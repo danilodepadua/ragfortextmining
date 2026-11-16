@@ -1,0 +1,334 @@
+z/os  FIXES ARE AVAILABLE
+DB2 Version 9.7 Fix Pack 2 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24026928]
+DB2 Version 9.7 Fix Pack 3 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24027906]
+DB2 Version 9.7 Fix Pack 3a for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24028306]
+DB2 Version 9.7 Fix Pack 4 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24029745]
+DB2 Version 9.7 Fix Pack 5 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24031181]
+DB2 Version 9.7 Fix Pack 6 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24032754]
+DB2 Version 9.7 Fix Pack 7 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24033685]
+DB2 Version 9.7 Fix Pack 8 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24034634]
+DB2 Version 9.7 Fix Pack 9a for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24037559]
+DB2 Version 9.7 Fix Pack 9 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24036646]
+DB2 Version 9.7 Fix Pack 10 for Linux, UNIX, and Windows [http://www-01.ibm.com/support/docview.wss?uid=swg24038641]
+
+
+SUBSCRIBE
+You can track all active APARs for this component.
+
+
+
+APAR STATUS
+ * CLOSED AS PROGRAM ERROR.
+    
+   
+   
+
+ERROR DESCRIPTION
+ *  In DPF environments, After granting quiesce_connect on the
+   database to the user and even to its group, if the instance is
+   quiesced as follows "db2 quiesce instance <instancename> group
+   cmodprod immediate", connect to the database by setting DB2NODE
+   to another partition would  fail with SQL20157N error though
+   theuser has quiesce_connect authority.
+   
+    For example:
+   db2 "grant quiesce_connect on database to user usr1"
+   db2 "grant quiesce_connect on database to group grp1"
+   db2 quiesce instance <instancename> group grp1 immediate
+   
+   As usr1:
+   export DB2NODE=1
+   db2 terminate
+   db2 connect to <dbname>
+   SQL20157N  User "usr1 " does not have the QUIESCE_CONNECT
+   privilege. SQLSTATE=08004
+   
+   
+    
+   
+   
+
+LOCAL FIX
+ *  Invoke the quiesce command using the user option instead for
+   every user belonging to the group.
+   db2 quiesce instance <inst_name> user usr1 immediate
+   
+   
+    
+   
+   
+
+PROBLEM SUMMARY
+ *  ****************************************************************
+   * USERS AFFECTED:                                              *
+   * All DPF users                                                *
+   ****************************************************************
+   * PROBLEM DESCRIPTION:                                         *
+   * In DPF environments, After granting quiesce_connect on       *
+   * thedatabase to the user and even to its group, if the        *
+   * instanceisquiesced as follows "db2 quiesce instance          *
+   * <instancename>group cmodprod immediate", connect to the      *
+   * database bysetting DB2NODE to another partition would  fail  *
+   * withSQL20157N error though the user has                      *
+   * quiesce_connectauthority.For example:db2 "grant              *
+   * quiesce_connect on database to user usr1"db2 "grant          *
+   * quiesce_connect on database to group grp1"db2 quiesce        *
+   * instance <instancename> group grp1 immediateAs usr1:export   *
+   * DB2NODE=1db2 terminatedb2 connect to <dbname>SQL20157N  User *
+   * "usr1 " does not have the QUIESCE_CONNECTprivilege.          *
+   * SQLSTATE=08004                                               *
+   ****************************************************************
+   * RECOMMENDATION:                                              *
+   * Please upgrade to Version 9.7 Fixpak 2 or later              *
+   ****************************************************************
+   
+   
+    
+   
+   
+
+PROBLEM CONCLUSION
+ *  Problem was first fixed in Version 9.7 Fixpak 2
+   
+   
+    
+   
+   
+
+TEMPORARY FIX
+ *  Invoke the quiesce command using the user option instead for
+   every user belonging to the group.
+   db2 quiesce instance <inst_name> user usr1 immediate
+   
+   
+    
+   
+   
+
+COMMENTS
+
+APAR INFORMATION
+ * APAR NUMBER
+   IC65139
+   
+   
+ * REPORTED COMPONENT NAME
+   DB2 FOR LUW
+   
+   
+ * REPORTED COMPONENT ID
+   DB2FORLUW
+   
+   
+ * REPORTED RELEASE
+   970
+   
+   
+ * STATUS
+   CLOSED PER
+   
+   
+ * PE
+   NoPE
+   
+   
+ * HIPER
+   NoHIPER
+   
+   
+ * SPECIAL ATTENTION
+   NoSpecatt
+   
+   
+ * SUBMITTED DATE
+   2009-12-14
+   
+   
+ * CLOSED DATE
+   2010-06-22
+   
+   
+ * LAST MODIFIED DATE
+   2010-06-22
+   
+   
+
+ * APAR IS SYSROUTED FROM ONE OR MORE OF THE FOLLOWING:
+    IC64509 [http://www-01.ibm.com/support/docview.wss?uid=swg1IC64509]
+   
+   
+ * APAR IS SYSROUTED TO ONE OR MORE OF THE FOLLOWING:
+   
+   
+   
+
+FIX INFORMATION
+ * FIXED COMPONENT NAME
+   DB2 FOR LUW
+   
+   
+ * FIXED COMPONENT ID
+   DB2FORLUW
+   
+   
+
+APPLICABLE COMPONENT LEVELS
+ * R970 PSY
+   UP  TECHNOTE (FAQ)
+
+QUESTION
+ Why does db2adutil verify option return a "Error migrating media header (sqlcode -2514)? 
+
+CAUSE
+For example:
+==>db2adutl verify full taken at '20161007021403' database 'SAMPLE'
+
+Query for database SAMPLE
+Retrieving FULL DATABASE BACKUP information. Please wait.
+Error migrating media header (sqlcode = -2514). 
+
+
+
+ANSWER
+The most common explanation why the above error is being returned is that there is likely a mis-match between the version of Db2 running the >db2adutl verify option against a "different" version of Db2 backup image. 
+
+For example: If the current instance is V10.5, then the db2adult verify will generate the above error if the version of Db2 backup image is any of the following: v9.5, v9.7, v10 and v11.  TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ Offline-backup against the quiesced database failed with the error, SQL1035N.
+It did not occur with V9.7. And it came to happen after migrating to V10.1 or later from V9.7. 
+
+SYMPTOM
+ 
+
+The following example shows this situation.
+
+1) In CLP 1 under the user having DBADM authority, execute quiesce database command on the database, sample.
+
+$ db2 connect to sample
+
+Database Connection Information
+
+Database server = DB2/AIX64 10.5.7
+SQL authorization ID = E105Q7A
+Local database alias = SAMPLE
+
+
+$ db2 quiesce database immediate force connections
+DB20000I The QUIESCE DATABASE command completed successfully.
+$ db2 terminate
+DB20000I The TERMINATE command completed successfully.
+
+2) In CL 2 under the user having only connect privilege on sample database. 
+Run the following shell repeating connect to sample.. 
+
+$ cat connect.sh
+#!/bin/sh
+count=0
+while [ $count -lt 1000 ]; do
+db2 connect to $db
+count=`expr $count + 1`
+done 
+
+db2insth $ sh -x loop.sh
++ count=0
++ [ 0 -lt 1000 ]
++ db2 connect to sample
+SQL20157N User with authorization ID "USER1" failed to attach to a
+quiesced instance, or connect to a quiesced database or a database in a
+quiesced instance which is in the following quiesce mode: "QUIESCE DATABASE"
+SQLSTATE=08004
++ + expr 0 + 1
+count=1
++ [ 1 -lt 1000 ]
++ db2 connect to sample
+<snippet>
+
+* connect to sample continues to fail with the error, SQL20157N because the database, sample is quiesced.
+
+3) In CLP 1, execute the off-line backup command while executing the shell script under CLP2.
+
+$ db2 backup db sample
+SQL1035N The operation failed because the specified database cannot be
+connected to in the mode requested. SQLSTATE=57019
+
+* The backup command failed. But this error does not happen on V9.7. 
+
+For avoiding the error in offline-backup, use quiesce instance command with restricted access option.
+
+
+
+CAUSE
+Because of the code change in V10.1 GA, the off-line backup command could be blocked for short period of time while connect database command is executed.
+
+
+
+RESOLVING THE PROBLEM
+ 
+
+Please use quiesce instance command with the "restricted access" option instead of the quiesce database command. 
+
+Or please retry off-line backup command after getting SQL1035N error.
+
+RELATED INFORMATION
+ A Japanese translation is available [http://www.ibm.com/support/docview.wss?uid=swg21980030] GSKit; ICC; encryption; DB2 security; SSL; global security kit TECHNOTE (FAQ)
+
+QUESTION
+ What version of GSKit is shipped with my DB2 release? 
+
+ANSWER
+ 
+
+DB2 Release GSKit level DB2 V9.5 V7.0.4.27 DB2 V9.5 FP10a V7.0.4.50 DB2 V9.5 FP10 V7.0.5.5 DB2 V9.7 GA to FP4 V8.0.13.3 DB2 V9.7 FP5, FP6 V8.0.14.8 DB2 V9.7 FP7 V8.0.14.14 DB2 V9.7 FP8 V8.0.15.4 DB2 V9.7 FP9 V8.0.14.32 DB2 V9.7 FP9a V8.0.14.43 DB2 V9.7 FP11 V8.0.50.47 DB2 V9.8 V8.0.13.3 DB2 V10.1 V8.0.14.14 DB2 V10.1 FP3a V8.0.14.43 DB2 V10.1 FP4 V8.0.14.43 DB2 V10.1 FP5 V8.0.50.41 DB2 V10.1 FP6 V8.0.50.57 DB2 V10.5 V8.0.14.27 DB2 V10.5 FP3a V8.0.14.43 DB2 V10.5 FP5 V8.0.50.31 DB2 V10.5 FP6 V8.0.50.41 DB2 V10.5 FP7 V8.0.50.47 DB2 V10.5 FP8 V8.0.50.57 DB2 V10.5 FP9 V8.0.50.79 DB2 V10.5 FP10 V8.0.50.86 DB2 V11.1 to FP2 V8.0.50.57 DB2 V11.1 FP3 V8.0.50.86 RELATED INFORMATION
+ Crypto library change in DB2 Version 9.7 Fix Pack 5 for [http://www-01.ibm.com/support/docview.wss?uid=swg21590697]
+DB2 Connect Performance Issue Related to Cryptography o [http://www-01.ibm.com/support/docview.wss?uid=swg21614548]  PRODUCT DOCUMENTATION
+
+ABSTRACT
+ This document lists the updates of the Software Requirements and supported DB2 database versions in Merge Backup documentation. 
+
+CONTENT
+You can install DB2 Merge Backup only on a supported platform. 
+
+DB2 Merge Backup supports the same platforms as DB2 V9.5 and DB2 V9.7 except Solaris x86. The following platforms are supported:
+• HP-UX IA64 11iv2 or later
+• IBM AIX® 6.1 and higher
+• Linux for xSeries®
+• Linux for pSeries®
+• Linux for zSeries®
+• Solaris Operating Environment 10 and higher (SPARC only)
+• Windows 8
+• Windows 7
+• Windows Vista
+• Windows 2008 Server x86-32 bit
+• Windows 2008 Server x86-64 bit
+• Windows XP Professional x86-32 bit
+• Windows XP Professional x86-64 bit
+• Windows 2003 Enterprise Edition x86-32 bit, x86-64 bit
+• Windows 2003 Standard Edition x86-32 bit, x86-64 bit
+
+DB2 Merge Backup supports the following databases:
+• IBM DB2 for Linux, UNIX, and Windows V9.5
+• IBM DB2 for Linux, UNIX, and Windows V9.7
+• IBM DB2 for Linux, UNIX, and Windows V10.1
+• IBM DB2 for Linux, UNIX, and Windows V10.5
+
+Restriction: DB2 V9.7 fix pack 4 and higher and DB2 V9.5 fix pack 8 and higher support the registration of backups that are created by DB2 Merge Backup. If you are using DB2 v9.7 Fix Pack 3 or earlier, and you want to merge backups starting from a full merged backup, you must specify the latest full merged backup by using the START option in the control file.
+
+Syntax
+None
+
+Variable
+None
+
+Default
+No Default
+
+
+RELATED INFORMATION
+ DB2 Merge Backup for Linux UNIX and Windows [http://pic.dhe.ibm.com/infocenter/db2ars/v1r1/topic/com.ibm.datatools.mbk.doc/helpindex_mbk_sdf.html]
+
+
+
+
+PUBLICATION NUMBER
+ SC19-3952-00

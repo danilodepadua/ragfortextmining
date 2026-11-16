@@ -1,0 +1,145 @@
+TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ I licensed my SPSS product with a number of authorization codes, but I am still getting a license error when I start my product. How to determine the correct authorization code is being used if one of the following happened:
+
+1 - I applied an authorization code for a different product or an authorization code for a different version of my installed version of SPSS
+
+2 - Possibly an authorization code that is not set up properly because attempting to start my SPSS product I receive one of the following errors: 
+
+SPSS Statistics:
+Error # 7001
+There is no license for SPSS for Windows.
+This command not executed.
+Specific symptom number: 18
+
+Or
+
+Error # 2072 
+There was an unanticipated problem with the license for this product. 
+This command not executed. 
+Specific symptom number: 4 
+
+Amos:
+No valid license for Amos was found. (1, 18)
+Or
+
+No valid license for Amos was found. (11,4)
+
+Clementine / Modeler:
+No license key found: Subcode 18 
+
+RESOLVING THE PROBLEM
+Each of our SPSS products come with a unique 20 character alpha-numeric code called an authorization code. These codes are specific not only to the product that needs to be installed, but the version of the product as well. Documentation that is provided by the SPSS sales department or your distributor defines what specific product and version your authorization code can be used for.
+
+If you have any questions about your authorization code, please feel free to contact Client Care at tsmail@us.ibm.com
+
+RELATED INFORMATION
+ Need more help? Our Licensing forum is Live! [https://developer.ibm.com/answers/topics/spsslicensing.html]
+
+
+ 
+
+HISTORICAL NUMBER
+ 81980 SPSS Support Acquisition Statistics Stats Grad Pack Student TECHNOTE (FAQ)
+
+QUESTION
+ Where do I get support for IBM SPSS Student Version or Graduate Pack software? 
+
+ANSWER
+Step 1: 
+For installation & licensing issues on Student version and Graduate pack, contact your vendor. 
+
+ * Hearne [http://www.hearne.software/Software/SPSS-Grad-Packs-for-Students-by-IBM/FAQ] 
+ * On the Hub [http://onthehub.com/] 
+ * StudentDiscounts.com [http://studentdiscounts.com/contact-us.aspx] 
+ * JourneyEd [https://www.journeyed.com/contact] 
+ * thinkEDU [https://thinkedu.desk.com/] 
+ * Studica [http://www.studica.com/technical-support]
+
+
+
+
+
+Cross reference information Segment Product Component Platform Version Edition Business Analytics SPSS Amos Windows Not Applicable Grad Pack, Shrinkwrap, Campus Business Analytics SPSS Modeler Platform Independent Not Applicable Business Analytics SPSS Text Analytics for Surveys Windows Not Applicable Business Analytics SPSS Statistics Platform Independent Not Applicable Campus Edition, Grad Pack, Student Version  TECHNOTE (FAQ)
+
+QUESTION
+ I'm using IBM SPSS Statistics with a network license. Everything's installed, authorized, and seems to running properly, but I've got a question about the WlmAdmin Sentinel License Manager display and logging. I know that our organization has licensed Statistics Base and several other modules, and we received a single license authorization code that I assume had all the various module authorizations bundled together -- and the users do get access to all the modules we're supposed to have. The problem is that only a single 'product' is shown in the License Manager display ('0' or '1200') and I can't track individual usage of the various other modules any more finely than that.
+
+For instance, we've got 10 users license for Base and Trends, but I've got a feeling that given our current usage levels only a maximum of 5 people are actually using the Trends module functionality at any given time. If I could confirm that by checking usage reports, then I could reduce the number of licenses we pay for.
+
+Is there some way I could track distinct module usage? 
+
+ANSWER
+The only way the WlmAdmin tool can track and log module use separately is by using one authorization code or license per module. You can ask IBM Customer Care for assistance in generating separate codes instead of bundling them all together.
+
+RELATED INFORMATION
+ Need more help? Our Statistics forum is Live! [https://developer.ibm.com/answers/topics/statistics.html?smartspace=predictive-analytics]
+Need more help? Our Licensing forum is Live! [https://developer.ibm.com/answers/topics/spsslicensing.html]
+
+
+ 
+
+HISTORICAL NUMBER
+ 51516  TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ Customer is trying to activate the 20 Alpha-Numeric Authorization Code after the software installation.
+-- OR --
+Customer is trying to activate the 20 Alpha-Numeric Authorization Code by launching the License Authorization Wizard. 
+
+SYMPTOM
+[IBM SPSS Statistics 21 Licensing]
+'Internet Authorization Status' window when running the License Authorization Wizard.
+
+--------------- The entire message in the 'Internet Authorization Status' window --------------- 
+
+
+Authorization in progress...(a 20-alpha-numeric authorization code)
+Authorization failed.: Authorization Error
+* * * End Of Transaction. * * *
+One or more codes failed.
+
+Click "Next" to license authorization via e-mail.
+
+--------------- End of message --------------- 
+
+
+CAUSE
+Possible causes:
+Firewall
+Anti-virus program
+Third Party software running in affected environment
+
+
+ENVIRONMENT
+Windows
+
+
+
+RESOLVING THE PROBLEM
+The License Authorization Wizard sends your authorization code over the Internet to IBM Corp. and automatically retrieves your license. If your computer is behind a proxy, click Configure proxy settings and enter the appropriate settings. 
+
+
+If the authorization process fails, you will be prompted to send an e-mail message.
+Send the e-mail message and respond to the prompt in the License Authorization Wizard. 
+The e-mail message will be processed almost instantaneously.
+You can then re-run the License Authorization Wizard and enter the license code(s) when you receive the reply email.
+
+If you already closed the License Authorization Wizard please do the following:
+Using the start menu, go to All Programs, and locate IBM SPSS Statistics, there you will see the shortcut to launch the Statistics software and an option to launch the license authorization wizard.
+
+Note: On Windows Vista or above, you must run as administrator.
+Right-click the License Authorization Wizard shortcut and choose 'Run As Administrator', when the wizards starts click next on the status screen and then select License my product now.
+
+RELATED INFORMATION
+ Need more help? Our Statistics forum is Live! [https://developer.ibm.com/answers/topics/statistics.html?smartspace=predictive-analytics] student academic user lost missing authorization authorisation code vendor TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ Where is the authorization code for SPSS Statistics, Modeler or AMOS Student Version or Graduate Pack software? 
+
+RESOLVING THE PROBLEM
+Refer to the SPSS Student Support Portal [http://www-01.ibm.com/support/docview.wss?uid=swg21592093] for information on who to contact to obtain your code for SPSS Statistics, Modeler or AMOS Student Version or Graduate Pack. Each vendor has a different process in how it distributes authorization codes for IBM SPSS Statistics product. On the Student Portal, you will find information about different vendors with their contact information. Apply the code by running the SPSS License Authorization Wizard to enable the license.
+
+RELATED INFORMATION
+ Need more help? Our Statistics forum is Live! [https://developer.ibm.com/answers/topics/statistics.html?smartspace=predictive-analytics]

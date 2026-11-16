@@ -1,0 +1,192 @@
+TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ This document will explain the steps necessary to create a group or role within the Cognos Namespace that can be used to assign only rights for Cognos Workspace Advanced and/or Cognos Workspace (or as they were formerly known in 10.1.1 / 10.1 Business Insight Advanced and/or Business Insight.). 
+
+CAUSE
+IBM Cognos Licensing might require a Group of Users to be able to only access Cognos Workspace or Cognos Workspace Advanced (Business Insight or Business Insight Advanced).
+
+ENVIRONMENT
+IBM Cognos Installation with Cognos Workspace (Business Insight) and Cognos Workspace Advanced (Business Insight Advanced).
+
+RESOLVING THE PROBLEM
+Based on the following steps the group or role will only have access to either Cognos Workspace (Business Insight) or Cognos Workspace Advanced (Business Insight Advanced). Even though the Role receives Traverse and Execute permissions for the Report Studio capability it will not be able to open Report Studio (this is only possible if you have Traverse and Execute permissions for the Professional User Interface Profile).
+
+
+
+
+
+First create your group or role in the Cognos Namespace: 
+
+1. Launch IBM Cognos Administration 
+
+2. Select the Security Tab 
+
+3. Choose Users, Groups and Roles 
+
+4. Click on the Cognos namespace. 
+
+5. Click "New Role" or "New Group" 
+
+Then you will have to apply the following settings:
+R=Read
+T=Traverse
+W=Write
+X=Execute 
+
+Permissions on Capabilities [Cognos Administration->Capabilities]:
+Cognos Viewer: TX
+Run With Options: TX
+Collaborate: TX
+Executive Dashboard: TX
+Executive Dahsboard -> Use Advanced Dashboard Features: TX (10.2.x and Up)
+Executive Dahsboard -> Use Interactive Dashboard Features: TX (10.2.x and Up)
+Report Studio: TX
+Scheduling: TX
+Watch Rules: TX
+
+Report Studio Profiles: TX [This is "set properties" directly on Security Tab->User Interface Profiles]
+Express: TX [This is below User Interface Profiles]
+
+Permissions:
+Public Folders: RTWX
+Express Authors (on itself): RTX [Replace this with your Group located in Cognos Administration->Security tab->Users,Groups,Roles->Cognos-><your Express Group>]
+
+To remove the Group/Role access to Cognos Workspace (Business Insight) do the following access:
+Cognos Administration->Security Tab->Capabilities->Executive Dashboards (Cognos Workspace/Business Insight)->Set Properties 
+Your group/role then receives deny on Traverse and Execute. 
+
+To remove the Group/Role access to Cognos Workspace Advanced (Business Insight Advanced) do the following:
+Cognos Administration->User Interface Profiles->Drop Down Symbol next to Express->Set Properties
+Select your group and change Traverse and Execute to Deny.
+
+You can create unique Groups/Roles to cater to every requirement separately.  TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ The "Email Report" option from the Cognos Viewer needs to be hidden from Consumers and a few other custom created roles. 
+
+RESOLVING THE PROBLEM
+ 
+
+ID for predefined Cognos namespace groups:
+
+Anonymous: Anonymous (Users who can access IBM Cognos software without being prompted for authentication)
+Administrators: Administrators (Users who have the administration capability)
+Consumers: Consumers (All authenticated users, which includes Administrators, Query Studio Users, and Report Studio Users)
+Query Studio Users: QSUsers (Users who have the Query Studio capability)
+Report Studio Users: RSUsers (Users who have the Report Studio capability)
+
+ID For custom:
+
+For custom created roles, we would need to create a unique id attribute for each role. For this:
+
+1. Stop the IBM Cognos service.
+2. Open the c10_location/templates/ps/portal/system.xml file in an XML or text editor. (Ensure you have a backup the current system.xml)
+3. Add a parameter named ui_groups and then do the following:
+● Add the group element for each group or role you want.
+● Specify a unique id attribute for each group or role.
+
+The IDs are case sensitive.
+For the custom groups or roles, the IDs cannot contain more than two characters, and
+cannot contain spaces. For example, the following IDs can be used: a1, b2, Ab, AB. The
+following IDs cannot be used: abc, A 1, a bc.
+
+For the IBM Cognos predefined groups, use the associated IDs as documented the table
+above.
+● Specify a value for the id attribute for each group element.
+Tip: To find the ID in IBM Cognos Connection, open the group or role properties page
+and, on the General tab, click the View the search path, ID and URL link.
+The following example shows the syntax of the ui_groups parameter.
+
+The "_" needs to be included as well.
+
+Tip: Separate IDs using spaces.
+
+<param name="ui_groups">
+<group id="q1">xOmpua2o_</group>
+</param>
+
+<param name="ui_hide">
+<RV_TOOLBAR_BUTTONS_SEND show="Administrators QSUsers RSUsers q1"/>
+</param>
+
+This means only the users from Administrators, Query Studio Users, Report Studio Users and role with id attribute "q1" (i.e. id from View Search Path and URL link for the role is "xOmpua2o_") will see the "Email Report" options whereas Consumers will not.
+
+4. Save the system.xml file.
+5. Restart the IBM Cognos service.
+
+For information about all the user interface elements that you can hide and other customization options, see "Elements You Can Hide" in the Cognos Administration and Security guide located in each Cognos Installation Directory at ...\webcontent\documentation\en called ug_cra.pdf Icon Disappeared; Icon Missing; Cognos Viewer icon missing. TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ The "Open With Report Studio" iIcon (Inverted Triangle Icon) in the Cognos Connection is no longer visible. 
+
+CAUSE
+This is usually observed when the following advanced parameters are enabled for the entire dispatcher, instead of just the ReportService and/or BatchReportService:
+1. VIEWER_ENABLE_SORT=TRUE
+2. VIEWER_DISABLE_SECONDARY_SORT_FOR_LISTS=TRUE
+
+ENVIRONMENT
+Cognos 10.2.2
+
+DIAGNOSING THE PROBLEM
+In IBM Cognos Administration > Configuration > Dispatchers and Services > Set Properties Configuration > Settings > Environment > Advance Setting check to see if the below settings exists:
+1. VIEWER_ENABLE_SORT=TRUE
+2. VIEWER_DISABLE_SECONDARY_SORT_FOR_LISTS=TRUE.
+If they are set then while running the reports the Open With Report Studio Inverted Triangle disappears.
+
+
+RESOLVING THE PROBLEM
+Removed these advanced parameters from the dispatcher's advanced settings and keep them only for the ReportService and BatchReportService.  TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ When accessing Cognos Workspace Advanced a user is greeted with a blank metadata area and when switching to Toolbox this area is also blank. 
+
+SYMPTOM
+Missing options on right side, no options to create a new report otherwise. Could be perceived as javascript being stuck, no browser indications of this however.
+
+
+CAUSE
+There is a capability involved which is not enabled for the user.
+
+ENVIRONMENT
+Cognos BI 10.2.2 - any operating system
+
+RESOLVING THE PROBLEM
+1) Launch IBM Cognos Administration
+2) Click on Security > Capabilities
+3) Click on the Report Studio capability
+4) Click on the arrow to the right of the "Create/Delete" capability and select "Set Properties"
+5) Click on Permissions and look at the list of users/groups listed in this view. The user in question needs to be part of this list and have Execute and Traverse permissions granted on the capability.
+
+Ensure also that the user has Execute and Traverse on the "Report Studio" capability.  TECHNOTE (FAQ)
+
+QUESTION
+ IBM hosted an Open Mic webcast with Cognos Support Engineers from India on 28th Jan 2015. The topic was "IBM Cognos BI 10.2.2 New Features - Part 1" 
+
+ANSWER
+ 
+
+Presentation En_Open Mic - IBM Cognos BI 10.2.2 New Features_Part1.pdf [/support/docview.wss?uid=swg21696577&aid=2]En_Open Mic - IBM Cognos BI 10.2.2 New Features_Part1.pdf [/support/docview.wss?uid=swg21696577&aid=1] Kr_Open Mic - IBM Cognos BI 10.2.2 New Features_Part1.pdf [/support/docview.wss?uid=swg21696577&aid=4]Kr_Open Mic - IBM Cognos BI 10.2.2 New Features_Part1.pdf [/support/docview.wss?uid=swg21696577&aid=3] Q & A 
+Compatibility: 
+
+1. Can the Reports generated in Cognos 10.2.2 Report Studio be run on earlier versions, such as 10.2.1? 
+A. No, You cannot use reports built on a higher version on a lower version . You can run reports generated in 10.2.1 on 10.2.2, but not vice versa. 
+
+Report Design: 
+
+2. When exporting a single page report in excel where does the user friendly name of the excel sheet come from ? 
+A. The name of the excel sheets are the values of the grouping used to break the report. 
+
+3. How many levels of a hierarchy can be expanded in Cognos Workspace using the triangle showed ? 
+A. The number of levels depends on the data and the level of subcategories you have. 
+
+My Datasets 
+
+4. Where exactly will this data file be saved on server in case of my datasets ? 
+A. The data loaded from the file is saved in database created on a DB2 server which is configured and maintained by the Administrator. 
+
+5. Can I share "My data set" to other user? Not the source data but the result of loading the data from excel/csv etc. 
+A. Administrator can configure the access to my data sets to all users. 
+
+6. What is the maximum size of Excel workbook for MY dataset? 
+A. To maintain system performance, there are limits to the size of files that you can upload. The administrator can modify the maximum file sizes, if required.

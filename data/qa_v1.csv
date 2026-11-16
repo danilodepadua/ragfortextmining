@@ -1,0 +1,441 @@
+qa_id,doc_id,question,gold_answer,evidence_text
+Q001,D001,"What can be done about ""Too many open files"" messages in the DASH systemOut? What can be done about ""Too many open files"" messages in the DASH systemOut log on a system running Linux?","In the DASH system, to resolve the ""Too many open files"" messages on a system running Linux, the ulimit for the number of file descriptors can be increased by following these steps:
+
+1. Edit the startup script in the /opt/rational/clearcase/linux_x86/etc/clearcase (or equivalent) directory and add the line: `ulimit -n <new_limit>`. For example, `ulimit -n 2048`. This increases the soft file descriptor limit for ClearCase processes.
+
+2. Alternatively, the value for all processes on the system can be increased by adding the line `set rlim_fd_cur=2048` to the /etc/system file and then rebooting the system.
+
+Either of these steps should help resolve the issue of ""Too many open files"" messages in the DASH systemOut log on a Linux system.",The default is 1024. Increasing to 2048 is a good value to try. This just increases the soft file descriptor limit for ClearCase processes.
+Q002,D002,SQL20157N happened in off-line backup against the quiesced database after migrating to V10.1 or V10.5 from V9.7. The customer spoladically got SQL20157N error in off-line backup command even when the database was quiesced. Why does this situation happen on V10.1 and V10.5 not on V9.7?,"Based on the provided context, the issue with the SQL20157N error occurring during offline backup against a quiesced database after migrating from DB2 V9.7 to V10.1 or V10.5 is due to a code change in the DB2 V10.1 GA release.
+
+The key points from the context are:
+
+1. The issue does not occur on DB2 V9.7, but starts happening after migrating to V10.1 or V10.5.
+2. The problem is that the offline backup command gets blocked for a short period of time while the connect to database command is executed.
+3. This was likely caused by a code change introduced in the DB2 V10.1 GA release.
+
+The likely explanation is that in DB2 V10.1 and later, the offline backup command is more tightly synchronized with the connection to the quiesced database, leading to a higher chance of the backup getting blocked temporarily when other connections are being established. This behavior was not present in the earlier DB2 V9.7 release.
+
+The recommended solution is to use the ""quiesce instance"" command with the ""restricted access"" option instead of the ""quiesce database"" command. This will ensure that the offline backup can be performed without encountering the SQL20157N error, even after the migration to the newer DB2 versions.
+
+In summary, the issue is caused by a code change in DB2 V10.1 that introduced tighter synchronization between the offline backup and database connections, leading to the observed SQL20157N errors in V10.1 and V10.5 that were not present in the earlier V9.7 release.","Because of the code change in V10.1 GA, the off-line backup command could be blocked for short period of time while connect database command is executed."
+Q003,D003,Help with Action required for Hypervisor Editions of IIB V9 & WMB V8 for security vulnerabilities in Red Hat Linux I need to understand details regarding Action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities in Red Hat Linux. Where can I find this information?,You can find the information regarding the action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities in Red Hat Linux on the IBM support website. The specific link provided in the context is: [http://www.ibm.com/support/docview.wss?uid=swg21697721]. This link contains details on the necessary actions to address the security vulnerabilities in Red Hat Linux for these products.,"Action required for IBM Integration Bus Hypervisor Edition V9.0, WebSphere Message Broker Hypervisor Edition V8.0, V7.0 and IBM SOA Policy Pattern for Red Hat Enterprise Linux Server 2.0 for the GNU C library (glibc) vulnerabilities. [http://www.ibm.com/support/docview.wss?uid=swg21697721]"
+Q004,D004,"Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc 
+
+Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc
+
+I get the following messages in the logs:-
+
+/tmp/guard_stap.stderr.txt on the DB Server :- ""Server wasn't heard from for nn sec during this attempt nnn sec total), closing and re-opening""
+
+and from the Guardium Appliance - via fileserver in the /log/opt-ibm-guardium-log/snif/snif.log ""Unauthorized client connecting from ,rejecting""","Based on the information provided in the TECHNOTE, it seems that the issue you are facing is related to the S-TAP not being able to properly connect to the Guardium Appliance.
+
+The key points are:
+
+1. The message in the /tmp/guard_stap.stderr.txt log on the DB Server indicates that the S-TAP is unable to maintain a stable connection to the Guardium Server.
+
+2. The message in the Guardium Appliance log (/log/opt-ibm-guardium-log/snif/snif.log) suggests that the Guardium Appliance is rejecting the connection attempt from the S-TAP, possibly due to an authorization issue.
+
+The TECHNOTE suggests that this issue could be caused by the ""S-TAP Approval Needed"" checkbox being checked in the S-TAP Certification screen on the Guardium Appliance.
+
+To resolve this issue, you should try the following:
+
+1. Log in to the Guardium Appliance GUI.
+2. Navigate to the S-TAP Certification screen.
+3. Locate the entry for the S-TAP installed on the DB Server.
+4. Uncheck the ""S-TAP Approval Needed"" checkbox.
+5. Save the changes.
+
+After making this change, the S-TAP should be able to connect to the Guardium Appliance and start sending data, which should then be visible in the S-TAP Control and other relevant screens on the Appliance.
+
+If the issue persists even after unchecking the ""S-TAP Approval Needed"" checkbox, you may need to check for any other potential connectivity or configuration issues between the S-TAP and the Guardium Appliance.",One reason for these errors could be that the S-TAP Approval Needed is checked in the S-TAP Certification screen on the Appliance like this :- Uncheck the Approval box and the S-TAPs should start connecting .
+Q005,D005,"Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc 
+
+Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc
+
+I get the following messages in the logs:-
+
+/tmp/guard_stap.stderr.txt on the DB Server :- ""Server wasn't heard from for nn sec during this attempt nnn sec total), closing and re-opening""
+
+and from the Guardium Appliance - via fileserver in the /log/opt-ibm-guardium-log/snif/snif.log ""Unauthorized client connecting from ,rejecting"".
+
+How do I correct the problem?","Based on the context provided, it seems that the issue is related to the S-TAP not being able to connect properly to the Guardium appliance. The error messages suggest that the S-TAP is not being recognized or authorized by the appliance.
+
+To resolve this issue, you should check the following:
+
+1. **S-TAP Approval Needed Setting**: In the Guardium appliance, go to the S-TAP Certification screen and check if the ""Approval Needed"" option is enabled. If it is, you need to uncheck it so that the S-TAP can connect without requiring manual approval.
+
+The steps to do this are:
+- Log in to the Guardium appliance
+- Navigate to the ""Administration"" > ""Certification"" > ""S-TAP Certification"" screen
+- Ensure that the ""Approval Needed"" option is unchecked
+- Apply the changes
+
+2. **S-TAP Communication Settings**: Check the communication settings between the S-TAP and the Guardium appliance. Ensure that the IP address, port, and any other networking-related settings are configured correctly on both the S-TAP and the appliance.
+
+3. **Firewall and Network Connectivity**: Verify that there are no firewall or network connectivity issues preventing the S-TAP from communicating with the Guardium appliance. Ensure that the necessary ports are open and that there are no network-related problems.
+
+4. **S-TAP Log Files**: Collect the S-TAP log files from the DB server and the Guardium appliance, as described in the ""TECHNOTE (FAQ)"" section of the provided context. These logs can help identify the root cause of the connection issue.
+
+5. **S-TAP Reinstallation**: If the above steps do not resolve the issue, you may need to uninstall and reinstall the S-TAP on the DB server, following the recommended installation process.
+
+By addressing these potential issues, you should be able to resolve the problem and get the S-TAP properly connected and visible on the Guardium appliance.",One reason for these errors could be that the S-TAP Approval Needed is checked in the S-TAP Certification screen on the Appliance like this :- Uncheck the Approval box and the S-TAPs should start connecting .
+Q006,D006,"Why am I seeing native out of memory issues on a 64-bit system? I have a 64-bit Java installed on my Portal server. On occasion I'm seeing the Portal server processID disappear across any one of my servers running in the clusters. Portal restarts no problem and runs fine, but the processID disappears. 
+Logs aren't showing any errors. Did see the following in a javacore or two that was generated: ""systhrow"" (00040000) Detail ""java/lang/OutOfMemoryError"" Failed to create a thread: retVal -1073741830, errno 11. reporting
+Why is this happening?","Based on the information provided, it seems that you are encountering a native out of memory issue on your 64-bit system, even though you have a 64-bit Java installed.
+
+The key evidence is the ""systhrow"" (00040000) Detail ""java/lang/OutOfMemoryError"" with the message ""Failed to create a thread: retVal -1073741830, errno 11"" in the javacore files.
+
+This error indicates that the Java Virtual Machine (JVM) is unable to create a new thread, which is typically due to a system-level limit being reached, rather than a pure Java heap memory issue.
+
+In a 64-bit environment, you may still encounter these native out of memory issues for the following reasons:
+
+1. **Thread Limit**: Even on a 64-bit system, there may be a limit on the number of threads that can be created by a single process. This limit is usually controlled by the operating system's kernel parameters, such as ""maxuproc"" on AIX or ""nproc"" on Linux. If this value is set too low, it can cause the JVM to fail to create new threads, leading to the observed ""Failed to create a thread"" errors.
+
+2. **File Descriptor Limit**: Another potential cause could be the limit on the number of open file descriptors for the process. If this limit is reached, the JVM may fail to create new threads, leading to the observed errors. You can check the file descriptor limit using the ""ulimit -n"" command.
+
+3. **Virtual Memory Limit**: On some 64-bit systems, there may be a limit on the total virtual memory available to a single process. If this limit is reached, the JVM may fail to create new threads, leading to the observed errors.
+
+To resolve this issue, you should:
+
+1. Check the operating system's kernel parameters related to thread/process limits (e.g., ""maxuproc"" on AIX, ""nproc"" on Linux) and increase them if necessary.
+2. Verify the file descriptor limit for the Portal server process and increase it if required.
+3. Ensure that there are no other system-level limits that may be causing the issue, such as virtual memory limits.
+
+Additionally, you can try the following:
+
+- Increase the Java heap size for the Portal server, as this may help prevent the JVM from running out of memory and failing to create new threads.
+- Check for any memory leaks or other issues in your Portal application that may be consuming excessive system resources.
+- Ensure that you are running the latest version of the Portal software and Java SDK, as newer versions may have improvements or fixes related to these types of issues.
+
+By addressing the underlying system-level limits and optimizing the Portal server's resource usage, you should be able to resolve the native out of memory issues you are experiencing on your 64-bit system.","In some other cases, the default value for nproc will be set to 1024, which may not allow to create enough threads in all processes；therefore, you have to check the ulimit setting on Linux."
+Q007,D007,Is ITCAM Data Collector for WebSphere 7.2.0.0.14 available? Is ITCAM Data Collector for WebSphere 7.2.0.0.14 available?,"Yes, ITCAM Data Collector for WebSphere 7.2.0.0.14 is available. The context provided includes the following information:
+
+""Alternatively, support for Traditional WebSphere for z/OS v9 and Liberty Profile for z/OS is available via the v7.2.0.0.14 Data Collector, which is available for download from the developerWorks [https://developer.ibm.com/apm/resources/itcam-websphere-application-server-v7-2-support-websphere-application-server-v9-liberty/] or directly in Fix Central [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-zos-IF0014&includeSupersedes=0&source=fc].""
+
+This clearly indicates that the ITCAM Data Collector for WebSphere 7.2.0.0.14 is available for download.","Alternatively, support for Traditional WebSphere for z/OS v9 and Liberty Profile for z/OS is available via the v7.2.0.0.14 Data Collector, which is available for download from the developerWorks"
+Q008,D008,Is there a support's guide to the CORBA Probes? Is there a support's guide to the IBM CORBA probes?,"Yes, there is a support's guide to the CORBA Probes and the IBM CORBA probes. The context provided mentions the following:
+
+1. ""Please review Support's Guide to IBM CORBA probes [attached] to understand the integration, alongside the probe's specific documentation.""
+
+This indicates that there is a Support's Guide to IBM CORBA Probes available.
+
+2. The context also mentions ""The Support's Guide to Probe Event Replication covers the following probe types:
+• Standard Input probe [rules file testing for all probes]
+• SimNet probe [Object Server loading]
+• Socket based probes [replaying TCP streamcapture]
+• Tivoli EIF probe [postzmsg]
+• MTTrapd probe [TCP/UDP/PACKET DATA]""
+
+This suggests that there is a more general Support's Guide to Probe Event Replication, which covers various types of probes, including CORBA probes.
+
+So in summary, the provided context indicates that there are at least two relevant support guides available:
+
+1. Support's Guide to IBM CORBA Probes
+2. Support's Guide to Probe Event Replication (which covers CORBA probes among others)","Please review Support's Guide to IBM CORBA probes [attached] to understand the integration, alongside the probe's specific documentation."
+Q009,D009,"Cognos Workspace Advanced Users are unable to see features. Why? 
+
+Certain Workspace Advanced users cannot open Report Studio. This happens with certain custom roles.
+
+Environment: IBM Cognos 10.2.2.x","Based on the provided context, the issue where Cognos Workspace Advanced users are unable to see certain features or cannot open Report Studio is likely due to the permissions and capabilities assigned to the custom roles.
+
+The key points from the context are:
+
+1. The issue occurs with certain custom roles, not with the default predefined Cognos groups/roles.
+2. The users are able to access Cognos Workspace Advanced, but certain features are missing or they cannot open Report Studio.
+3. The problem is related to the permissions and capabilities assigned to the custom roles.
+
+The resolution provided in the context suggests the following steps:
+
+1. Ensure the custom role/group has the necessary permissions on the relevant capabilities in Cognos Administration:
+   - The role/group should have Traverse (T) and Execute (X) permissions on the following capabilities:
+     - Cognos Viewer
+     - Run With Options
+     - Collaborate
+     - Executive Dashboard
+     - Report Studio
+     - Scheduling
+     - Watch Rules
+   - The role/group should also have Traverse (T) and Execute (X) permissions on the Report Studio Profiles and Express capabilities.
+2. Additionally, the role/group should have Read (R), Traverse (T), Write (W), and Execute (X) permissions on the Public Folders.
+3. To remove access to Cognos Workspace (Business Insight), the group/role should be denied Traverse and Execute permissions on the ""Executive Dashboards (Cognos Workspace/Business Insight)"" capability.
+4. To remove access to Cognos Workspace Advanced (Business Insight Advanced), the group/role should be denied Traverse and Execute permissions on the ""Express"" user interface profile.
+
+By validating and adjusting the permissions and capabilities assigned to the custom roles, you should be able to resolve the issue where certain Cognos Workspace Advanced users are unable to see certain features or cannot open Report Studio.",Even though the Role receives Traverse and Execute permissions for the Report Studio capability it will not be able to open Report Studio (this is only possible if you have Traverse and Execute permissions for the Professional User Interface Profile).
+Q010,D010,"Uninstalling I5 OS agent failed 
+
+I need to uninstall the I5OS agent before reinstalling a newer release of the same.
+
+Command: DLTLICPGM LICPGM(5724C04)
+
+is anyway failing and I don't know how to proceed further. 
+
+Can you please let me know the manual steps to uninstall the i5OS agent correctly ?","Based on the information provided in the ""i5 removal TECHNOTE (TROUBLESHOOTING)"" section, here are the steps to manually uninstall the IBM Tivoli Monitoring (ITM) i5/OS agent:
+
+1. First, try running the DLTLICPGM 5724C04 command to uninstall the Tivoli agent. If that does not work, proceed with the following manual steps:
+
+2. Run the following i5/OS commands:
+   - DLTLIB QAUTOMON
+   - DLTLIB QAUTOTMP
+   - DLTUSRPRF QAUTOMON and choose to remove all objects owned by this user.
+
+3. Start the i5/OS command shell (qsh):
+   - Delete the directory `/QIBM/USERDATA/IBM/ITM` and all subdirectories.
+   - Delete the directory `/QIBM/PRODDATA/IBM/ITM` and all subdirectories.
+
+4. Retry the RSTLICPGM commands specified in the user guide:
+   - http://www-01.ibm.com/support/knowledgecenter/SSTFXA_6.3.0/com.ibm.itm.doc_6.3/osibmi/pcinstall_a4_ug.htm?lang=en
+
+The technote indicates that these manual steps are necessary because the DLTLICPGM 5724C04 command fails to completely uninstall the agent, leaving it in an unknown state.
+
+Please follow these steps carefully to fully uninstall the i5/OS agent before attempting to reinstall a newer version.",RSTLICPGM/DLTLICPGM 5724C04 command failed to finish correctly and leaves the agent in an unknown state. DLTUSRPRF QAUTOMON and choose to remove all objects owned by this user.
+Q011,D011,Why are the component parameters missing for the Enable Hold and Virtual Interview Multiple Response functionality? Why are the component parameters missing for the Enable Hold and Virtual Interview Multiple Response functionality?,"The component parameters for the Enable Hold and Virtual Interview Multiple Response functionality are missing because they are not automatically added as part of the database upgrade scripts. This means that they need to be manually created by going to the Admin > Components screen, searching for the VIRTUAL_INTERVIEW_CONFIGURATION component, and adding the parameters ""MULTIPLE_RESPONSES_FOR_HOLD_VI_ALLOWED"" and ""MULTIPLE_RESPONSES_INTERVIEW_AUTO_COMPLETE"" with their respective values.",These component parameters are not automatically added as part of the database upgrade scripts. To enable the Enable Hold and Virtual Interview Multiple Response functionality you can manually create the component parameters.
+Q012,D012,"Controlling stop and starting of Rulerunner Service 
+
+Hi
+
+Datacap version 9.0.1
+
+ Is there a way of issuing a controlled shutdown request so the thread has time to finish processing whichever tasks it is executing so that no batches are aborted due to the communication link error?","Based on the provided context, there are a few ways to control the stop and start of the Rulerunner service:
+
+1. **Configuring Restart Behavior**:
+   - You can adjust the registry keys related to the ""Restart Individual processors"" and ""Restart processor Attempts"" settings.
+   - Increasing the ""Restart processor Attempts"" value from the default of 3 will allow Rulerunner to tolerate more consecutive aborted batches before shutting down all threads.
+   - Setting ""Restart Individual processors"" to 0 will disable the automatic shutdown feature altogether, allowing the threads to continue processing batches even if some are aborted.
+
+2. **Controlled Shutdown Request**:
+   - The information provided does not explicitly mention a way to issue a controlled shutdown request for the Rulerunner service.
+   - However, you can try using the Windows Services management tool to stop the Rulerunner service manually. This would allow the threads to finish processing any tasks they are currently executing before the service shuts down.
+
+3. **Monitoring Rulerunner Logs**:
+   - The context mentions that you can check the rulerunnerX.log files (where X is the thread number) to diagnose issues with consecutive aborted batches.
+   - Monitoring these logs can help you identify any patterns or issues that may be causing the batches to abort, which could help you determine the appropriate actions to take.
+
+In summary, the key things you can try are:
+
+1. Adjusting the Rulerunner registry settings to control the automatic shutdown behavior.
+2. Manually stopping the Rulerunner service through the Windows Services management tool to allow for a more controlled shutdown.
+3. Closely monitoring the Rulerunner logs to identify and address the root cause of the batch aborts.",NONE
+Q013,D013,What may be the cause of unclosed MQ object connections on DataPower? How can I resolve open MQ object connections that did not close out on DataPower?,"Based on the context provided, the main cause for unclosed MQ object connections on DataPower is the default cache timeout value for the MQ manager (mq-qm) object.
+
+The key points are:
+
+1. DataPower MQ manager object's idle connection is not closed when using the default (empty) cache timeout value.
+
+2. To resolve the issue of open MQ object connections that did not close, the recommended solution is to:
+
+   - Change the cache timeout on the IBM WebSphere DataPower MQ manager (mq-qm) object.
+   - A suggested value to start with is 60 seconds.
+   - The best practice is to use a value less than the KeepAlive Timeout of the MQ Queue Manager (qmgr).
+
+By setting an appropriate cache timeout value on the DataPower mq-qm object, the idle MQ connections will be closed as expected, preventing the issue of unclosed MQ object connections.",DataPower MQ manager object's idle connection is not closed when using default cache timeout. Change the cache timeout on the IBM WebSphere DataPower MQ manager (mq-qm) object.
+Q014,D014,Column Analysis on Informix database using odbc connector fails with error SQLSTATE = HY000: Native Error Code = -256 Column Analysis on Informix database using odbc connector fails with error SQLSTATE = HY000: Native Error Code = -256,"To resolve the error SQLSTATE = HY000: Native Error Code = -256 when Column Analysis on an Informix database using the ODBC connector fails, set the Transaction handling>Isolation Level from none to Auto-Commit. This adjustment should help to address the issue with the ODBC Connector Stage accessing data in the Informix database.","To resolve the above error, set the Transaction handling>Isolation Level from none to Auto-Commit."
+Q015,D015,"CQWEB  can\'t retrieve repository dropdown list options in RedHat Linux, how to deal with it ? I setup a cq demo env in redhat linux with oracle database, CQ 7.1.2, LRKS 8.1.3,  Linux CQ client can login CQ as the following picture 1, but CQWEB login page can't retrieve the repository dropdown list options as the following picture 2.  I used cqreg to register CQ database:
+
+cqreg add_dbset -v ORACLE -s 192.168.0.84 -d ESBDB -u cqadmin -p cqadmin -dbset CQ_DEMO_ORACLE -co LOB_TYPE=CLOB -force
+
+ How do I deal with it?","Based on the information provided, it seems that the issue you are facing is related to the ClearQuest Web (CQWEB) application not being able to retrieve the repository dropdown list options on the login page in your RedHat Linux environment.
+
+Here are the steps you can take to troubleshoot and resolve this issue:
+
+1. **Verify ClearQuest Database Connection**: Ensure that the ClearQuest database connection you have set up using the `cqreg add_dbset` command is working correctly. You can try logging in to the ClearQuest Client (as shown in Picture 1) and verify that you can see the repository dropdown list options.
+
+2. **Check ClearQuest Web Server Configuration**: Verify the ClearQuest Web server configuration to ensure that it is properly configured to access the ClearQuest database. Check the following:
+   - Ensure that the ClearQuest Web server is correctly configured to use the same ClearQuest database connection that you have set up using the `cqreg add_dbset` command.
+   - Check the ClearQuest Web server logs (located in `<install directory>/rational/clearquest/cqweb/cqserver/logs`) for any error messages or clues about the issue.
+
+3. **Verify ClearQuest Web Server Environment Variables**: Ensure that the necessary environment variables are correctly set for the ClearQuest Web server. On Linux, you may need to set the `LD_LIBRARY_PATH` environment variable to include the appropriate ClearQuest library paths. You can refer to the technote [1239017](https://www.ibm.com/support/pages/node/1239017) for more information on resolving the ""unsatisfied link error"" related to the `libcqjniproxy.so` library.
+
+4. **Check ClearQuest Maintenance Tool Configuration**: Verify the configuration in the ClearQuest Maintenance Tool (on the ClearQuest Web server) to ensure that the ClearQuest database connection is properly set up and registered.
+
+5. **Reinstall or Reconfigure ClearQuest Web Server**: If the above steps do not resolve the issue, you may need to consider reinstalling or reconfiguring the ClearQuest Web server to ensure that it is properly integrated with the ClearQuest database.
+
+6. **Check for ClearQuest Web Server Patches or Updates**: Verify if there are any available patches or updates for the ClearQuest Web server that could address this issue. IBM may have released updates to improve the integration between ClearQuest and ClearQuest Web.
+
+By following these steps, you should be able to identify and resolve the issue with the ClearQuest Web login page not displaying the repository dropdown list options in your RedHat Linux environment.",The list of dbsets (Database Connections or Schema Repositories) displayed on Rational ClearQuest Web is controlled by the ClearQuest Maintenance Tool on the server where the Rational ClearQuest Web Server component exists.
+Q016,D016,Datapower WebGUI down due to an expired or invalid certificate The Datapower WebGUI is down due to an expired or invalid certificate. How can the WebGUI access be restored?,"Based on the provided context, here are the steps to restore access to the DataPower WebGUI when it is down due to an expired or invalid certificate:
+
+1. Access the DataPower appliance using the serial console.
+
+2. In the serial console, enter the following commands:
+
+   ```
+   config
+   web-mgmt
+   no ssl
+   exit
+   write mem
+   y
+   no web-mgmt
+   no ssh
+   rbm
+   reset
+   exit
+   acl web-mgmt
+   reset
+   exit
+   acl ssh
+   reset
+   exit
+   write mem
+   y
+   web-mgmt <ip to listen on or 0.0.0.0 for all> <port to use, default is 9090>
+   ssh <ip to listen on or 0.0.0.0 for all> <port to use, default is 22>
+   write mem
+   y
+   ```
+
+   These commands will reset the RBMs, ACLs, WebGUI, and SSH services to their default settings, effectively removing any expired or invalid certificates.
+
+3. Test the WebGUI and SSH access to confirm they are now working.
+
+4. Once the default settings are restored, you can then reconfigure any custom certificates or authentication settings as desired.
+
+If the issue persists after following these steps, you should contact DataPower support for further assistance.","The following commands will reset the RBM's, ACL's, WebGUI and SSH services to the default settings."
+Q017,D017,"Authorization code missing for SPSS 25? I purchased the IBM SPSS from Amazon, and I do not know where to locate the authorization code of license code/key. Can anyone help me?","To obtain the authorization code for SPSS 25 that you purchased from Amazon, you can refer to the SPSS Student Support Portal [http://www-01.ibm.com/support/docview.wss?uid=swg21592093] for information on how to contact the vendor to obtain your code. Each vendor has a different process for distributing authorization codes for IBM SPSS products. On the Student Portal, you will find information about different vendors with their contact information. You can then apply the code by running the SPSS License Authorization Wizard to enable the license.","Refer to the SPSS Student Support Portal for information on who to contact to obtain your code for SPSS Statistics, Modeler or AMOS Student Version or Graduate Pack."
+Q018,D018,"Help with Action required for IIB H.E. V9 and WMB H.E. V8 for security vulnerabilities in Red Hat Linux (CVE-2011-5320, CVE-2017-15670, CVE-2017-15671, CVE-2017-15804) I need to understand details regarding Action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities in Red Hat Linux. Where can I find this information?",You can find the details regarding the action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities in Red Hat Linux on the IBM support website. Here is the link to the specific document providing information on this issue: [http://www.ibm.com/support/docview.wss?uid=swg21902248],CVE-2011-5320 CVE-2017-15670 CVE-2017-15671 CVE-2017-15804
+Q019,D019,mirandabarby I have purchased a grad pack of SPSS. How do I enter the authorisation code to activate/license,"Based on the information provided in the technical notes, here are the steps to enter the authorization code to activate/license your SPSS Grad Pack:
+
+1. Access the ""License Key Center"" to generate an authorization code for your SPSS Grad Pack:
+   - Log in to the License Key Center and select the SPSS product and version you want to generate the code for.
+   - If Quantity Available is shown, click ""Generate"" to create a new authorization code.
+   - Follow the steps to generate the authorization code.
+
+2. Once you have the authorization code, you need to convert it to a license key:
+   - In the License Key Center, click on the generated authorization code.
+   - Enter the ""Lock Code"" of the system where you want to install SPSS. This Lock Code can be found by running the echoid.exe file in the SPSS installation directory.
+   - Click ""Activate"" to generate the license key.
+
+3. Finally, you need to enter the generated license key in the SPSS License Authorization Wizard to complete the activation:
+   - Open the SPSS License Authorization Wizard application.
+   - Follow the steps to enter the license key you generated from the authorization code.
+
+This process should activate and license your SPSS Grad Pack software. If you have any issues or need further assistance, you can contact your SPSS vendor (Hearne, OnTheHub, StudentDiscounts.com, JourneyEd, thinkEDU, or Studica) for support.","To generate an authorization code or license key for your SPSS product, access the ""License Key Center""."
+Q020,D020,"OOM exception thrown when trying to configure an ITCAM for WAS 7.2 Data Collector I am trying to configure an ITCAM for WAS 7.2.0.0.x DC using config.sh, but getting OOM exceptions, as following:
+
+./config.sh
+
+Log file name: /opt/IBM/ITM/dchome/7.2.0.0.10/data/config-trace.log.
+
+List of TCP/IP interfaces discovered:
+
+       1. ...
+     Enter a number [default is: 1]:
+     1
+     JVMDUMP039I Processing dump event ""systhrow"", detail ""java/lang/OutOfMemoryError"" at 2017/08/22 12:27:03 - please wait.
+....
+     java.lang.OutOfMemoryError: java.lang.OutOfMemoryError: Java heap space
+
+Looking at the javacore.txt files, I can see that this is the command throwing an OOM
+
+1CICMDLINE /opt/IBM/ITM/JRE/aix526/bin/java -classpath /opt/IBM/ITM/dchome/7.2.0.0.10/bin/jython/jython.jar:/opt/IBM/ITM/dchome/7.2.0.0.10/bin/lib/installbundle.jar -Xms256m -Xmx256m -Dpython.path=/opt/IBM/ITM/dchome/7.2.0.0.10/bin/lib:/opt/IBM/ITM/dchome/7.2.0.0.10/bin/lib org.python.util.jython /opt/IBM/ITM/dchome/7.2.0.0.10/bin/config.py
+
+How could I solve this?","Based on the context provided, it seems that the issue is caused by insufficient Java heap space during the configuration of the ITCAM for WAS 7.2.0.0.x Data Collector (DC).
+
+The error message ""java.lang.OutOfMemoryError: java.lang.OutOfMemoryError: Java heap space"" indicates that the Java Virtual Machine (JVM) is running out of memory during the configuration process.
+
+To resolve this issue, you can try the following steps:
+
+1. Increase the Java heap size for the configuration process:
+   - Locate the `config.sh` script in the `/opt/IBM/ITM/dchome/7.2.0.0.10/bin` directory.
+   - Open the `config.sh` script in a text editor.
+   - Find the line that sets the `JAVA_OPTS` environment variable, which looks like this:
+     ```
+     JAVA_OPTS=""-Xms256m -Xmx256m""
+     ```
+   - Increase the initial and maximum heap size values. For example, you can change it to:
+     ```
+     JAVA_OPTS=""-Xms512m -Xmx1024m""
+   - Save the changes to the `config.sh` script.
+
+2. Try running the configuration again using the updated `config.sh` script:
+   ```
+   ./config.sh
+   ```
+
+If the issue persists, you can try the following additional steps:
+
+1. Ensure that the system has enough available memory to run the ITCAM for WAS 7.2.0.0.x DC configuration process.
+2. Check the system's available disk space, as the configuration process may generate large log files or heap dumps that can consume a significant amount of disk space.
+3. Refer to the ITCAM for WAS 7.2.0.0.x documentation for any specific memory or system requirements for the configuration process.
+4. If the issue continues, you can try contacting IBM Support for further assistance.
+
+By increasing the Java heap size in the `config.sh` script, you should be able to resolve the ""java.lang.OutOfMemoryError: Java heap space"" issue during the ITCAM for WAS 7.2.0.0.x DC configuration process.","The Java heap settings are set in the config.sh script in the JAVA_OPTS line. For AIX, the default settings are way too low. Change the JAVA_OPTS=""-Xms256m -Xmx256m"" to a higher value like this: JAVA_OPTS=""-Xms512m -Xms512m"""
+Q021,D021,Is using a monitored JBoss server with ITCAM supported in a Windows Service? Is using a monitored JBoss server with ITCAM supported in a Windows Service?,"Based on the information provided in the given context:
+
+No, using a monitored JBoss Application Server with ITCAM for J2EE is not supported in a Windows service.
+
+The key points are:
+
+1. When you configure the JBoss Application Service to run as a Windows service, you need to download the JBoss native connectors and modify the service.bat file.
+
+2. However, the JBoss service is not available to run as a Windows service when configured with the ITCAM for J2EE agent/DC. This is because it involves changes to the JBoss native connector files, which is currently not supported.
+
+3. Additionally, there is no option to specify the Service name when configuring the JBoss server during the configuration steps for ITCAM for J2EE.
+
+So in summary, the IBM Tivoli Composite Application Manager (ITCAM) for J2EE agent is not supported to be used with a JBoss Application Server that is running as a Windows service. The supported configuration is to run the JBoss server from the command line in standalone mode.",The JBoss service is not available to run as a Windows service when configured with the ITCAM for J2EE agent/DC because this involves changes to the JBoss native connector files and this is currently not supported.
+Q022,D022,"Why am I seeing a java.lang.StackOverflowError in Portal? My Portal process pid / java.exe is suddenly disappearing. Reviewing the SystemOut.log files around the time it disppears, I am seeing the following:
+
+[datetime] 000007c1 ServletWrappe E
+com.ibm.ws.webcontainer.servlet.ServletWrapper service SRVE0014E: [....]
+
+nested exception is
+java.lang.StackOverflowError
+at
+org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherS ervlet.java:837)
+How do I prevent this?","The error you are seeing is a java.lang.StackOverflowError, which typically occurs when a function calls itself in an uncontrolled manner, causing the stack to overflow. In this case, the error is being triggered in the DispatcherServlet of Spring framework.
+
+To prevent this error from occurring, you can try the following steps:
+1. Check your code for any recursive function calls that might be causing the stack overflow. Make sure that your code does not have infinite loops or recursive calls that do not have a termination condition.
+2. Increase the stack size for the Java process running your Portal application. You can do this by specifying the -Xss flag with a larger value when starting the Java process. For example, you can use ""-Xss4m"" to set the stack size to 4 MB.
+3. Update your Spring framework version to the latest one, as newer versions might have fixes for this kind of issue.
+4. Monitor your application for any specific patterns or inputs that trigger the StackOverflowError and try to identify and fix the root cause of the issue.
+
+By taking these steps, you should be able to prevent the java.lang.StackOverflowError from occurring in your Portal application.",NONE
+Q023,D023,Can I disable RC4 cyphers in TIP? How can one disable the RC4 cypers in Tivoli Integrated Portal?,"Based on the provided context, here are the steps to disable RC4 ciphers in Tivoli Integrated Portal (TIP):
+
+1. Log into the WebSphere Application Server that hosts TIP.
+
+2. Navigate to: 
+   SSL certificate and key management > SSL configurations > NodeDefaultSSLSettings > Quality of protection (QoP)
+
+3. In the ""Selected ciphers"" list, select the RC4 ciphers and click the ""<<Remove"" button to remove them.
+
+4. Click the ""Apply"" button to save the changes.
+
+5. Click the ""Save (to the master configuration)"" link to save the configuration.
+
+6. Restart the Tivoli Integrated Portal (TIP) application.
+
+This will disable the RC4 ciphers and force TIP to use more secure cipher suites for SSL/TLS communication.
+
+The key steps are:
+1. Locate the SSL configuration in WebSphere for the TIP application
+2. Identify and remove the RC4 ciphers from the selected ciphers list
+3. Save the changes and restart TIP
+
+By disabling the RC4 ciphers, you can improve the overall security of the TIP environment.","Select the *RC4* ciphers from the ""Selected ciphers"" list, and then click the ""<<Remove"" button."
+Q024,D024,"Help with Action required for IIB V9 & WMB V8 Hypervisor Editions  for security vulnerabilities in Red Hat Linux 
+
+I need to understand details regarding Action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities in Red Hat Linux.
+
+Where can I find this information?","Based on the provided context, here are the key details regarding the action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities in Red Hat Linux:
+
+1. The vulnerabilities are in the Red Hat Enterprise Linux (RHEL) Server versions that are bundled with these IBM products:
+   - IBM Integration Bus Hypervisor Edition V9.0 ships with RHEL Server 6.2
+   - WebSphere Message Broker Hypervisor Edition V8.0 ships with RHEL Server 6.2
+
+2. The specific vulnerabilities are:
+   - CVE-2016-0800: Cross-protocol attack on TLS using SSLv2 (DROWN)
+   - CVE-2016-0703: Divide-and-conquer session key recovery in SSLv2
+   - CVE-2016-0704: Bleichenbacher oracle in SSLv2
+   - CVE-2016-1234: Denial of service in glibc
+
+3. Remediation:
+   - IBM strongly recommends that you contact the Red Hat provider to obtain and install the fixes for RHEL Server 6.2.
+
+4. Related information:
+   - Redhat security vulnerabilities information: https://access.redhat.com/security/vulnerabilities/drown
+
+So in summary, the action required is to contact Red Hat and apply the necessary fixes for the RHEL Server 6.2 version bundled with these IBM products to address the security vulnerabilities.","IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat (CVE-2016-0800, CVE-2016-0703, CVE-2016-0704,CVE-2016-1234)"
+Q025,D025,Does StoredIQ support TLS v1.2? Does StoredIQ support TLS v1.2?,"Yes, StoredIQ 7.6.0.5 and above support TLS 1.2. It is supported both on the Application Stack and Dataserver.","Yes, StoredIQ 7.6.0.5 and above support TLS 1.2."

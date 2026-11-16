@@ -1,0 +1,341 @@
+Too many open files; rlim_fd_max; cleartool: Error; 1258086 TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ This technote explains why attempts to run the IBM® Rational® ClearCase® VOB Space command through the ClearCase Scheduler on Solaris® results in the error Too many open files and provides instructions to resolve the issue. 
+
+SYMPTOM
+ 
+
+The following errors are seen in the Job Scheduler [http://publib.boulder.ibm.com/infocenter/cchelp/v7r0m0/topic/com.ibm.rational.clearcase.cc_ref.doc/topics/ct_schedule.htm?resultof=%22%63%6c%65%61%72%63%61%73%65%22%20%22%63%6c%65%61%72%63%61%73%22%20%22%73%63%68%65%64%75%6c%65%72%22%20%22%73%63%68%65%64%75%6c%22%20] on Solaris:
+
+Job.LastCompletionInfo.Messages.Begin:
+cleartool: Error: /vobstorage2/test.vbs/s/sdft/b/f: Too many open files
+cleartool: Error: /vobstorage2/test.vbs/s/sdft/c/26: Too many open files
+cleartool: Error: /vobstorage2/test.vbs/s/sdft/37/2d: Too many open files
+cleartool: Error: /vobstorage/test2.vbs/db/logs: Too many open files
+cleartool: Error: /vobstorage/test2.vbs/admin/vob_space: Too many open files
+Job.LastCompletionInfo.Messages.End:
+Job.End
+
+
+
+CAUSE
+ 
+
+The rlim_fd_cur value in /etc/system may be set too low. 
+
+
+RESOLVING THE PROBLEM
+ 
+
+
+The problem can be resolved by either:
+
+
+ 1. Setting the ulimit for number of file descriptors in the startup script near to beginning:
+    
+    /opt/rational/clearcase/linux_x86/etc/clearcase
+    <CCHOME>/<system arch>/etc/clearcase
+    
+    ulimit -n <new_limit> 
+    
+    For Example:
+    ulimit -n 2048
+    
+    The default is 1024. Increasing to 2048 is a good value to try. This just increases the soft file descriptor limit for ClearCase processes. 
+    
+    Note: This file may need to be re-edited after reinstalling ClearCase or applying any ClearCase patch.
+    
+    Then stop and start ClearCase.
+    
+ 2. Or, increase the value for all processes on the system with the system environmental variable rlim_fd_cur:
+     1. Log in as root and add this line to the /etc/system file:
+        set rlim_fd_cur=2048 
+     2. Reboot the system.
+        
+    
+    
+
+
+
+
+
+
+
+Cross Reference information Segment Product Component Platform Version Edition Software Development Rational ClearCase Utilities and Tools  SUBSCRIBE TO THIS APAR
+By subscribing, you receive periodic emails alerting you to the status of the APAR, along with a link to the fix after it becomes available. You can track this item individually or track all items by product.
+
+Notify me when this APAR changes.
+
+Notify me when an APAR for this component changes.
+
+
+
+ DIRECT LINKS TO FIXES
+3.4.2.0-SterlingSecureProxy-AIX-if0004 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-AIX-if0004&source=SAR]
+3.4.2.0-SterlingSecureProxy-HP-IA-if0004 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-HP-IA-if0004&source=SAR]
+3.4.2.0-SterlingSecureProxy-Linux_s390-if0004 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-Linux_s390-if0004&source=SAR]
+3.4.2.0-SterlingSecureProxy-Linux-if0004 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-Linux-if0004&source=SAR]
+3.4.2.0-SterlingSecureProxy-SolarisSPARC-if0004 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-SolarisSPARC-if0004&source=SAR]
+3.4.2.0-SterlingSecureProxy-Windows-if0004 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-Windows-if0004&source=SAR]
+3.4.2.0-SterlingSecureProxy-AIX-if0005 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-AIX-if0005&source=SAR]
+3.4.2.0-SterlingSecureProxy-HP-IA-if0005 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-HP-IA-if0005&source=SAR]
+3.4.2.0-SterlingSecureProxy-Linux_s390-if0005 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-Linux_s390-if0005&source=SAR]
+3.4.2.0-SterlingSecureProxy-Linux-if0005 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-Linux-if0005&source=SAR]
+3.4.2.0-SterlingSecureProxy-SolarisSPARC-if0005 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-SolarisSPARC-if0005&source=SAR]
+3.4.2.0-SterlingSecureProxy-Windows-if0005 [http://www.ibm.com/support/fixcentral/quickorder?product=ibm%2FOther+software%2FSterling+Secure+Proxy&fixids=3.4.2.0-SterlingSecureProxy-Windows-if0005&source=SAR]
+
+
+APAR STATUS
+ * CLOSED AS PROGRAM ERROR.
+    
+   
+   
+
+ERROR DESCRIPTION
+ *  CD Adapter is receiving an error "Too Many Open Files"
+   
+   
+    
+   
+   
+
+LOCAL FIX
+ *  STRRTC - 468626
+   RJ/RJ
+   Circumvention:
+   Update to latest SSP Build
+   
+   
+    
+   
+   
+
+PROBLEM SUMMARY
+ *  SSP3420 Customers running many simultaneous C:D transfers
+   through SSP getting a java.net.SocketException: Too many open
+   files error. These open files are sockets which have not been
+   closed.
+   
+   
+    
+   
+   
+
+PROBLEM CONCLUSION
+ *  Now close every used socket at the end of a
+   C:D transfer.
+   
+   
+    
+   
+   
+
+TEMPORARY FIX
+ *  Supplied SSP3420 iFix 4 to Customer which contained fix for
+   RTC468626.
+   
+   
+    
+   
+   
+
+COMMENTS
+
+APAR INFORMATION
+ * APAR NUMBER
+   IT09823
+   
+   
+ * REPORTED COMPONENT NAME
+   STR SECURE PROX
+   
+   
+ * REPORTED COMPONENT ID
+   5725D0300
+   
+   
+ * REPORTED RELEASE
+   342
+   
+   
+ * STATUS
+   CLOSED PER
+   
+   
+ * PE
+   NoPE
+   
+   
+ * HIPER
+   NoHIPER
+   
+   
+ * SPECIAL ATTENTION
+   NoSpecatt / Xsystem
+   
+   
+ * SUBMITTED DATE
+   2015-07-02
+   
+   
+ * CLOSED DATE
+   2015-09-01
+   
+   
+ * LAST MODIFIED DATE
+   2015-09-01
+   
+   
+
+ * APAR IS SYSROUTED FROM ONE OR MORE OF THE FOLLOWING:
+   
+   
+   
+ * APAR IS SYSROUTED TO ONE OR MORE OF THE FOLLOWING:
+   
+   
+   
+
+FIX INFORMATION
+ * FIXED COMPONENT NAME
+   STR SECURE PROX
+   
+   
+ * FIXED COMPONENT ID
+   5725D0300
+   
+   
+
+APPLICABLE COMPONENT LEVELS
+ * R342 PSY
+   UP cli tsmcli durby hang ve plugin plug-in TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ Starting the IBM Spectrum Protect for VMware User Interface takes several minutes to open. 
+
+CAUSE
+It is normal for the user interface to take between 0 and 2 minutes to open. If it is taking longer to open, one reason can be due to the size of the DERBY DB. 
+It is not uncommon for the DERBY DB to grow over 500MB+ depending on how many "runnow" tasks are done and how many VM's that task backs up. Long wait times for the VMware UI to open has been seen on DB's that are over 400 MB.
+
+
+
+ENVIRONMENT
+Windows or Linux 
+
+IBM Spectrum Protect for VMware
+
+
+DIAGNOSING THE PROBLEM
+1 - Verify the size of the DERBY DB by checking the size of the following directory: 
+
+ 
+
+Windows: 
+
+C:\Program Files (x86)\Common Files\Tivoli\TDPVMware\VMwarePlugin\derby 
+
+ 
+
+Linux: 
+
+ /home/tdpvmware/tdpvmware/VMCLIDB 
+
+If the size of this folder is over 400 MB it is likely this is what is causing the problem. 
+
+ 
+
+2 - Run the following command and note how long it takes to complete: 
+
+ 
+
+Windows:
+C:\Program Files (x86)\Common Files\Tivoli\TDPVMware\VMwarePlugin\scripts
+
+vmcli.cmd -f inquire --type backup -t TSM
+
+Linux: (command must be run as the tdpvmware user)
+/opt/tivoli/tsm/tdpvmware/common/scripts
+
+./vmcli -f inquire -type backup -t TSM
+
+If this command takes longer than 20-30 seconds, this would be indicative of a DERBY DB that is too large. 
+
+
+
+
+RESOLVING THE PROBLEM
+The DERBY db tracks the events that are run from within the user interface. It keeps information on the tasks, events, and details of the backups. All of this information can cause the DERBY db to grow very large depending on how many manual backups (run now backups) are run from within the UI. 
+
+A few configuration options can be changed to decrease the amount of time that information is retained in the db. 
+
+The following options can be found in the VMCLIPROFILE file. This can be found in the following locations: 
+
+Windows:
+C:\Program Files (x86)\Common Files\Tivoli\TDPVMware\VMwarePlugin\scripts
+
+Linux:
+/opt/tivoli/tsm/tdpvmware/common/scripts
+
+-VMCLI_GRACE_PERIOD (defaults to 30 days) 
+Grace period for keeping the run & run_details for backups.
+
+-VMCLI_TASK_EXPIRATION_TIME (defaults to 10 days)
+Grace period for keeping "Recent Tasks" 
+
+Change the VMCLI_GRACE_PERIOD to 864000 (10 days). Then run: 
+
+vmclli -f db_compact 
+
+More information on the available options can be found here: [http://www.ibm.com/support/knowledgecenter/SS8TDQ_7.1.3/ve.inst/t_ve_cfg_vmcli.html]
+VMCLIPROFILE [http://www.ibm.com/support/knowledgecenter/SS8TDQ_7.1.3/ve.inst/t_ve_cfg_vmcli.html]
+
+
+
+PRODUCT ALIAS/SYNONYM
+ TSM isim va isim7 performance open files ulimit TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ ISIM 7 VA can fail with error "Too many open files" in the logs. This can be caused by system admin who changes ISIM configuration looking for better performance. 
+
+SYMPTOM
+ISIM 7 VA fails with error "Too many open files" in the log files.
+Then the server goes down and it becomes unresponsive.
+Error example:
+Caused by: java.io.FileNotFoundException:
+/opt/ibm/WebSphere/AppServer/plugins/org.apache.tuscany.sdo.sca.core.
+model/geronimo-tuscany-implementation-web-1.5.1-SNAPSHOT.jar (Too many
+open files)
+
+
+CAUSE
+The error is caused by the Operating System that actually has too many open files for the current user.
+The root caused can be the ISIM administrator trying to improve performance.
+One of the first things an admin tries to do is to increase LDAP and DB connection pools sizes.
+But every available connection of the pool is a socket, and in UNIX systems a socket is a file.
+So if the administrator sets a very high value it will cause the Operating System to have less "space" to open other files.
+
+ENVIRONMENT
+IBM Security Identity Server 7 Virtual Appliance
+
+DIAGNOSING THE PROBLEM
+Look for "Too many open files" errors in log files.
+You should see a lot of entries with such error.
+Usually the error occurs while establishing DB2 connection, LDAP connection, connection to TDI, accessing the WAS JAR files.
+
+RESOLVING THE PROBLEM
+To solve the problem the ISIM administrator should check the enRole.properties settings in ISIM Appliance Dashboard.
+A classic example is the "enrole.connectionpool.maxpoolsize" property that controls the LDAP connections pool size.
+Often it is set to 500 but the value of 200 is enough to perform ISIM LDAP-related operations. Because of this the OS will create less available connections, so less sockets, so (in UNIX systems such as the Virtual Appliance) less files. TIPL2; DASHL2; TIP; DASH; logs; login failure; ffdc TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ In Tivoli Integrated Portal, while investigating login failures "Login failed. Check the user ID and password and try again" there are no related messages in either the SystemOut log, or the trace logs with security traces enabled. 
+
+CAUSE
+At the time this technical note is being written, the reason there are no related messages in the SystemOut or trace logs is not yet known. This technical note will be updated when the cause is known.
+
+DIAGNOSING THE PROBLEM
+Recreate the login issue and monitor the SystemOut and/or trace logs for related messages. The logs will likely indicate that ffdc log segments are created, but no other useful messaging is present.
+
+RESOLVING THE PROBLEM
+If there are no relevant or helpful messages in the SystemOut or trace logs, check the ffdc log segments that are created near the time of the login failure. The ffdc logs will likely have messaging that is useful to troubleshoot login failures.
