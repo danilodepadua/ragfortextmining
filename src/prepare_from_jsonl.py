@@ -2,12 +2,15 @@ import hashlib
 import json
 from pathlib import Path
 
-import pandas as pd
+# Dynamically resolve project root (one level up from src/)
+ROOT_DIR = Path(__file__).resolve().parent.parent
 
-SRC = Path("curated_documents/filtered_ragbench_tech.jsonl")
-RAW = Path("data/raw")
-RAW.mkdir(parents=True, exist_ok=True)
+# Correct paths anchored to the project root
+SRC = ROOT_DIR / "data" / "raw" / "filtered_ragbench_tech.jsonl"
+DATA_DIR = ROOT_DIR / "data"
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
+# Read records from the source JSONL file
 records = [json.loads(line) for line in SRC.read_text(encoding="utf-8").splitlines() if line.strip()]
 print("Lines:", len(records))
 print("Fields in each line:", list(records[0].keys()))
@@ -32,11 +35,32 @@ for i, r in enumerate(records, start=1):
     else:
         seen[h] = doc_id
 
-    (RAW / f"{doc_id}.txt").write_text(context, encoding="utf-8")
-    corpus_rows.append({"doc_id": doc_id, "source_line": i, "word_count": len(context.split())})
-    qa_rows.append({"qa_id": f"Q{i:03d}", "doc_id": doc_id, "question": r.get("question", "").strip(),
-                    "gold_answer": answer, "evidence_text": ""})
+    # Append structural metadata records
+    corpus_rows.append({
+        "doc_id": doc_id, 
+        "source_line": i, 
+        "word_count": len(context.split())
+    })
+    
+    # Append Q&A record
+    qa_rows.append({
+        "qa_id": f"Q{i:03d}", 
+        "doc_id": doc_id, 
+        "question": r.get("question", "").strip(),
+        "gold_answer": answer, 
+        "evidence_text": ""
+    })
 
-pd.DataFrame(corpus_rows).to_csv("data/corpus_v1.csv", index=False)
-pd.DataFrame(qa_rows).to_csv("data/qa_v1.csv", index=False)
-print("Saved data/corpus_v1.csv, data/qa_v1.csv and the texts in data/raw/")
+# Write corpus and QA data as JSONL files
+corpus_output_path = DATA_DIR / "corpus_v1.jsonl"
+qa_output_path = DATA_DIR / "qa_v1.jsonl"
+
+with open(corpus_output_path, "w", encoding="utf-8") as f:
+    for row in corpus_rows:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+with open(qa_output_path, "w", encoding="utf-8") as f:
+    for row in qa_rows:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+print(f"Saved {corpus_output_path} and {qa_output_path} successfully!")

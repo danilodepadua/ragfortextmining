@@ -20,130 +20,130 @@ QUESTION: Help with Action required for Hypervisor Editions of IIB V9 & WMB V8 f
 QUESTION: Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc   Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc  I get the following messages in the logs:-  /tmp/guard_stap.stderr.txt on the DB Server :- "Server wasn't hea
   [1] (3.0) "Server <ip_addr> wasn't heard from for nn sec during this attempt (nnn sec total), closing and re-opening"
   [2] (2.8) and from the Guardium Appliance - via fileserver in the /log/opt-ibm-guardium-log/snif/snif.log
-  [3] (2.3) What can cause an STAP to fail to connect properly - I get the following messages in the logs:-
-
-=== Q005 (D005) ===
-QUESTION: Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc   Installed an STAP on a DB Server but it does not show up on my Appliance in S-TAP Control etc  I get the following messages in the logs:-  /tmp/guard_stap.stderr.txt on the DB Server :- "Server wasn't hea
-  [1] (3.0) "Server <ip_addr> wasn't heard from for nn sec during this attempt (nnn sec total), closing and re-opening"
-  [2] (2.8) and from the Guardium Appliance - via fileserver in the /log/opt-ibm-guardium-log/snif/snif.log
   [3] (2.7) What can cause an STAP to fail to connect properly - I get the following messages in the logs:-
 
-=== Q006 (D006) ===
+=== Q005 (D005) ===
 QUESTION: Why am I seeing native out of memory issues on a 64-bit system? I have a 64-bit Java installed on my Portal server. On occasion I'm seeing the Portal server processID disappear across any one of my servers running in the clusters. Portal restarts no problem and runs fine, but the processID disappear
   [1] (3.0) 1TISIGINFO Dump Event "systhrow" (00040000) Detail "java/lang/OutOfMemoryError" "Failed to create a thread: retVal -1073741830, errno 11" received
   [2] (2.8) Dump Event "systhrow" (00040000) Detail "java/lang/OutOfMemoryError":"Failed to crate a thread: retVal -1073741830, errno 11" received
   [3] (2.7) In some other cases, the default value for nproc will be set to 1024, which may not allow to create enough threads in all processes；therefore, you have to check the ulimit setting on Linux.
 
-=== Q007 (D007) ===
+=== Q006 (D006) ===
 QUESTION: Is ITCAM Data Collector for WebSphere 7.2.0.0.14 available? Is ITCAM Data Collector for WebSphere 7.2.0.0.14 available?
   [1] (6.6) Alternatively, support for Traditional WebSphere for z/OS v9 and Liberty Profile for z/OS is available via the v7.2.0.0.14 Data Collector, which is available for download from the developerWorks [https://developer.ibm.com/apm/resources/itcam-websphere-application-server-v7-2-support-websphere-application-server-v9-liberty/] or directly in Fix Central [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-zos-IF0014&includeSupersedes=0&source=fc].
   [2] (3.1) 7.2.0.0.8 [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-IF0008&includeSupersedes=0&source=fc] Oct 18, 2013 PM93570 7.2.0.0.7 [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-IF0007&includeSupersedes=0&source=fc] Oct 18, 2013 7.2.0.0.6 [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-IF0006&includeSupersedes=0&source=fc] Oct 18, 2013 PM88373 7.2.0.0.5 [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-IF0005&includeSupersedes=0&source=fc] Oct 18, 2013 7.2.0.0.4 [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-IF0004&includeSupersedes=0&source=fc] Oct 18, 2013 PM81890 PM79101 PM80120 PM88932 PM76203 7.2.0.0.3 [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-IF0003&includeSupersedes=0&source=fc] Oct 17, 2013 PM82318 7.2.0.0.2 [http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Tivoli/Tivoli+Composite+Application+Manager+for+Applications&release=All&platform=All&function=fixId&fixids=7.2.0.0-TIV-ITCAM_DC-IF0002&includeSupersedes=0&source=fc] Oct 17, 2013 PM77662
   [3] (2.5) IBM Tivoli Composite Application Manager Data Collector for WebSphere V7.2 fixes
 
-=== Q008 (D008) ===
+=== Q007 (D007) ===
 QUESTION: Is there a support's guide to the CORBA Probes? Is there a support's guide to the IBM CORBA probes?
   [1] (3.7) Please review Support's Guide to IBM CORBA probes [attached] to understand the integration, alongside the probe's specific documentation.
   [2] (2.8) • Standard Input probe [rules file testing for all probes]
   [3] (2.8) The Support's Guide to Probe Event Replication covers the following probe types:
 
-=== Q009 (D009) ===
+=== Q008 (D008) ===
 QUESTION: Cognos Workspace Advanced Users are unable to see features. Why?   Certain Workspace Advanced users cannot open Report Studio. This happens with certain custom roles.  Environment: IBM Cognos 10.2.2.x
   [1] (3.2) To remove the Group/Role access to Cognos Workspace Advanced (Business Insight Advanced) do the following:
   [2] (3.1) Based on the following steps the group or role will only have access to either Cognos Workspace (Business Insight) or Cognos Workspace Advanced (Business Insight Advanced).
   [3] (3.0) To remove the Group/Role access to Cognos Workspace (Business Insight) do the following access:
 
-=== Q010 (D010) ===
+=== Q009 (D009) ===
 QUESTION: Uninstalling I5 OS agent failed   I need to uninstall the I5OS agent before reinstalling a newer release of the same.  Command: DLTLICPGM LICPGM(5724C04)  is anyway failing and I don't know how to proceed further.   Can you please let me know the manual steps to uninstall the i5OS agent correctly ?
   [1] (2.8) DLTUSRPRF QAUTOMON and choose to remove all objects owned by this user.
   [2] (2.7) RSTLICPGM/DLTLICPGM 5724C04 command failed to finish correctly and leaves the agent in an unknown state.
   [3] (2.4) First try DLTLICPGM 5724C04 for the Tivoli agent.
 
-=== Q011 (D011) ===
+=== Q010 (D010) ===
 QUESTION: Why are the component parameters missing for the Enable Hold and Virtual Interview Multiple Response functionality? Why are the component parameters missing for the Enable Hold and Virtual Interview Multiple Response functionality?
   [1] (3.2) Why are the component parameters missing for the Enable Hold and Virtual Interview Multiple Response functionality?
   [2] (2.8) The documentation references a MULTIPLE_RESPONSES_FOR_HOLD_VI_ALLOWED and a MULTIPLE_RESPONSES_INTERVIEW_AUTO_COMPLETE parameter that is supposed to be under the VIRTUAL_INTERVIEW_CONFIGURATION component.These component parameters are not automatically added as part of the database upgrade scripts.
   [3] (2.7) To enable the Enable Hold and Virtual Interview Multiple Response functionality you can manually create the component parameters.
 
-=== Q012 (D012) ===
+=== Q011 (D011) ===
 QUESTION: Controlling stop and starting of Rulerunner Service   Hi  Datacap version 9.0.1   Is there a way of issuing a controlled shutdown request so the thread has time to finish processing whichever tasks it is executing so that no batches are aborted due to the communication link error?
   [1] (2.6) * Restart processor Attempts - Number of times Rulerunner will move to the next batch without shutting down the threads after a series of batches abort.
   [2] (2.4) When it detects a certain number of consecutively aborted batches on a single thread, Rulerunner shuts down all threads.
   [3] (2.2) When starting the Datacap Rulerunner service, using Rulerunner Manager, the service does not start.
 
-=== Q013 (D013) ===
+=== Q012 (D012) ===
 QUESTION: What may be the cause of unclosed MQ object connections on DataPower? How can I resolve open MQ object connections that did not close out on DataPower?
   [1] (3.2) DataPower MQ manager object's idle connection is not closed when using default cache timeout.
   [2] (3.1) The best practice is to use a value which should be less than the KeepAlive Timeout of the MQ Queue Manager (qmgr).
   [3] (3.0) Change the cache timeout on the IBM WebSphere DataPower MQ manager (mq-qm) object.
 
-=== Q014 (D014) ===
+=== Q013 (D013) ===
 QUESTION: Column Analysis on Informix database using odbc connector fails with error SQLSTATE = HY000: Native Error Code = -256 Column Analysis on Informix database using odbc connector fails with error SQLSTATE = HY000: Native Error Code = -256
   [1] (2.8) To resolve the above error, set the Transaction handling>Isolation Level from none to Auto-Commit.
   [2] (2.6) When using the ODBC Connector Stage to access data in an Informix database, receive the following error:
   [3] (2.0) SQLSTATE = HY000: Native Error Code = 12,899:
 
-=== Q015 (D015) ===
+=== Q014 (D014) ===
 QUESTION: CQWEB  can\'t retrieve repository dropdown list options in RedHat Linux, how to deal with it ? I setup a cq demo env in redhat linux with oracle database, CQ 7.1.2, LRKS 8.1.3,  Linux CQ client can login CQ as the following picture 1, but CQWEB login page can't retrieve the repository dropdown list 
   [1] (2.5) If there are multiple database sets (dbsets) established on the IBM Rational ClearQuest Web server, is there a way to have a unique login screen and web page for each dbset in Rational ClearQuest Web client?
   [2] (2.4) Cross Reference information Segment Product Component Platform Version Edition Software Development Rational ClearQuest Software Development Rational RequisitePro CQ; ClearQuest; CQ Web; ClearQuest Web; cqweb; CQWJ; LD_LIBRARY_PATH; 1239017; unsatisfied link error; Cannot find libcqjniproxy.so; libcqjniproxy; so; unsatisfied; link error; Can't find library cqjniproxy TECHNOTE (TROUBLESHOOTING)
   [3] (2.4) This technote explains why the error, "Default DB path is not set", occurs when adding a connection with IBM® Rational® ClearQuest® on RedHat Enterprise Linux® (RHEL) 5.
 
-=== Q016 (D016) ===
+=== Q015 (D015) ===
 QUESTION: Datapower WebGUI down due to an expired or invalid certificate The Datapower WebGUI is down due to an expired or invalid certificate. How can the WebGUI access be restored?
   [1] (3.0) The following commands will reset the RBM's, ACL's, WebGUI and SSH services to the default settings.
   [2] (2.5) web-mgmt <ip to listen on or 0.0.0.0 for all> <port to use default is9090>
   [3] (2.5) ssh <ip to listen on or 0.0.0.0 for all> <port to use default is22>
 
-=== Q017 (D017) ===
+=== Q016 (D016) ===
 QUESTION: Authorization code missing for SPSS 25? I purchased the IBM SPSS from Amazon, and I do not know where to locate the authorization code of license code/key. Can anyone help me?
   [1] (3.3) On the Student Portal, you will find information about different vendors with their contact information.
   [2] (3.1) Refer to the SPSS Student Support Portal [http://www-01.ibm.com/support/docview.wss?uid=swg21592093] for information on who to contact to obtain your code for SPSS Statistics, Modeler or AMOS Student Version or Graduate Pack.
   [3] (3.0) Apply the code by running the SPSS License Authorization Wizard to enable the license.
 
-=== Q018 (D018) ===
+=== Q017 (D017) ===
 QUESTION: Help with Action required for IIB H.E. V9 and WMB H.E. V8 for security vulnerabilities in Red Hat Linux (CVE-2011-5320, CVE-2017-15670, CVE-2017-15671, CVE-2017-15804) I need to understand details regarding Action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker 
   [1] (3.8) IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux
   [2] (3.8) IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux
   [3] (3.8) IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux
 
-=== Q019 (D019) ===
+=== Q018 (D018) ===
 QUESTION: mirandabarby I have purchased a grad pack of SPSS. How do I enter the authorisation code to activate/license
   [1] (3.3) Log in to the "License Key Center" click the product and version you want to generate an authorization code for
   [2] (3.0) To generate an authorization code or license key for your SPSS product, access the "License Key Center".
   [3] (2.5) How to create an Authorization Code or license key to activate the installation of SPSS add-on modules?
 
-=== Q020 (D020) ===
+=== Q019 (D019) ===
 QUESTION: OOM exception thrown when trying to configure an ITCAM for WAS 7.2 Data Collector I am trying to configure an ITCAM for WAS 7.2.0.0.x DC using config.sh, but getting OOM exceptions, as following:  ./config.sh  Log file name: /opt/IBM/ITM/dchome/7.2.0.0.10/data/config-trace.log.  List of TCP/IP inter
   [1] (3.2) JVMDUMP039I Processing dump event "systhrow", detail "java/lang/OutOfMemoryError" at 2015/12/10 8:49:17 - please wait.
   [2] (2.4) JVMDUMP039I Processing dump event "systhrow", detail
   [3] (2.1) Save file, restart the config again and see if it works now without any Out of Java heap messages.
 
-=== Q021 (D021) ===
+=== Q020 (D020) ===
 QUESTION: Is using a monitored JBoss server with ITCAM supported in a Windows Service? Is using a monitored JBoss server with ITCAM supported in a Windows Service?
   [1] (4.4) The JBoss service is not available to run as a Windows service when configured with the ITCAM for J2EE agent/DC because this involves changes to the JBoss native connector files and this is currently not supported.
   [2] (3.3) Additionally, there's no option to specify the Service name when configuring the JBoss server during the configuration steps.
   [3] (3.2) Is using a monitored JBoss Application Server with ITCAM for J2EE supported in a Windows service?
 
-=== Q022 (D022) ===
+=== Q021 (D021) ===
 QUESTION: Why am I seeing a java.lang.StackOverflowError in Portal? My Portal process pid / java.exe is suddenly disappearing. Reviewing the SystemOut.log files around the time it disppears, I am seeing the following:  [datetime] 000007c1 ServletWrappe E com.ibm.ws.webcontainer.servlet.ServletWrapper service 
   [1] (1.5) Uncaught service() exception root cause com.ibm.iis.isf.web.common.home_jsp: java.rmi.AccessException:
   [2] (1.3) For example SystemOut.log may show the following:
   [3] (1.1) Review the Portal log file SystemOut.log and observe the following:
 
-=== Q023 (D023) ===
+=== Q022 (D022) ===
 QUESTION: Can I disable RC4 cyphers in TIP? How can one disable the RC4 cypers in Tivoli Integrated Portal?
   [1] (3.0) SSL certificate and key management > SSL configurations > NodeDefaultSSLSettings > Quality of protection (QoP)
   [2] (2.4) Log into the Websphere Application server and navigate to:
   [3] (2.3) Select the *RC4* ciphers from the "Selected ciphers" list, and then click the "<<Remove" button.
 
-=== Q024 (D024) ===
+=== Q023 (D023) ===
 QUESTION: Help with Action required for IIB V9 & WMB V8 Hypervisor Editions  for security vulnerabilities in Red Hat Linux   I need to understand details regarding Action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities 
   [1] (4.1) IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat (CVE-2016-0800, CVE-2016-0703, CVE-2016-0704,CVE-2016-1234)
   [2] (4.1) IBM Integration Bus Hypervisor Edition V9.0 と WebSphere Message Broker Hypervisor Edition V8.0 は、Red Hat Enterprise Linux (RHEL) Server 6.2を同梱しています。
   [3] (4.0) IBM strongly recommends that you contact Red Hat provider to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2 as applicable RELATED INFORMATION
 
-=== Q025 (D025) ===
+=== Q024 (D024) ===
 QUESTION: Does StoredIQ support TLS v1.2? Does StoredIQ support TLS v1.2?
   [1] (2.6) Yes, StoredIQ 7.6.0.5 and above support TLS 1.2.
   [2] (1.7) TLS 1.2 is supported both on Application Stack and Dataserver z/os SUBSCRIBE TO THIS APAR
   [3] (1.3) *  Jetty 6.1 currently included in CD BUI does not support TLS 1.2.
+
+=== Q025 (D025) ===
+QUESTION: ITMv6 issue: Cognos reports run for an extended period, sometimes never finishes ITMv6 issue: Cognos reports run for an extended period, sometimes never finishes
+  [1] (1.8) This could be due to a corrupted scheduling database, the following may resolve the
+  [2] (1.3) run the command line iwirsdisp -register
+  [3] (1.1) the current plan extended to a set time of day, for example

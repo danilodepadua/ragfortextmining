@@ -26,7 +26,7 @@
 
 - Dataset: rungalileo/ragbench, subset "techqa" (English)
 - We use 25 documents, picked randomly (seed 42)
-- Saved in `data/corpus_v1.csv` (IDs D001-D025). It does not change after M1.
+- Saved in `data/corpus_v1.jsonl` (IDs D001-D025). It does not change after M1.
 
 **Include a document if it:**
 - is in English
@@ -61,5 +61,25 @@ Chosen randomly (seed 42). 3 of them are highlighted.
 
 
 # Loading new documents
-- Open your terminal inside the project directory and run
+- Open your terminal inside the `src` directory and run
 ```python load_documents.py```
+
+# Preparing qa_v1 from documents
+- Open your terminal inside the `src` directory and run
+```python prepare_from_jsonl.py```
+
+# Process chunks from the documents
+- Open your terminal inside the `src` directory and run
+```python process_chunks.py```
+
+# Updating qa_v1 (Evidence annotation)
+- Open your terminal inside the `src` directory and run
+```python fill_evidence.py```
+
+# Compares and evidence against the chunks (Evidence Mapping & Evaluation Set Generation)
+- Open your terminal inside the `src` directory and run
+```python map_evidence.py```
+
+# Creates evidence_candidates.txt (Evidence Suggestion & Review)
+- Open your terminal inside the `src` directory and run
+```python suggest_evidence.py```
