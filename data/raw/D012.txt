@@ -1,0 +1,354 @@
+login tasks rulerunner quattro TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ When configuring Rulerunner threads in Rulerunner Quattro Manager with IBM Datacap Taskmaster Capture, a list of the tasks do not appear after selecting the three check boxes for the application on the Workflow:Job Task tab. Instead, an error appears stating:
+
+Login error.
+Could not login. User ID(domain\Windowsuser), Password or Station
+ID is incorrect, or Station ID is already in use. Please correct and try again. 
+
+CAUSE
+This occurs when the Station ID is invalid or has not been given permissions for the application.
+
+RESOLVING THE PROBLEM
+To correct: 
+
+ 1. Run Taskmaster Client and log in to the application. 
+ 2. From the Settings menu, select Stations. 
+ 3. If the station does not exist, select Add and create it using the Station ID configured in Rulerunner Quattro Manager. 
+ 4. If the station already exists, make sure that Permissions are checked for All or the tasks that Rulerunner will be executing. z/os  A FIX IS AVAILABLE
+Obtain the fix for this APAR.
+
+
+SUBSCRIBE
+You can track all active APARs for this component.
+
+
+
+APAR STATUS
+ * CLOSED AS PROGRAM ERROR.
+    
+   
+   
+
+ERROR DESCRIPTION
+ *  After PK19070 [http://www-01.ibm.com/support/docview.wss?uid=swg1PK19070], CSQ3AMT3 does not ensure that the EOT service
+   tasks have ended before allowing shutdown to continue (this
+   occurs after a STOP QMGR MODE(QUIESCE) followed by a
+   MODE(FORCE). This occurs while one of the EOT service tasks is
+   in a STIMER, issued by CSQ3EOTS. The load-module containing
+   CSQ3EOTS is then DELETEd as shutdown processing continues.
+   The STIMER then pops, and the 0C4 occurs as the storage
+   containing CSQ3EOTS is no longer avialable.
+   
+   
+    
+   
+   
+
+LOCAL FIX
+
+PROBLEM SUMMARY
+ *  ****************************************************************
+   * USERS AFFECTED: All users of Websphere MQ for z/OS Version 6 *
+   ****************************************************************
+   * PROBLEM DESCRIPTION: After a STOP QMGR MODE(QUIESCE)         *
+   *                      followed by a MODE(FORCE), the queue    *
+   *                      manager may abend 0C4 PIC11.            *
+   ****************************************************************
+   * RECOMMENDATION:                                              *
+   ****************************************************************
+   CSQ3AMT3 does not ensure that the EOT service tasks have ended
+   before allowing shutdown to continue - this occurs after a STOP
+   QMGR MODE(QUIESCE) followed by a MODE(FORCE).  During the
+   quiesce, CSQ3AMT3 clears the AMGSDSQH (holding the deferred EOT
+   SQH for this task).  In the following stop mode(force), CSQ3AMT3
+   detects that AMGSDSQH is now zero and so does not wait for
+   CSQ3EOTS to end.
+   
+   If the corresponding EOT service task is in a STIMER it may
+   have missed the quiesce.  The load-module containing CSQ3EOTS is
+   then DELETEd as shutdown processing continues.  The STIMER then
+   pops, and the 0C4 occurs as the storage containing CSQ3EOTS is
+   no longer available.
+   
+   
+    
+   
+   
+
+PROBLEM CONCLUSION
+ *  The code has been changed so that CSQ3EOTS now clears AMGSDSQH
+   when it knows the queue manager is shutting down. This way the
+   EOT services are allowed to end before allowing a force shutdown
+   to continue.
+   000Y
+   CSQ3AMT3
+   CSQ3EOTS
+   
+   
+    
+   
+   
+
+TEMPORARY FIX
+
+COMMENTS
+
+APAR INFORMATION
+ * APAR NUMBER
+   PK45114
+   
+   
+ * REPORTED COMPONENT NAME
+   WMQ Z/OS V6
+   
+   
+ * REPORTED COMPONENT ID
+   5655L8200
+   
+   
+ * REPORTED RELEASE
+   000
+   
+   
+ * STATUS
+   CLOSED PER
+   
+   
+ * PE
+   YesPE
+   
+   
+ * HIPER
+   NoHIPER
+   
+   
+ * SPECIAL ATTENTION
+   NoSpecatt
+   
+   
+ * SUBMITTED DATE
+   2007-05-14
+   
+   
+ * CLOSED DATE
+   2007-05-17
+   
+   
+ * LAST MODIFIED DATE
+   2007-07-03
+   
+   
+
+ * APAR IS SYSROUTED FROM ONE OR MORE OF THE FOLLOWING:
+    PK41708
+   
+   
+ * APAR IS SYSROUTED TO ONE OR MORE OF THE FOLLOWING:
+    UK25190
+   
+   
+
+MODULES/MACROS
+ *     CSQ3AMT3 CSQ3EOTS
+   
+   
+    
+   
+   
+
+FIX INFORMATION
+ * FIXED COMPONENT NAME
+   WMQ Z/OS V6
+   
+   
+ * FIXED COMPONENT ID
+   5655L8200
+   
+   
+
+APPLICABLE COMPONENT LEVELS
+ * R000 PSY UK25190 [HTTPS://WWW14.SOFTWARE.IBM.COM/WEBAPP/SET2/ORDERMEDIA/SHOPCART?PTFS=UK25190]
+   UP07/06/07 P F706
+   
+   
+
+FIX IS AVAILABLE
+ * SELECT THE PTF APPROPRIATE FOR YOUR COMPONENT LEVEL. YOU WILL BE REQUIRED TO SIGN IN. DISTRIBUTION ON PHYSICAL MEDIA IS NOT AVAILABLE IN ALL COUNTRIES.  SUBSCRIBE TO THIS APAR
+By subscribing, you receive periodic emails alerting you to the status of the APAR, along with a link to the fix after it becomes available. You can track this item individually or track all items by product.
+
+Notify me when this APAR changes.
+
+Notify me when an APAR for this component changes.
+
+
+
+APAR STATUS
+ * CLOSED AS PROGRAM ERROR.
+    
+   
+   
+
+ERROR DESCRIPTION
+ *  role-based batch filtering not working when processing batches
+   through Rulerunner service
+   
+   
+    
+   
+   
+
+LOCAL FIX
+
+PROBLEM SUMMARY
+ *  ****************************************************************
+   * USERS AFFECTED:                                              *
+   * windows users                                                *
+   ****************************************************************
+   * PROBLEM DESCRIPTION:                                         *
+   * See Error Description                                        *
+   ****************************************************************
+   * RECOMMENDATION:                                              *
+   * Apply Datacap 9.1.3.0-iFix-006 that includes updated updated *
+   * Rulerunner.exe and RRProcessor.exe modules.                  *
+   ****************************************************************
+   
+   
+    
+   
+   
+
+PROBLEM CONCLUSION
+ *  updated Rulerunner.exe , RRProcessor.exe to fix role-based batch
+   filtering not working issue when processing batches through
+   Rulerunner service.
+   
+   
+    
+   
+   
+
+TEMPORARY FIX
+
+COMMENTS
+
+APAR INFORMATION
+ * APAR NUMBER
+   IO26273
+   
+   
+ * REPORTED COMPONENT NAME
+   DATACAP TASKMST
+   
+   
+ * REPORTED COMPONENT ID
+   5725C1500
+   
+   
+ * REPORTED RELEASE
+   913
+   
+   
+ * STATUS
+   CLOSED PER
+   
+   
+ * PE
+   NoPE
+   
+   
+ * HIPER
+   NoHIPER
+   
+   
+ * SPECIAL ATTENTION
+   NoSpecatt / Xsystem
+   
+   
+ * SUBMITTED DATE
+   2018-05-21
+   
+   
+ * CLOSED DATE
+   2018-08-20
+   
+   
+ * LAST MODIFIED DATE
+   2018-08-20
+   
+   
+
+ * APAR IS SYSROUTED FROM ONE OR MORE OF THE FOLLOWING:
+   
+   
+   
+ * APAR IS SYSROUTED TO ONE OR MORE OF THE FOLLOWING:
+   
+   
+   
+
+FIX INFORMATION
+ * FIXED COMPONENT NAME
+   DATACAP TASKMST
+   
+   
+ * FIXED COMPONENT ID
+   5725C1500
+   
+   
+
+APPLICABLE COMPONENT LEVELS Rulerunner hang stop abort TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ After several batches abort consecutively in Rulerunner, all threads shut down. 
+
+CAUSE
+Rulerunner has a thread control feature that acts as a safety to prevent all pending batches from aborting. When it detects a certain number of consecutively aborted batches on a single thread, Rulerunner shuts down all threads. By default, the threshold is three batches, so shutdown occurs if four batches abort consecutively.
+
+DIAGNOSING THE PROBLEM
+With Rulerunner logging turned on, aborting batches will show in the rulerunnerX.log files (where X is the thread number. If there is a question as to whether a Rulerunner shutdown is being caused by this feature, check the rulerunnerX logs for each thread to see if there are four consecutive aborts followed by a shutdown.
+
+RESOLVING THE PROBLEM
+If there is a need to change this behavior due to situations where a large number of batches might legitimately abort, the threshold can be increased or the feature can be turned off through the following registry keys.
+
+
+x86 (32-bit) OS: 
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Datacap\Rulerunner\Misc (REG_DWORD) Restart
+Individual processors [default: 1] 
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Datacap\Rulerunner\Misc (REG_DWORD) Restart
+processor Attempts [default: 3] 
+
+ 
+
+x64 (64-bit) OS: 
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Datacap\Rulerunner\Misc
+(REG_DWORD) Restart Individual processors [default: 1) 
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Datacap\Rulerunner\Misc
+(REG_DWORD) Restart processor Attempts [default: 3] 
+
+ 
+
+ * Restart Individual processors - 1 is on, 0 is off. 
+ * Restart processor Attempts - Number of times Rulerunner will move to the next batch without shutting down the threads after a series of batches abort.
+
+
+
+Cross reference information Segment Product Component Platform Version Edition Enterprise Content Management Datacap Taskmaster Capture Not Applicable Windows 8.1.0.3 rulerunner service start TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ When starting the Datacap Rulerunner service, using Rulerunner Manager, the service does not start. After 30 seconds, it times out while still displaying the Starting Service. 
+
+SYMPTOM
+If attempting to start the service through Windows Services, it reports that the service cannot start. No Rulerunner or Windows Event log entries are generated.
+
+
+CAUSE
+If Rulerunner does not have any threads configured, it will shut itself down.
+
+RESOLVING THE PROBLEM
+Using Datacap Rulerunner Manager, go to the Workflow tab and configure at least one thread.

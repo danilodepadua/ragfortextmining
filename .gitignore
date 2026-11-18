@@ -11,7 +11,3 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# Generated dataset and JSONL output files
-curated_documents/*.jsonl
-

@@ -1,0 +1,203 @@
+1320206; ClearQuest; Command Line Tools; CQ; cqreg; add_dbset; initialize; CQ_DATABASES; CQDB_rgys; registry; db set; db_set; Default DB path is not set; Use cqreg initialize first; linux; RHEL; RHEL5 TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ This technote explains why the error, "Default DB path is not set", occurs when adding a connection with IBM® Rational® ClearQuest® on RedHat Enterprise Linux® (RHEL) 5. 
+
+SYMPTOM
+When running the command cqreg add_dbset, this error occurs:
+
+"Default DB path is not set"
+"Default version is 7.0.0"
+/opt/rational/clearquest/CQDB_rgys/cqdb_registry/7.0.0 does not exist. Use cqreg initialize first. 
+
+CAUSE
+Normally, at the end of a ClearQuest installation on UNIX® based platforms, the cqreg initialize command runs automatically. The command creates the registry structure for database sets. During the installation, the command did not run successfully.
+
+DIAGNOSING THE PROBLEM
+Verify that the CQDB_rgys directory exists, as defined in the installation options. The following is the default registry location: 
+
+
+/opt/rational/clearquest/CQDB_rgys/cqdb_registry/
+
+If not present, then the cqreg initialize command was not successful.
+
+
+RESOLVING THE PROBLEM
+Run cqreg initialize. The add_dbset command will run successfully afterwards. However, should the same error persist, make sure the command is run as the root user. 
+
+
+
+Also make sure that the CQ_DATABASES environment variable is set to the desired registry path. If it is not, set the variable accordingly, then run the previously mentioned commands again. CQ; cqweb; web; login; html; http; direct login; ASP; URL; logon; cqwj; GenerateMainFrame; use_case; use case; go; 1136402 TECHNOTE (FAQ)
+
+QUESTION
+ How can you automatically log into the IBM® Rational® ClearQuest® Web without the login window? 
+
+ANSWER
+ 
+
+The URL format for automatically logging into ClearQuest has changed in different versions. The URLs for these versions are the same for both regular and restricted users. Refer to the following table for the ClearQuest Web server versions 2003.06.13 and later: 
+
+
+
+Arguments Value <web_server_name> ClearQuest Web server name schema= Your ClearQuest schema repository connection name contextid= Logical Database Name of your target ClearQuest database username= ClearQuest user name password= ClearQuest password 
+ClearQuest versions 7.0.0.x, 7.0.1.x, 2003.06.14 - 2003.06.16 
+
+For example if you have the following URL that works in ClearQuest Web 2003.06.14 and later:
+
+http://web_server_name/cqweb/main?command=GenerateMainFrame &service=CQ%20≻hema=2003.06.00&contextid=SAMPL &username=admin&password= 
+
+ClearQuest versions 2003.06.13 
+
+For example if you have the following URL that works in ClearQuest Web 2003.06.13. This syntax was changed in later versions of ClearQuest. 
+
+ http://web_server_name/cqweb/main?USE_CASE=GO &service=CQ%20≻hema=2003.06.00&contextid=SAMPL &username=admin&password= 
+
+ 
+
+
+
+
+
+
+ClearQuest versions 2003.06.12 and earlier 
+
+Type in the address mentioned below, in your Browser, specifying your target the database in ClearQuest Web. 
+
+To create a URL that will allow you to login to your ClearQuest database on a ClearQuest Web Server, use the following URL syntax, substituting you values for this example:
+
+http://web_server_name/clearquest_virtual_directory/logon/default.asp? DbSetName=2003.06.00&DatabaseName=SAMPL&user=admin&password=pwd 
+
+For example:
+http://localhost/CQWeb/logon/default.asp? DbSetName=2003.06.00&DatabaseName=SAMPL&user=admin&password="" 
+
+ 
+
+Arguments Value web_server_name Windows server name clearquest_virtual_directory ClearQuest virtual directory in IIS. Typically "CQWeb" by default DbSetName= Your ClearQuest schema repository connection name DatabaseName= Logical Database Name of your target ClearQuest database user= ClearQuest user name password= ClearQuest password 
+RELATED INFORMATION
+#ClearQuest Web 7.1 web login URLs [http://www.ibm.com/support/docview.wss?uid=swg21373106]
+
+
+
+
+
+
+Cross Reference information Segment Product Component Platform Version Edition Software Development Rational ClearQuest Web ASP Client 2003.06.00, 2003.06.12 Understanding How; 1273537; integrations; CQWeb; ReqWeb; CQI; proxy requirement TECHNOTE (FAQ)
+
+QUESTION
+ What are the technical details about how the Rational ReqWeb and Rational ClearQuest (CQ) integration works? This technote can be used as a guide for troubleshooting integration issues. 
+
+ANSWER
+From Rational RequisiteWeb you can perform two types of ClearQuest Web Related actions, View and Create ClearQuest Proxy Requirements. 
+
+Viewing CQ Requirements from RequisiteWeb: 
+
+ 1. When you first attempt to view a CQ Requirement from a RequisiteWeb session you are presented with a proxy CQLogin Dialog. This .jsp page is actually owned by ReqWeb and is displaying the CQ Connection and User Database as it is set in the .rsp file. 
+ 2. Once you have entered your ClearQuest Username and Password ReqWeb will generate a cqweb shortcut URL that will display the proxy record. This URL will look like:
+
+ * 
+ * 
+ * <cqwebserver>/cqweb/main?schema=<cqdbset>&contextid=<cqdbname>&shortcut=true&command=GetEntity&entityDefName=Requirement&entityId=<dbid>
+ * 
+
+
+Where: 
+<cqwebserver> = CQWeb Server name taken CQWebURL parameter from .rqs file. 
+<cqdbset> = ClearQuestDbConnectionName from rsp file. 
+<cqdbname> = ClearQuestDatabaseName from rsp file. 
+<dbid> = dbid of CQ Requirement Proxy from "CQ Requirement" attribute 
+
+Note: 
+If the CQ Web server does not have the CQ Database integrated with this particular project registered with the same database Connection name as set in the rsp file then this URL will fail. 
+
+Creating CQ Requirements from RequisiteWeb:  1. When you first attempt to create a CQ Requirement from a RequisiteWeb session you are presented with a proxy CQLogin Dialog. This .jsp page is actually owned by ReqWeb and is displaying the CQ Connection and User Database as it is set in the .rsp file. 
+ 2. The CQ User and PW supplied at this proxy login window along with the Connection Name and Database Name is passed to the CQ API on the ReqWeb Server in order to create the "CQ Requirement" record in the ClearQuest Database. At this point CQWeb is never used. The proxy Login is just used to collect necessary data to submit the new record using the CQ API that is installed locally.
+
+
+For this reason the Connection that is set in the .rsp file must be the same name as the connections registered on both the ReqWeb and ClearQuest Web Servers. 
+
+Note: 
+In many cases the ReqWeb and CQWeb server will be the same machine so this will not be a concern. Also, if the "IBM WebSphere Application Server V6 - RWP ReqWeb servlet" Service is running as a Domain User you must make sure that the ClearQuest Connection is registered correctly for this user. To verify this, log into the ReqWeb Server as this user and launch the ClearQuest Maintenance Tool. 
+
+
+
+
+
+
+
+Cross Reference information Segment Product Component Platform Version Edition Software Development Rational ClearQuest Software Development Rational RequisitePro CQ; ClearQuest; CQ Web; ClearQuest Web; cqweb; CQWJ; LD_LIBRARY_PATH; 1239017; unsatisfied link error; Cannot find libcqjniproxy.so; libcqjniproxy; so; unsatisfied; link error; Can't find library cqjniproxy TECHNOTE (TROUBLESHOOTING)
+
+PROBLEM(ABSTRACT)
+ This technote explains how to resolve an unsatisfied link error. This can occur when starting IBM® Rational® ClearQuest® Web server processes. 
+
+SYMPTOM
+Attempting to login to the ClearQuest Web produces a blank page. On the server, you can check the stderr file in the directory: 
+
+<install directory>/rational/clearquest/cqweb/cqserver/logs and found requestmgr-7.
+
+Full text of the log is as follows:
+
+Exception in thread "main" java.lang.UnsatisfiedLinkError: Can't find library cqjniproxy (libcqjniproxy.so) in sun.boot.library.path or java.library.path
+sun.boot.library.path=/opt/rational/common/IBMJava2-142/jre/bin
+java.library.path=/opt/rational/common/IBMJava2-142/jre/bin:/opt/rational
+/common/IBMJava2-142/jre/bin/classic:/opt/rational/common/IBMJava2-142
+/jre/bin:/usr/lib
+at java.lang.ClassLoader.loadLibrary(ClassLoader.java:2047)
+at java.lang.Runtime.loadLibrary0(Runtime.java:824)
+at java.lang.System.loadLibrary(System.java:908)
+at com.rational.clearquest.cqweb.requestmgr.RmRequestMgr.<init>(Unknown Source)
+at com.rational.clearquest.cqweb.requestmgr.RmInitialization.main(Unknown Source)
+
+
+
+CAUSE
+ 
+
+Cause on Linux or UNIX platform server
+The LD_LIBRARY_PATH environment variable is not set.
+
+Cause on Windows platform server
+PATH environment variable values referencing ClearQuest paths are invalid. This can happen after an upgrade of ClearQuest, or if you have installed Oracle software.
+
+
+RESOLVING THE PROBLEM
+ 
+
+Resolving the problem on Linux or UNIX platforms 
+
+To run Rational ClearQuest Server and the Rational ClearQuest Web Application components, you must set the LD_LIBRARY_PATH parameter as documented in the ClearQuest Information Center [http://publib.boulder.ibm.com/infocenter/cqhelp/v7r0m1/index.jsp?topic=/com.ibm.rational.clearquest.install_upgrade.doc/install/t_os_prereq_linux.htm]. 
+
+
+After the server restarts you should be able to access the ClearQuest Web server and be prompted with a login screen as expected. 
+
+ 
+
+Resolving the problem on Windows platforms 
+
+Check the system PATH environment variable. 
+
+Follow these steps: 
+
+ 1. Go to Control Panel > System, and click the Advanced tab. 
+ 2. Click the Environment Variable button. 
+ 3. Under System Variables select PATH. 
+ 4. Verify that all Rational paths are correct, separated by a semicolon (;), and are located at the beginning of the variable.
+
+
+Note: The server may need to be rebooted for System variable changes to take effect. 1327228; RATLC00748956; CQ; ClearQuest; CQ Web; ClearQuest Web; login; page; site; connection; schema repository; dbset; db set; separate; split TECHNOTE (FAQ)
+
+QUESTION
+ If there are multiple database sets (dbsets) established on the IBM Rational ClearQuest Web server, is there a way to have a unique login screen and web page for each dbset in Rational ClearQuest Web client? 
+
+ANSWER
+This functionality is not available. The list of dbsets (Database Connections or Schema Repositories) displayed on Rational ClearQuest Web is controlled by the ClearQuest Maintenance Tool on the server where the Rational ClearQuest Web Server component exists. 
+
+To have multiple login screens, one for each dbset, there must be separate Rational Web Platform (RWP) and Rational ClearQuest Web servers, with each one having a separate dbset in its ClearQuest Maintenance Tool. 
+
+A request for enhancement, RFE RATLC00748956 [http://www.ibm.com/developerworks/support/rational/rfe/execute?use_case=viewChangeRequest&CR_ID=1529], exists for the ability to have separate login pages for each Rational ClearQuest dbset. It is available for viewing on the RFE Community Web site [http://www.ibm.com/developerworks/support/rational/rfe/].
+
+
+
+
+
+
+Cross reference information Segment Product Component Platform Version Edition Software Development Rational ClearQuest Maintenance tool
