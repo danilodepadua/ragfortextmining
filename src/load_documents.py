@@ -82,8 +82,8 @@ Respond ONLY with a valid JSON object in this exact format:
         print(f"LLM evaluation error: {e}")
     return None
 
-def stream_and_filter(target_matches: int = 26, output_file: str = "curated_documents/filtered_ragbench_tech.jsonl"):
-    # Ensure the curated_documents directory exists
+def stream_and_filter(target_matches: int = 26, output_file: str = "data/curated_documents/filtered_ragbench_tech.jsonl"):
+    # Ensure the directory exists
     output_dir = os.path.dirname(output_file)
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)

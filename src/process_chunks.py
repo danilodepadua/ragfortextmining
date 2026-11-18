@@ -136,8 +136,8 @@ def process_jsonl_corpus(
 
 
 if __name__ == "__main__":
-    INPUT_JSONL = "filtered_ragbench_tech.jsonl"
-    OUTPUT_JSONL = "chunked_filtered_ragbench_tech.jsonl"
+    INPUT_JSONL = "data/curated_documents/filtered_ragbench_tech.jsonl"
+    OUTPUT_JSONL = "data/curated_documents/chunked_filtered_ragbench_tech.jsonl"
 
     # Chunking configurations (300 words with 50-word overlap)
     CHUNK_SIZE_WORDS = 300
