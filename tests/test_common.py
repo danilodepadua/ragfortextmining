@@ -75,3 +75,8 @@ def test_stable_chunk_id_format_and_determinism():
     assert cid.startswith("chk_D001_003_") and len(cid.split("_")[-1]) == 8
     assert cid == stable_chunk_id("D001", 3, "texto")
     assert cid != stable_chunk_id("D001", 3, "outro")
+
+
+def test_write_jsonl_always_uses_lf(tmp_path):
+    write_jsonl(tmp_path / "f.jsonl", [{"a": 1}, {"b": 2}])
+    assert (tmp_path / "f.jsonl").read_bytes() == b'{"a": 1}\n{"b": 2}\n'
