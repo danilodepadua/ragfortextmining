@@ -103,7 +103,7 @@ def build_paired(eval_set: list[dict]) -> dict:
 
 def _csv_text(eval_set: list[dict]) -> str:
     out = io.StringIO()
-    writer = csv.DictWriter(out, fieldnames=list(eval_set[0]))
+    writer = csv.DictWriter(out, fieldnames=list(eval_set[0]), lineterminator="\n")
     writer.writeheader()
     for row in eval_set:
         writer.writerow({**row, "gold_chunk_ids": json.dumps(row["gold_chunk_ids"])})

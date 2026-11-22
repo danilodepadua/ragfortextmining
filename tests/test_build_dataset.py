@@ -174,3 +174,8 @@ def test_manifest_covers_the_human_review_decision_when_present(tmp_path):
     _built(tmp_path)
     (tmp_path / "human_review.json").write_text('{"rejected": []}', encoding="utf-8")
     assert "human_review.json" in bd.manifest(tmp_path)["files"]
+
+
+def test_csv_uses_lf_so_git_line_ending_settings_cannot_change_its_hash(tmp_path):
+    _built(tmp_path)
+    assert b"\r" not in (tmp_path / "eval_set_v2.csv").read_bytes()
