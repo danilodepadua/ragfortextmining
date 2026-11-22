@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
+RUNS = ROOT / "runs"
 
 CHUNK_SIZE_WORDS = 300
 CHUNK_OVERLAP_WORDS = 50
@@ -24,7 +25,7 @@ def read_jsonl(path: Path) -> list[dict]:
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w", encoding="utf-8", newline="\n") as f:  # LF everywhere: byte-stable output
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
