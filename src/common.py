@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
+RUNS = ROOT / "runs"
 
 CHUNK_SIZE_WORDS = 300
 CHUNK_OVERLAP_WORDS = 50
