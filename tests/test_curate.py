@@ -292,3 +292,23 @@ def test_resume_needs_existing_files_and_excludes_overwrite(tmp_path):
         curate.collect(iter([]), FakeJudgeClient(), "m", data_dir=tmp_path, resume=True)
     with pytest.raises(ValueError, match="mutually exclusive"):
         curate.collect(iter([]), FakeJudgeClient(), "m", data_dir=tmp_path, resume=True, overwrite=True)
+
+
+def test_resume_can_grow_the_pool_with_pool_size(tmp_path, monkeypatch):
+    monkeypatch.setattr(curate.time, "sleep", lambda s: None)
+    rows = good_rows(60)
+    curate.collect(iter(rows), FakeJudgeClient(), "m", data_dir=tmp_path, sleep=0)
+    client = FakeJudgeClient()
+    pool = curate.collect(iter(rows), client, "m", data_dir=tmp_path, sleep=0, resume=True, pool_size=36)
+    assert len(pool) == 36 and client.count == 6  # only the 6 new documents were judged
+
+
+def test_finalize_accepts_reasons_and_validates_their_ids(tmp_path, monkeypatch):
+    monkeypatch.setattr(curate.time, "sleep", lambda s: None)
+    curate.collect(iter(good_rows(40)), FakeJudgeClient(), "m", data_dir=tmp_path, sleep=0)
+    review = {"rejected": ["doc-0"], "reasons": {"doc-0": "marketing"}}
+    (tmp_path / "human_review.json").write_text(json.dumps(review))
+    assert curate.finalize(tmp_path)[0]["document_id"] == "doc-1"
+    (tmp_path / "human_review.json").write_text(json.dumps({"rejected": [], "reasons": {"doc-x": "typo"}}))
+    with pytest.raises(ValueError, match="not in the pool"):
+        curate.finalize(tmp_path)

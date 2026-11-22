@@ -191,8 +191,9 @@ def collect(
     sleep: float = 1.0,
     overwrite: bool = False,
     resume: bool = False,
+    pool_size: int = TARGET + RESERVE,
 ) -> list[dict]:
-    """Stream rows, filter, judge, and keep the first TARGET + RESERVE accepted documents.
+    """Stream rows, filter, judge, and keep the first `pool_size` accepted documents.
 
     `resume` continues from an existing pool and log (for example after a quota error):
     documents already judged are skipped, so no judge call is paid twice.
@@ -256,7 +257,7 @@ def collect(
 
     try:
         for row in stream:
-            if rows >= max_rows or len(pool) >= TARGET + RESERVE or judge_calls >= max_judge_calls:
+            if rows >= max_rows or len(pool) >= pool_size or judge_calls >= max_judge_calls:
                 break
             rows += 1
             context = normalize_text(row.get("context", ""))
@@ -323,11 +324,11 @@ def finalize(data_dir: Path = DATA) -> list[dict]:
     rejected: set = set()
     if review_path.exists():
         review = json.loads(review_path.read_text(encoding="utf-8"))
-        unknown = set(review) - {"rejected"}
+        unknown = set(review) - {"rejected", "reasons"}
         if unknown:
             raise ValueError(f"unknown keys in human_review.json: {sorted(unknown)}")
         rejected = set(review.get("rejected", []))
-        missing = rejected - {p["document_id"] for p in pool}
+        missing = (rejected | set(review.get("reasons", {}))) - {p["document_id"] for p in pool}
         if missing:
             raise ValueError(f"human_review.json lists ids that are not in the pool: {sorted(missing)}")
     kept = [p for p in pool if p["document_id"] not in rejected]
@@ -354,7 +355,8 @@ def review_markdown(selected: list[dict]) -> str:
     out = [
         "# Review of the selected documents\n",
         "To reject one, list its `document_id` in `data/human_review.json` "
-        '(`{"rejected": ["doc-123"]}`) and run `python src/curate.py finalize` again.\n',
+        '(`{"rejected": ["doc-123"], "reasons": {"doc-123": "why"}}`) and run '
+        "`python src/curate.py finalize` again.\n",
     ]
     for rec in selected:
         words = rec["context"].split()
@@ -385,6 +387,7 @@ def main() -> None:
     c.add_argument("--include-doc-type", action="append", default=[], help="extra doc_type to accept")
     c.add_argument("--max-rows", type=int, default=50_000)
     c.add_argument("--max-judge-calls", type=int, default=100)
+    c.add_argument("--pool-size", type=int, default=TARGET + RESERVE, help="accepted documents to keep")
     c.add_argument("--sleep", type=float, default=4.0, help="seconds between judge calls (15 per minute)")
     c.add_argument("--model", default=DEFAULT_MODEL)
     mode = c.add_mutually_exclusive_group()
@@ -406,6 +409,7 @@ def main() -> None:
             sleep=args.sleep,
             overwrite=args.overwrite,
             resume=args.resume,
+            pool_size=args.pool_size,
         )
         print(f"accepted {len(pool)} documents; see data/curation_log.jsonl")
     else:
