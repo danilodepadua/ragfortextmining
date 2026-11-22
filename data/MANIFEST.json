@@ -1,0 +1,26 @@
+{
+  "dataset": "Madras1/rag-qa-fulltext-ptbr",
+  "revision": "a9546f0d67416f3f2df57007f0ae60fde0cc0fab",
+  "seed": 42,
+  "shuffle_buffer": 10000,
+  "judge_models": [
+    "gemini-3.5-flash-lite"
+  ],
+  "judge_model_versions": [
+    "gemini-3.5-flash-lite"
+  ],
+  "chunk_size_words": 300,
+  "chunk_overlap_words": 50,
+  "files": {
+    "raw/accepted_pool.jsonl": "08235ea50cce3609b3deb39cfef88cfbbd74c720bb03fd7d91eebd868837e565",
+    "raw/selected_documents.jsonl": "837d2127f3405b156f74592f44c750ee19246812b48912d6c78f1abb05980e06",
+    "corpus_v2.jsonl": "9d271847659d79b8eb42b5eeada1cf7051c8be956a8010a74417c5cdccea6c47",
+    "chunks_v2.jsonl": "374814ce983264a8a7c42f8e48f02f7333c58bbb0afe5edde0dfcc13bb0cf8a2",
+    "eval_set_v2.jsonl": "a596a5d072ab80f8eb2c433cdf7f695b8abe2a386571f11ade2544a9029a808a",
+    "eval_set_v2.csv": "ed29a4db58a5c80e477937fa52b31c29e0398bb5277e56ccc58a3d295f34668b",
+    "paired_questions_v2.json": "2acd66aac22b5d888814cb15755b4fcd66e60e4ef3e6ed414db6a954fd7795ff",
+    "curation_log.jsonl": "18e64b74224abb6189b145c68ce241826f99ac652f88fc7b2849a6e8794e0e00",
+    "review.md": "93c519c91501683587cd1a6c3e7fc704f21f3e2fd452c058ef967364aba4d09b",
+    "human_review.json": "4a914f0ffda3b9777704d1cc63bb2c774654b9fd8084854d75b0d6730fab8d84"
+  }
+}
