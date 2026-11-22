@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import unicodedata
 from pathlib import Path
@@ -25,9 +26,11 @@ def read_jsonl(path: Path) -> list[dict]:
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as f:  # LF everywhere: byte-stable output
+    tmp = path.with_name(path.name + ".tmp")  # write beside, then swap: a crash never leaves a half file
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:  # LF everywhere: byte-stable output
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    os.replace(tmp, path)
 
 
 def normalize_text(text: str) -> str:
