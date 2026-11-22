@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 
+import numpy as np
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -54,3 +55,31 @@ def generate_json(
         "usage": usage.model_dump(exclude_none=True) if usage is not None else None,
     }
     return schema.model_validate_json(response.text), meta
+
+
+def embed(client, model: str, texts: list[str], task_type: str, dim: int) -> tuple[np.ndarray, dict]:
+    """One embedding request. Returns the raw vectors (float32) and metadata for the log.
+
+    The vectors are exactly what the API returned: normalize where cosine is computed.
+    Fails loudly unless there is exactly one vector per text (a multimodal embedding model
+    silently returns a single embedding for a list of strings).
+    """
+    response = client.models.embed_content(
+        model=model,
+        contents=texts,
+        config=types.EmbedContentConfig(task_type=task_type, output_dimensionality=dim),
+    )
+    vectors = [list(e.values) for e in (response.embeddings or [])]
+    if len(vectors) != len(texts):
+        raise RuntimeError(f"{model} returned {len(vectors)} embeddings for {len(texts)} texts")
+    array = np.asarray(vectors, dtype=np.float32)
+    if array.shape[1] != dim:
+        raise RuntimeError(f"{model} returned {array.shape[1]} dimensions, expected {dim}")
+    usage = getattr(response, "usage_metadata", None)
+    meta = {
+        "model_requested": model,
+        "task_type": task_type,
+        "dim": dim,
+        "usage": usage.model_dump(exclude_none=True) if usage is not None else None,
+    }
+    return array, meta
