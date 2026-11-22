@@ -251,3 +251,44 @@ def test_finalize_fails_closed_on_human_review_mistakes(tmp_path, monkeypatch, r
     (tmp_path / "human_review.json").write_text(json.dumps(review))
     with pytest.raises(ValueError, match=message):
         curate.finalize(tmp_path)
+
+
+class QuotaClient(FakeJudgeClient):
+    """Accepts `ok_calls` calls, then fails like an exhausted daily quota."""
+
+    def __init__(self, ok_calls):
+        super().__init__()
+        self.ok_calls = ok_calls
+
+    def _call(self, **kwargs):
+        if self.count >= self.ok_calls:
+            raise RuntimeError("429 RESOURCE_EXHAUSTED")
+        return super()._call(**kwargs)
+
+
+def test_resume_continues_after_a_quota_error_without_paying_twice(tmp_path, monkeypatch):
+    monkeypatch.setattr(curate.time, "sleep", lambda s: None)
+    rows = good_rows(40)
+    with pytest.raises(RuntimeError, match="5 judge calls failed"):
+        curate.collect(iter(rows), QuotaClient(ok_calls=3), "m1", data_dir=tmp_path, sleep=0)
+    first = read_jsonl(tmp_path / "raw" / "accepted_pool.jsonl")
+    assert [p["document_id"] for p in first] == ["doc-0", "doc-1", "doc-2"]
+
+    client = FakeJudgeClient()
+    pool = curate.collect(iter(rows), client, "m2", data_dir=tmp_path, sleep=0, resume=True)
+    assert len(pool) == curate.TARGET + curate.RESERVE
+    assert [p["document_id"] for p in pool[:3]] == ["doc-0", "doc-1", "doc-2"]
+    assert client.count == curate.TARGET + curate.RESERVE - 3  # the first 3 were not judged again
+
+    log = read_jsonl(tmp_path / "curation_log.jsonl")
+    assert [line["judge_model"] for line in log if line["type"] == "run"] == ["m1", "m2"]
+    assert any(line["type"] == "previous_summary" for line in log)
+    assert sum(1 for line in log if line.get("decision") == "judge_error") == 5
+    assert log[-1]["type"] == "summary" and log[-1]["reject_counts"]["already_judged"] == 3
+
+
+def test_resume_needs_existing_files_and_excludes_overwrite(tmp_path):
+    with pytest.raises(FileNotFoundError, match="nothing to resume"):
+        curate.collect(iter([]), FakeJudgeClient(), "m", data_dir=tmp_path, resume=True)
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        curate.collect(iter([]), FakeJudgeClient(), "m", data_dir=tmp_path, resume=True, overwrite=True)

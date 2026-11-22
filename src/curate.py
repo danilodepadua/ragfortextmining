@@ -189,16 +189,39 @@ def collect(
     max_judge_calls: int = 100,
     sleep: float = 1.0,
     overwrite: bool = False,
+    resume: bool = False,
 ) -> list[dict]:
-    """Stream rows, filter, judge, and keep the first TARGET + RESERVE accepted documents."""
+    """Stream rows, filter, judge, and keep the first TARGET + RESERVE accepted documents.
+
+    `resume` continues from an existing pool and log (for example after a quota error):
+    documents already judged are skipped, so no judge call is paid twice.
+    """
     from llm import generate_json
 
     pool_path = data_dir / "raw" / "accepted_pool.jsonl"
     log_path = data_dir / "curation_log.jsonl"
-    if not overwrite and (pool_path.exists() or log_path.exists()):
-        raise FileExistsError(f"{pool_path} or {log_path} exists: pass --overwrite to replace the selection")
+    if resume and overwrite:
+        raise ValueError("resume and overwrite are mutually exclusive")
+    exists = pool_path.exists() or log_path.exists()
+    if exists and not (overwrite or resume):
+        raise FileExistsError(f"{pool_path} or {log_path} exists: pass --resume or --overwrite")
+
+    previous_log: list[dict] = []
+    pool: list[dict] = []
+    judged: set = set()
+    if resume:
+        if not (pool_path.exists() and log_path.exists()):
+            raise FileNotFoundError("nothing to resume: accepted_pool.jsonl or curation_log.jsonl is missing")
+        pool = read_jsonl(pool_path)
+        for line in read_jsonl(log_path):
+            if line["type"] == "summary":
+                line = {**line, "type": "previous_summary"}
+            previous_log.append(line)
+            if line.get("decision") in ("accepted", "rejected_by_judge"):
+                judged.add(line["document_id"])
 
     log: list[dict] = [
+        *previous_log,
         {
             "type": "run",
             "dataset": DATASET,
@@ -212,9 +235,8 @@ def collect(
             "max_span_words": MAX_SPAN_WORDS,
         }
     ]
-    pool: list[dict] = []
-    seen_hashes: set[str] = set()
-    seen_questions: set[str] = set()
+    seen_hashes: set[str] = {_context_hash(p["context"]) for p in pool}
+    seen_questions: set[str] = {p["question"].lower() for p in pool}
     rejects: Counter = Counter()
     qa_rejects: Counter = Counter()
     rows = judge_calls = errors_in_a_row = 0
@@ -238,6 +260,8 @@ def collect(
             rows += 1
             context = normalize_text(row.get("context", ""))
             reason = cheap_reject(row, context, doc_types)
+            if reason is None and row.get("document_id") in judged:
+                reason = "already_judged"
             if reason is None:
                 digest = _context_hash(context)
                 if digest in seen_hashes:
@@ -362,7 +386,9 @@ def main() -> None:
     c.add_argument("--max-judge-calls", type=int, default=100)
     c.add_argument("--sleep", type=float, default=1.0, help="seconds between judge calls")
     c.add_argument("--model", default=DEFAULT_MODEL)
-    c.add_argument("--overwrite", action="store_true", help="replace an existing accepted pool and log")
+    mode = c.add_mutually_exclusive_group()
+    mode.add_argument("--overwrite", action="store_true", help="replace an existing accepted pool and log")
+    mode.add_argument("--resume", action="store_true", help="continue from the existing pool and log")
     sub.add_parser("finalize", help="offline: write the corpus files from the accepted pool")
     args = parser.parse_args()
 
@@ -378,6 +404,7 @@ def main() -> None:
             max_judge_calls=args.max_judge_calls,
             sleep=args.sleep,
             overwrite=args.overwrite,
+            resume=args.resume,
         )
         print(f"accepted {len(pool)} documents; see data/curation_log.jsonl")
     else:

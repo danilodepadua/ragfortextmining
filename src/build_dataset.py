@@ -186,7 +186,8 @@ def manifest(data_dir: Path = DATA) -> dict:
     if problems:
         raise RuntimeError("refusing to write a manifest, check() found: " + "; ".join(problems))
     log = read_jsonl(data_dir / "curation_log.jsonl")
-    run = next(line for line in log if line["type"] == "run")
+    runs = [line for line in log if line["type"] == "run"]
+    run = runs[0]
     versions = sorted(
         {
             line["judge_meta"]["model_version"]
@@ -202,7 +203,7 @@ def manifest(data_dir: Path = DATA) -> dict:
         "revision": run["revision"],
         "seed": run["seed"],
         "shuffle_buffer": run["shuffle_buffer"],
-        "judge_model": run["judge_model"],
+        "judge_models": sorted({r["judge_model"] for r in runs}),
         "judge_model_versions": versions,
         "chunk_size_words": CHUNK_SIZE_WORDS,
         "chunk_overlap_words": CHUNK_OVERLAP_WORDS,

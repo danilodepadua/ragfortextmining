@@ -101,6 +101,7 @@ def test_build_check_and_manifest_end_to_end(tmp_path):
 
     result = bd.manifest(tmp_path)
     assert result["revision"] == "r" and result["judge_model_versions"] == ["fake-1"]
+    assert result["judge_models"] == ["m"]
     assert set(result["files"]) == set(bd.V2_FILES)
     assert all(len(h) == 64 for h in result["files"].values())
 
