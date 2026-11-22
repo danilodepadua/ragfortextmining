@@ -82,3 +82,11 @@ def stable_chunk_id(doc_id: str, chunk_index: int, chunk_text: str) -> str:
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def verify_manifest(data_dir: Path, *names: str) -> None:
+    """Raise unless each named data file still has the sha256 recorded in data/MANIFEST.json."""
+    manifest = json.loads((data_dir / "MANIFEST.json").read_text(encoding="utf-8"))
+    for name in names:
+        if manifest["files"].get(name) != sha256_file(data_dir / name):
+            raise RuntimeError(f"{name} does not match data/MANIFEST.json")

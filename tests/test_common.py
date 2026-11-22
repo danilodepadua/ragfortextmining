@@ -1,3 +1,4 @@
+import json
 import unicodedata
 
 import pytest
@@ -6,7 +7,9 @@ from common import (
     chunk_spans,
     normalize_text,
     read_jsonl,
+    sha256_file,
     stable_chunk_id,
+    verify_manifest,
     word_spans,
     words_touched,
     write_jsonl,
@@ -80,3 +83,17 @@ def test_stable_chunk_id_format_and_determinism():
 def test_write_jsonl_always_uses_lf(tmp_path):
     write_jsonl(tmp_path / "f.jsonl", [{"a": 1}, {"b": 2}])
     assert (tmp_path / "f.jsonl").read_bytes() == b'{"a": 1}\n{"b": 2}\n'
+
+
+def test_verify_manifest_accepts_matching_files_and_names_the_bad_one(tmp_path):
+    (tmp_path / "a.txt").write_text("alpha", encoding="utf-8")
+    (tmp_path / "b.txt").write_text("beta", encoding="utf-8")
+    files = {n: sha256_file(tmp_path / n) for n in ("a.txt", "b.txt")}
+    (tmp_path / "MANIFEST.json").write_text(json.dumps({"files": files}), encoding="utf-8")
+    verify_manifest(tmp_path, "a.txt", "b.txt")
+    (tmp_path / "b.txt").write_text("changed", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="b.txt does not match"):
+        verify_manifest(tmp_path, "a.txt", "b.txt")
+    with pytest.raises(RuntimeError, match="c.txt"):  # not listed in the manifest
+        (tmp_path / "c.txt").write_text("x", encoding="utf-8")
+        verify_manifest(tmp_path, "c.txt")
