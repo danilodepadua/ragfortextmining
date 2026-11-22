@@ -1,6 +1,6 @@
 # RAG for text mining
 
-Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The v2 foundation (curated corpus, chunks, evaluation set) is committed and frozen. The retrievers and the RAG pipeline are not implemented yet.
+Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The v2 foundation (curated corpus, chunks, evaluation set) is committed and frozen. The two retrievers (M2) are implemented; the RAG pipeline (M3) is not.
 
 # Configuring the environment
 
@@ -26,7 +26,7 @@ To run the tests, also install the development dependencies:
 Copy `.env.example` to `.env` in the repository root and set your Gemini API key (Gemini replaced OpenAI):
 ```GEMINI_API_KEY=your_actual_gemini_api_key_here```
 
-Only `python src/curate.py collect` needs the key.
+Only `python src/curate.py collect` and building or extending the embedding cache in `python src/retrieve.py` need the key (see M2: retrieval).
 
 # Devcontainer (optional)
 
@@ -85,6 +85,38 @@ Chosen randomly (seed 42) with `random.Random(42).sample(sorted(qa_ids), 5)`: Q0
 
 **Failures:** analyze 2 wrong answers. Name 1 search risk and 1 fix.
 
+# M2: retrieval
+
+`python src/retrieve.py` reads `data/` (chunks and eval set, checked against `data/MANIFEST.json`) and writes three files under `runs/`: `rankings_v2.jsonl`, `retrieval_metrics.json` and the embedding cache `embeddings_gemini-embedding-001_3072.npz`.
+
+**Retrievers.** Settings were fixed before any result was seen and never tuned on the eval set.
+- TF-IDF: scikit-learn `TfidfVectorizer(strip_accents='unicode', lowercase=True)`, fit on the chunks only, no stop words.
+- Dense: `gemini-embedding-001`, 3072 dimensions. Chunks use task type `RETRIEVAL_DOCUMENT`, questions use `QUESTION_ANSWERING`. Cosine similarity in float64 after normalizing the vectors.
+
+**Ranking file.** `runs/rankings_v2.jsonl` holds the full ranking of all 83 chunks for each of the 25 questions and both retrievers (50 lines). Each line has the question, the ranking (rank, chunk id, score), the retriever `config` and `chunks_sha256`. M3 will read it.
+
+**Metrics** (`runs/retrieval_metrics.json`):
+- Evidence recall@k for k = 1, 3, 5: a gold chunk is in the top k (equals hit@k).
+- MRR over the full ranking (reciprocal rank of the first gold chunk).
+- Random baseline: the exact expected value for a random ranking, not a simulation.
+- Paired counts per k: questions hit by both, by dense only, by TF-IDF only, by neither.
+
+**Results** (25 questions, 83 chunks):
+
+| Retriever | recall@1 | recall@3 | recall@5 | MRR |
+| --- | --- | --- | --- | --- |
+| TF-IDF | 0.640 | 1.000 | 1.000 | 0.800 |
+| Dense | 0.640 | 0.960 | 1.000 | 0.803 |
+| Random (exact) | 0.013 | 0.039 | 0.065 | 0.063 |
+
+Paired at k = 1: 13 both, 3 dense only, 3 TF-IDF only, 6 neither. At k = 3: 24 both, 1 TF-IDF only. At k = 5: all 25 both.
+
+Read these numbers with care:
+- With n = 25, a difference of 1 to 3 questions is noise. The two retrievers are not separated by this data.
+- Recall@5 is 1.000 for both, and k = 5 returns only about 6% of the 83 chunks, so the comparison shows mostly at k = 1 and in MRR.
+
+**Cache and API use.** Cache entries are keyed by content (task type plus chunk id, or the hash of the question) and the cache is committed. A rerun makes 0 API calls and reproduces the three files byte for byte (`.gitattributes` keeps their line endings), so `GEMINI_API_KEY` is only needed to build or extend the cache. Missing texts are embedded in batches of 20, with a pause between requests (`--pause`, default 15 seconds) to stay under the free-tier token limit. The cache is saved after every batch.
+
 # Workflow
 
 ```
@@ -93,11 +125,13 @@ python src/curate.py finalize        # offline: apply data/human_review.json, wr
 python src/build_dataset.py build    # write chunks, eval set and paired questions
 python src/build_dataset.py check    # validate the files and that a rebuild is identical
 python src/build_dataset.py manifest # write data/MANIFEST.json (runs check first)
+python src/retrieve.py               # rank all chunks with both retrievers, write runs/ (key only if the cache lacks entries)
 python -m pytest                     # tests
 ```
 
 - `collect` options: `--resume` (continue an existing pool and log, for example after a quota error), `--overwrite` (replace them), `--pool-size` (accepted documents to keep, default 30), `--include-doc-type` (extra document type, repeatable). Without `--resume` or `--overwrite` it refuses to run if a pool or log exists.
 - `data/` is read-only in the devcontainer, so `collect`, `finalize`, `build` and `manifest` run on the host. `check` and `python -m pytest` only read, so they also work in the container.
+- `retrieve.py` option: `--pause` (seconds between embedding requests, default 15). It only reads `data/` and writes `runs/`, so it also runs in the container; it needs `GEMINI_API_KEY` only when the cache is missing entries.
 - Rebuilding changes the hashes in `data/MANIFEST.json`: the corpus is frozen, so only do it deliberately.
 
 # Data files
@@ -115,4 +149,12 @@ python -m pytest                     # tests
 | `data/review.md` | Selected documents laid out for human review |
 | `data/human_review.json` | Documents rejected in review, with reasons |
 
-The v1 data and scripts (English, RAGBench TechQA) were removed. Recover any v1 file with `git show data-v1-final:<path>`, for example `git show data-v1-final:data/corpus_v1.jsonl`.
+# Run outputs
+
+| File | Content |
+| --- | --- |
+| `runs/rankings_v2.jsonl` | Full ranking of all chunks per question and retriever (50 lines), with config and `chunks_sha256` |
+| `runs/retrieval_metrics.json` | Evidence recall@k, MRR, first gold rank per question, exact random baseline, paired counts |
+| `runs/embeddings_gemini-embedding-001_3072.npz` | Embedding cache (chunks and questions), content keyed |
+
+The v1 data and scripts (English, RAGBench TechQA) were removed. Recover any v1 file with `git show 046dcd2:<path>`, for example `git show 046dcd2:data/corpus_v1.jsonl`.
