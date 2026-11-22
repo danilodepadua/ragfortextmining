@@ -25,10 +25,11 @@ REVISION = "a9546f0d67416f3f2df57007f0ae60fde0cc0fab"
 SEED = 42
 SHUFFLE_BUFFER = 10_000
 
-# Pinned after listing the models available to the key (override with --model). Aliases resolve silently
-# (asking for gemini-3.5-flash was served by gemini-3.6-flash), so every judge call
-# also logs the returned model_version.
-DEFAULT_MODEL = "gemini-3.6-flash"
+# Free-tier limits decide the model: gemini-3.6-flash allows 20 requests per day, which
+# stopped the first run, while gemini-3.5-flash-lite allows 500 per day and 15 per minute,
+# enough for the whole experiment. Override with --model. Every judge call logs the
+# model_version it was served by (asking for gemini-3.5-flash was served by gemini-3.6-flash).
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 LANGUAGE = "pt-br"
 DOMAIN = "tecnologia"
@@ -384,7 +385,7 @@ def main() -> None:
     c.add_argument("--include-doc-type", action="append", default=[], help="extra doc_type to accept")
     c.add_argument("--max-rows", type=int, default=50_000)
     c.add_argument("--max-judge-calls", type=int, default=100)
-    c.add_argument("--sleep", type=float, default=1.0, help="seconds between judge calls")
+    c.add_argument("--sleep", type=float, default=4.0, help="seconds between judge calls (15 per minute)")
     c.add_argument("--model", default=DEFAULT_MODEL)
     mode = c.add_mutually_exclusive_group()
     mode.add_argument("--overwrite", action="store_true", help="replace an existing accepted pool and log")
