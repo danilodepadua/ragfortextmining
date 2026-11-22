@@ -3,9 +3,6 @@
   "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
   "workspaceFolder": "/workspaces/ragfortextmining",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/ragfortextmining,type=bind",
-  "mounts": [
-    "source=${localWorkspaceFolder}/data,target=/workspaces/ragfortextmining/data,type=bind,readonly"
-  ],
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "customizations": {
     "vscode": {

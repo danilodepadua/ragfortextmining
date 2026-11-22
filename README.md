@@ -26,8 +26,7 @@ An alternative to the virtual environment above: Python 3.12 with all dependenci
 
 - Open the repository in VS Code and choose **Reopen in Container**, or run `devcontainer up --workspace-folder .`.
 - Put `GEMINI_API_KEY` in `.env` (see Step 4 above). The key is not forwarded from the host environment, so an empty host variable can never shadow the `.env` value.
-- `data/` is mounted **read-only** inside the container, so scripts that rewrite it (`prepare_from_jsonl.py`, `fill_evidence.py`, `map_evidence.py`, `suggest_evidence.py`, `load_documents.py`, `process_chunks.py`) fail instead of overwriting the curated data. To regenerate data, run them on the host or remove the `data` entry from `mounts` in `.devcontainer/devcontainer.json`.
-- Run git commands that change files under `data/` (`pull`, `checkout`, `merge`, `stash`) on the host: inside the container they fail on the read-only mount and can leave the working tree half-updated.
+- `data/` is writable while the v2 corpus is being rebuilt. It is mounted read-only again once the corpus is frozen (`data/MANIFEST.json` records the sha256 of every file).
 - Write run outputs (logs, answers) to `runs/`, which is writable and tracked in git.
 
 # Protocol of document curating
