@@ -16,8 +16,8 @@
 ```pip install -r requirements.txt```
 
 ## Step 4: Configure your environment variables
-- Create a file named `.env` in your root directory and add your OpenAI API key so the scripts can authenticate properly:
-```OPENAI_API_KEY=your_actual_openai_api_key_here```
+- Copy `.env.example` to `.env` in your root directory and fill in your Gemini API key so the scripts can authenticate properly:
+```GEMINI_API_KEY=your_actual_gemini_api_key_here```
 
 
 # Devcontainer (optional)
@@ -25,7 +25,7 @@
 An alternative to the virtual environment above: Python 3.12 with all dependencies, `ipykernel` and `nbconvert` preinstalled.
 
 - Open the repository in VS Code and choose **Reopen in Container**, or run `devcontainer up --workspace-folder .`.
-- Put `OPENAI_API_KEY` in `.env` (see Step 4 above). The key is not forwarded from the host environment, so an empty host variable can never shadow the `.env` value.
+- Put `GEMINI_API_KEY` in `.env` (see Step 4 above). The key is not forwarded from the host environment, so an empty host variable can never shadow the `.env` value.
 - `data/` is mounted **read-only** inside the container, so scripts that rewrite it (`prepare_from_jsonl.py`, `fill_evidence.py`, `map_evidence.py`, `suggest_evidence.py`, `load_documents.py`, `process_chunks.py`) fail instead of overwriting the curated data. To regenerate data, run them on the host or remove the `data` entry from `mounts` in `.devcontainer/devcontainer.json`.
 - Run git commands that change files under `data/` (`pull`, `checkout`, `merge`, `stash`) on the host: inside the container they fail on the read-only mount and can leave the working tree half-updated.
 - Write run outputs (logs, answers) to `runs/`, which is writable and tracked in git.
