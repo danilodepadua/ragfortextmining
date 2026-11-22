@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Installs dependencies and prepares the writable output folder.
-# data/ is mounted read-only in this container and is never touched here.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."

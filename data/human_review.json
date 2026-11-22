@@ -1,0 +1,24 @@
+{
+  "rejected": [
+    "doc-166454",
+    "doc-100690",
+    "doc-216681",
+    "doc-168044",
+    "doc-216224",
+    "doc-166370",
+    "doc-367198",
+    "doc-1593",
+    "doc-216926"
+  ],
+  "reasons": {
+    "doc-166454": "Answer not supported: 'choque eletrico' appears nowhere in the document; an electrician safety article, not IT documentation.",
+    "doc-100690": "Adware-removal page that promotes a paid tool (Combo Cleaner is named 4 times): marketing.",
+    "doc-216681": "The evidence span is garbled by PDF extraction (stray letters) and the answer is vacuous ('the text suggests...').",
+    "doc-168044": "Commercial product page for evaporative coolers (marketing); the answer adds benefits that are not in the evidence.",
+    "doc-216224": "Article promotes Steganos Privacy Suite and the question asks about its free trial: marketing.",
+    "doc-166370": "Incoherent wiki spam: the title and the body are unrelated, so evidence and answer come from a mixed page.",
+    "doc-367198": "The question asks how to access the web version, but the document only says it exists; 'navegador' (browser) appears nowhere.",
+    "doc-1593": "The question asks which program is recommended and the answer is a plug for an obscure tool (GiosPSM): promotional.",
+    "doc-216926": "SEO file-extension page; part of the answer ('not all programs are compatible') is not in the document, and the page ends with a list of unrelated conversions."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "seed": 42,
+  "method": "random.Random(seed).sample(sorted(qa_ids), 5)",
+  "paired": [
+    "Q021",
+    "Q004",
+    "Q001",
+    "Q024",
+    "Q009"
+  ],
+  "highlighted": [
+    "Q021",
+    "Q004",
+    "Q001"
+  ]
+}

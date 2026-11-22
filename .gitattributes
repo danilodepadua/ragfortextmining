@@ -1,0 +1,2 @@
+# The v2 data files are hashed in data/MANIFEST.json: never rewrite their line endings.
+data/** -text
