@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from common import DATA, RUNS, read_jsonl, sha256_file, write_jsonl
+from common import DATA, RUNS, read_jsonl, sha256_file, verify_manifest, write_jsonl
 from llm import embed, make_client
 
 # Pre-registered before any result was seen; never tuned on the eval set (25 questions).
@@ -46,11 +46,8 @@ SCORE_DECIMALS = 6
 def load_inputs(data_dir: Path = DATA):
     """Chunks, eval set and the sha256 of the chunks file (checked against the manifest)."""
     chunks_path = data_dir / "chunks_v2.jsonl"
-    chunks_sha = sha256_file(chunks_path)
-    manifest = json.loads((data_dir / "MANIFEST.json").read_text(encoding="utf-8"))
-    if manifest["files"]["chunks_v2.jsonl"] != chunks_sha:
-        raise RuntimeError("chunks_v2.jsonl does not match data/MANIFEST.json")
-    return read_jsonl(chunks_path), read_jsonl(data_dir / "eval_set_v2.jsonl"), chunks_sha
+    verify_manifest(data_dir, "chunks_v2.jsonl")
+    return read_jsonl(chunks_path), read_jsonl(data_dir / "eval_set_v2.jsonl"), sha256_file(chunks_path)
 
 
 # ---------------------------------------------------------------- scoring

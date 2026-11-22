@@ -1,6 +1,6 @@
 # RAG for text mining
 
-Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The v2 foundation (curated corpus, chunks, evaluation set) is committed and frozen. The two retrievers (M2) are implemented; the RAG pipeline (M3) is not.
+Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The v2 foundation (curated corpus, chunks, evaluation set) is committed and frozen. The two retrievers (M2) and the RAG runner (M3) are implemented; the M3 answers are not graded yet.
 
 # Configuring the environment
 
@@ -26,7 +26,7 @@ To run the tests, also install the development dependencies:
 Copy `.env.example` to `.env` in the repository root and set your Gemini API key (Gemini replaced OpenAI):
 ```GEMINI_API_KEY=your_actual_gemini_api_key_here```
 
-Only `python src/curate.py collect` and building or extending the embedding cache in `python src/retrieve.py` need the key (see M2: retrieval).
+Only `python src/curate.py collect` and building or extending the embedding cache in `python src/retrieve.py`, and `python src/rag.py` need the key (see M2: retrieval and M3: RAG answers).
 
 # Devcontainer (optional)
 
@@ -117,6 +117,42 @@ Read these numbers with care:
 
 **Cache and API use.** Cache entries are keyed by content (task type plus chunk id, or the hash of the question) and the cache is committed. A rerun makes 0 API calls and reproduces the three files byte for byte (`.gitattributes` keeps their line endings), so `GEMINI_API_KEY` is only needed to build or extend the cache. Missing texts are embedded in batches of 20, with a pause between requests (`--pause`, default 15 seconds) to stay under the free-tier token limit. The cache is saved after every batch.
 
+# M3: RAG answers
+
+`python src/rag.py` answers the 5 paired questions with both retrievers (10 answers) from retrieved chunks only. It reads `data/` (checked against `data/MANIFEST.json`) and `runs/rankings_v2.jsonl`, needs `GEMINI_API_KEY` in `.env`, and runs in the devcontainer. Options: `--model`, `--pause` (seconds between calls, default 4).
+
+**Prompt and settings.** The top K = 3 chunks of each retriever go into the prompt in rank order, labelled `[1]` to `[3]`; the code maps the numbers back to chunk ids. One Portuguese prompt template serves both retrievers. The model returns structured output with `answerable`, `cited` (chunk numbers) and `answer`, in that order. Model `gemini-3.5-flash-lite`, temperature 0, seed 42. The prompt version is a hash of the template and the schema (`13c74fac6aa7`).
+
+**Outputs** (under `runs/`):
+- `m3_runs.jsonl`: full log, one record per question and retriever: prompt text, retrieved chunks, raw response, finish reason, usage, checks and provenance (git HEAD, hashes of `src/rag.py` and `src/llm.py`, input file hashes).
+- `m3_runs_failures.jsonl`: failed attempts, kept even after a retry succeeds.
+- `m3_grading_sheet.md`: blind sheet for the grader.
+- `m3_dev_runs.jsonl`: development runs (below).
+
+**Rerun.** If all 10 answers succeeded, a rerun makes 0 calls. Otherwise it calls only the missing or failed ones. It refuses to run (delete `runs/m3_runs.jsonl` to start over) if an existing record used a different prompt, settings, `g_id` or input files.
+
+**Protocol.** The prompt and settings were developed only on non-paired questions and frozen before the paired run: `python src/rag.py --dev Q006,Q002,Q012`, plus an abstention probe, `--dev Q019 --dev-k 1`, to exercise `answerable = false`. `--dev` refuses paired ids and is the only place a k other than 3 is allowed (`--dev-k`). The development log `runs/m3_dev_runs.jsonl` is committed as evidence. K = 3 was chosen on protocol grounds (the middle of 1, 3 and 5). Disclosure: the author had already looked at the ranks of the paired questions while sizing the options.
+
+**Citation checks** in each record: `cited_numbers` mapped to `cited_chunk_ids`, `invalid_cited_numbers`, `cites_gold`, `gold_in_context` and `consistent` (an answer with no valid citation, or a refusal that cites, is inconsistent). These are auxiliary signals only; failure classification in M4 rests on the human grade.
+
+**What "paired" means here.**
+- Q009: both retrievers give the same chunks in the same order, so the prompts are byte-identical (a determinism check).
+- Q004: same chunks, different order.
+- Only Q021, Q001 and Q024 compare retrieval. The highlighted questions are Q021, Q004 and Q001.
+- With n = 5 the comparison is qualitative only; nothing is statistical.
+
+**Grading handoff.** The grader (Person B) uses `runs/m3_grading_sheet.md`: answers `G01` to `G10`, the two answers to a question side by side in a seeded random order, with the question, the answer, the cited chunks and the gold answer and evidence span. The retriever is hidden; `g_id` is the key in the log. Blinding holds by trust: the grader must not open the log or read `src/rag.py` until the grades are returned. Grades come back in a separate file, `runs/m3_grades.csv`, with columns `g_id,grade,cited_supports,notes`.
+
+**Rubric** (written before any paired answer exists; for the team to confirm):
+- Correct: same substance as the gold answer and no wrong claim.
+- Partial: right but incomplete, or with an unsupported or wrong extra claim.
+- Wrong: contradicts the gold answer, answers another question, or abstains. An abstention is never Correct; `gold_in_context` in the log says whether retrieval is to blame.
+- `cited_supports`: Yes if the cited chunks together contain what the answer states, No otherwise, N/A when nothing is cited.
+
+**Caveats.**
+- Temperature 0 was chosen for determinism, although Google's Gemini 3 guidance prefers the default temperature 1.0.
+- Hosted LLMs are not bit-reproducible, even with temperature 0 and a seed. The experiment is controlled (same prompt, model and settings, all logged), not exactly repeatable. The log records the served model version for the `gemini-3.5-flash-lite` alias.
+
 # Workflow
 
 ```
@@ -126,6 +162,7 @@ python src/build_dataset.py build    # write chunks, eval set and paired questio
 python src/build_dataset.py check    # validate the files and that a rebuild is identical
 python src/build_dataset.py manifest # write data/MANIFEST.json (runs check first)
 python src/retrieve.py               # rank all chunks with both retrievers, write runs/ (key only if the cache lacks entries)
+python src/rag.py                    # answer the 5 paired questions with both retrievers (GEMINI_API_KEY)
 python -m pytest                     # tests
 ```
 
@@ -156,5 +193,10 @@ python -m pytest                     # tests
 | `runs/rankings_v2.jsonl` | Full ranking of all chunks per question and retriever (50 lines), with config and `chunks_sha256` |
 | `runs/retrieval_metrics.json` | Evidence recall@k, MRR, first gold rank per question, exact random baseline, paired counts |
 | `runs/embeddings_gemini-embedding-001_3072.npz` | Embedding cache (chunks and questions), content keyed |
+| `runs/m3_dev_runs.jsonl` | M3 development runs on non-paired questions (prompt and settings protocol) |
+| `runs/m3_runs.jsonl` | M3 full log: prompt, retrieved chunks, raw response, checks, provenance (10 records) |
+| `runs/m3_runs_failures.jsonl` | M3 failed attempts, kept |
+| `runs/m3_grading_sheet.md` | M3 blind grading sheet (G01-G10) |
+| `runs/m3_grades.csv` | Grades from the grader: `g_id,grade,cited_supports,notes` |
 
 The v1 data and scripts (English, RAGBench TechQA) were removed. Recover any v1 file with `git show 046dcd2:<path>`, for example `git show 046dcd2:data/corpus_v1.jsonl`.

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import unicodedata
 from pathlib import Path
@@ -25,9 +26,11 @@ def read_jsonl(path: Path) -> list[dict]:
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as f:  # LF everywhere: byte-stable output
+    tmp = path.with_name(path.name + ".tmp")  # write beside, then swap: a crash never leaves a half file
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:  # LF everywhere: byte-stable output
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    os.replace(tmp, path)
 
 
 def normalize_text(text: str) -> str:
@@ -82,3 +85,11 @@ def stable_chunk_id(doc_id: str, chunk_index: int, chunk_text: str) -> str:
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def verify_manifest(data_dir: Path, *names: str) -> None:
+    """Raise unless each named data file still has the sha256 recorded in data/MANIFEST.json."""
+    manifest = json.loads((data_dir / "MANIFEST.json").read_text(encoding="utf-8"))
+    for name in names:
+        if manifest["files"].get(name) != sha256_file(data_dir / name):
+            raise RuntimeError(f"{name} does not match data/MANIFEST.json")

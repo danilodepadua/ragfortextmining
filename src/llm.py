@@ -8,7 +8,15 @@ import numpy as np
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
+
+
+class GenerationError(RuntimeError):
+    """A call that returned no usable JSON. `meta` keeps the raw text, finish reason and usage."""
+
+    def __init__(self, message: str, meta: dict):
+        super().__init__(message)
+        self.meta = meta
 
 
 def make_client(attempts: int = 5) -> genai.Client:
@@ -43,18 +51,25 @@ def generate_json(
             response_schema=schema,
         ),
     )
-    if not response.text:
-        feedback = getattr(response, "prompt_feedback", None)
-        raise RuntimeError(f"empty response from {model} (prompt_feedback={feedback})")
     usage = getattr(response, "usage_metadata", None)
+    candidates = getattr(response, "candidates", None) or []
+    finish_reason = getattr(candidates[0], "finish_reason", None) if candidates else None
     meta = {
         "model_requested": model,
         "model_version": getattr(response, "model_version", None),
         "temperature": temperature,
         "seed": seed,
+        "finish_reason": str(finish_reason) if finish_reason is not None else None,
+        "raw_text": response.text,
         "usage": usage.model_dump(exclude_none=True) if usage is not None else None,
     }
-    return schema.model_validate_json(response.text), meta
+    if not response.text:
+        feedback = getattr(response, "prompt_feedback", None)
+        raise GenerationError(f"empty response from {model} (prompt_feedback={feedback})", meta)
+    try:
+        return schema.model_validate_json(response.text), meta
+    except ValidationError as exc:
+        raise GenerationError(f"invalid JSON from {model}: {exc}", meta) from exc
 
 
 def embed(client, model: str, texts: list[str], task_type: str, dim: int) -> tuple[np.ndarray, dict]:

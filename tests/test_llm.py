@@ -82,3 +82,31 @@ def test_embed_rejects_a_wrong_vector_count():
 def test_embed_rejects_a_wrong_dimension():
     with pytest.raises(RuntimeError, match="expected 8"):
         llm.embed(FakeEmbedClient(dim=4), "m", ["a"], "T", 8)
+
+
+def test_generate_json_failures_keep_the_raw_text_and_finish_reason():
+    client = FakeClient("{not json")
+    with pytest.raises(llm.GenerationError, match="invalid JSON") as info:
+        llm.generate_json(client, "m", "p", Answer)
+    assert info.value.meta["raw_text"] == "{not json" and info.value.meta["model_version"] == "fake-1"
+    assert isinstance(info.value, RuntimeError)
+
+    empty = FakeClient(None)
+    with pytest.raises(llm.GenerationError, match="empty response") as info:
+        llm.generate_json(empty, "m", "p", Answer)
+    assert info.value.meta["raw_text"] is None
+
+
+def test_generate_json_reports_the_finish_reason_when_the_api_gives_one():
+    client = FakeClient(json.dumps({"ok": True}))
+    original = client._call
+
+    def with_candidates(**kwargs):
+        response = original(**kwargs)
+        response.candidates = [SimpleNamespace(finish_reason="STOP")]
+        return response
+
+    client.models = SimpleNamespace(generate_content=with_candidates)
+    obj, meta = llm.generate_json(client, "m", "p", Answer)
+    assert meta["finish_reason"] == "STOP" and meta["raw_text"] == '{"ok": true}'
+    assert llm.generate_json(FakeClient(json.dumps({"ok": True})), "m", "p", Answer)[1]["finish_reason"] is None
