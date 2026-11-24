@@ -1,0 +1,17 @@
+# Models for the M3 RAG answers (read by src/rag.py).
+# The prompt, K = 3 and the retrievers are fixed in the code; this file only chooses the models and their
+# generation settings. Each model gets its own files under runs/ (m3_runs.<model>.jsonl and so on).
+
+# Models answered when --model is not given.
+run = ["gemini-3.5-flash-lite"]
+
+[models."gemini-3.5-flash-lite"]
+temperature = 0.0
+seed = 42
+pause = 4.0  # seconds between calls (15 requests per minute)
+
+# To add a model, add a table with its API name and list it in `run` (or pass --model <name>):
+# [models."<model-name>"]
+# temperature = 0.0
+# seed = 42
+# pause = 15.0  # lower-tier limits are tighter; check the model's free-tier requests per minute
