@@ -1,7 +1,7 @@
 # M3 grading sheet
 
 Grade each answer G01 to G10 with the fixed rubric in the README and return the grades in
-`runs/m3_grades.csv` with the columns `g_id,grade,cited_supports,notes`.
+`runs/m3_grades.gemini-3.5-flash-lite.csv` with the columns `g_id,grade,cited_supports,notes`.
 `grade` is Correct, Partial or Wrong. `cited_supports` is Yes, No or N/A (nothing cited).
 The two answers to the same question are next to each other, in a random order.
 
