@@ -10,8 +10,20 @@ temperature = 0.0
 seed = 42
 pause = 4.0  # seconds between calls (15 requests per minute)
 
-# To add a model, add a table with its API name and list it in `run` (or pass --model <name>):
-# [models."<model-name>"]
-# temperature = 0.0
-# seed = 42
-# pause = 15.0  # lower-tier limits are tighter; check the model's free-tier requests per minute
+# Weaker models for comparison, defined here but NOT in `run`: pick them with --model <name>.
+# (gemini-2.5-flash-lite was tried: the API answers 404, "no longer available to new users".)
+# The temperature and seed match the main model (the prompt is frozen), so the model is the only variable.
+# `pause` is cautious: the free-tier limits are per project and not published as a fixed table; a 429 is
+# logged as a failed attempt and the idempotent rerun retries only that call.
+
+# Previous Flash-Lite generation.
+[models."gemini-3.1-flash-lite"]
+temperature = 0.0
+seed = 42
+pause = 4.0
+
+# Small open model served by the Gemini API. It accepted structured output and seed in the final run.
+[models."gemma-4-26b-a4b-it"]
+temperature = 0.0
+seed = 42
+pause = 4.0
