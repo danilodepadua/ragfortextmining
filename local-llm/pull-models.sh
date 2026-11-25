@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+
 # Downloads models into the running Ollama container.
 #   local-llm/pull-models.sh                      every model with provider = "ollama" in rag_models.toml
 #   local-llm/pull-models.sh llama3.1:8b qwen3:8b  only these tags
+
 set -euo pipefail
 
 if [ "$#" -eq 0 ]; then

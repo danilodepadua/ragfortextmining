@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+
 # Attaches this project's running devcontainer to the model server's network, so the runner can reach
 # http://ragfortextmining-ollama:11434 from inside it. The devcontainer configuration is not changed.
 #   local-llm/connect-devcontainer.sh               connect (safe to repeat)
 #   local-llm/connect-devcontainer.sh --disconnect  detach, needed before `docker compose down`
 # A rebuilt devcontainer, or a server whose network was recreated, has to be connected again.
+
 set -euo pipefail
 
 network=ragfortextmining-llm
@@ -12,7 +14,7 @@ case "${1:-}" in
   *) echo "usage: $0 [--disconnect]" >&2; exit 2 ;;
 esac
 
-# The label holds the path the devcontainer was opened with: try the plain and the symlink-resolved path.
+# the label holds the path the devcontainer was opened with: try the plain and the symlink-resolved path.
 root="$(cd "$(dirname "$0")/.." && pwd)"
 container=""
 for candidate in "$root" "$(cd "$root" && pwd -P)"; do
