@@ -1,4 +1,7 @@
 import json
+import threading
+import time
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from types import SimpleNamespace
 
 import pytest
@@ -110,3 +113,131 @@ def test_generate_json_reports_the_finish_reason_when_the_api_gives_one():
     obj, meta = llm.generate_json(client, "m", "p", Answer)
     assert meta["finish_reason"] == "STOP" and meta["raw_text"] == '{"ok": true}'
     assert llm.generate_json(FakeClient(json.dumps({"ok": True})), "m", "p", Answer)[1]["finish_reason"] is None
+
+
+# ---------------------------------------------------------------- Ollama (local server)
+
+
+class FakeOllama:
+    def __init__(self, message=None, done_reason="stop"):
+        self.digest, self.version, self.base_url = "sha256:abc", "0.40.18", "http://fake:11434"
+        self.bodies = []
+        self._message = {"content": json.dumps({"ok": True})} if message is None else message
+        self._done = done_reason
+
+    def request(self, method, path, body=None):
+        self.bodies.append((method, path, body))
+        return {"message": self._message, "done_reason": self._done, "prompt_eval_count": 11, "eval_count": 3}
+
+
+def test_ollama_request_is_structured_unthinking_and_never_truncates():
+    client = FakeOllama({"content": json.dumps({"ok": True}), "thinking": "hm"})
+    obj, meta = llm.generate_json_ollama(client, "llama3.1:8b", "prompt", Answer, 0.0, 42, num_ctx=4096, num_predict=99, think=False)
+    assert obj.ok is True
+    method, path, body = client.bodies[0]
+    assert (method, path) == ("POST", "/api/chat")
+    assert body["format"] == Answer.model_json_schema() and body["stream"] is False
+    assert body["think"] is False and body["truncate"] is False and body["shift"] is False
+    assert body["options"] == {"temperature": 0.0, "seed": 42, "num_ctx": 4096, "num_predict": 99}
+    assert meta["model_version"] == "sha256:abc" and meta["server_version"] == "0.40.18"
+    assert meta["finish_reason"] == "stop" and meta["thinking"] == "hm" and meta["usage"]["prompt_eval_count"] == 11
+
+
+@pytest.mark.parametrize(
+    "message, done, expected",
+    [({"content": "not json"}, "stop", "invalid JSON"), ({"content": ""}, "stop", "empty response"),
+     ({"content": "{\"ok\": tr"}, "length", "output limit")],
+)
+def test_ollama_failures_keep_the_raw_text_and_say_why(message, done, expected):
+    with pytest.raises(llm.GenerationError, match=expected) as exc:
+        llm.generate_json_ollama(FakeOllama(message, done), "m", "p", Answer, num_ctx=4096, num_predict=99, think=False)
+    assert exc.value.meta["finish_reason"] == done and exc.value.meta["raw_text"] == message["content"]
+
+
+class Handler(BaseHTTPRequestHandler):
+    routes: dict = {}
+
+    def log_message(self, *args):
+        pass
+
+    def _serve(self):
+        status, payload, delay = self.routes.get(self.path, (404, {"error": "no such route"}, 0))
+        time.sleep(delay)
+        raw = json.dumps(payload).encode()
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(raw)))
+        self.end_headers()
+        self.wfile.write(raw)
+
+    do_GET = do_POST = _serve
+
+
+@pytest.fixture
+def server():
+    handler = type("H", (Handler,), {"routes": {}})
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+    yield handler.routes, f"http://127.0.0.1:{httpd.server_address[1]}"
+    httpd.shutdown()
+    httpd.server_close()
+
+
+def test_make_ollama_client_reads_version_and_digest_and_normalises_latest(server):
+    routes, url = server
+    routes["/api/version"] = (200, {"version": "0.40.18"}, 0)
+    routes["/api/tags"] = (200, {"models": [{"name": "llama3.1:8b", "digest": "sha256:aa"}, {"name": "tiny:latest", "digest": "sha256:bb"}]}, 0)
+    client = llm.make_ollama_client("llama3.1:8b", base_url=url)
+    assert client.version == "0.40.18" and client.digest == "sha256:aa"
+    assert llm.make_ollama_client("tiny", base_url=url).digest == "sha256:bb"
+
+
+def test_make_ollama_client_says_what_to_run_when_the_model_is_not_pulled(server):
+    routes, url = server
+    routes["/api/version"] = (200, {"version": "0.40.18"}, 0)
+    routes["/api/tags"] = (200, {"models": []}, 0)
+    with pytest.raises(RuntimeError, match="ollama pull qwen3:8b"):
+        llm.make_ollama_client("qwen3:8b", base_url=url)
+
+
+@pytest.mark.parametrize(
+    "version, tags",
+    [((404, {"error": "no such route"}, 0), (200, {"models": []}, 0)),  # wrong URL
+     ((200, {"version": "x"}, 0), (200, {"models": None}, 0)),  # not an Ollama answer
+     ((200, ["not", "a", "dict"], 0), (200, {"models": []}, 0))],
+)
+def test_make_ollama_client_hints_at_the_fix_for_a_wrong_or_odd_server(server, version, tags):
+    routes, url = server
+    routes["/api/version"], routes["/api/tags"] = version, tags
+    with pytest.raises(RuntimeError, match="docker compose -f local-llm/compose.yaml up -d"):
+        llm.make_ollama_client("m", base_url=url)
+
+
+def test_make_ollama_client_says_how_to_start_the_server_when_it_is_unreachable():
+    with pytest.raises(RuntimeError, match="docker compose -f local-llm/compose.yaml up -d"):
+        llm.make_ollama_client("m", base_url="http://127.0.0.1:9")
+
+
+def test_make_ollama_client_takes_the_url_from_the_environment(server, monkeypatch):
+    routes, url = server
+    routes["/api/version"] = (200, {"version": "x"}, 0)
+    routes["/api/tags"] = (200, {"models": [{"name": "m:latest", "digest": "d"}]}, 0)
+    monkeypatch.setenv("OLLAMA_BASE_URL", url + "/")
+    assert llm.make_ollama_client("m").base_url == url
+
+
+def test_an_http_error_carries_the_servers_message(server):
+    routes, url = server
+    routes["/api/chat"] = (400, {"error": "the prompt is longer than the context length"}, 0)
+    client = llm.OllamaClient(url, timeout=5, digest="d")
+    with pytest.raises(RuntimeError, match="HTTP 400.*longer than the context length"):
+        llm.generate_json_ollama(client, "m", "p", Answer, num_ctx=4096, num_predict=99, think=False)
+
+
+def test_a_slow_server_times_out(server):
+    routes, url = server
+    routes["/api/chat"] = (200, {"message": {"content": "{}"}}, 1.0)
+    client = llm.OllamaClient(url, timeout=0.2, digest="d")
+    with pytest.raises(OSError):  # socket.timeout is a TimeoutError
+        llm.generate_json_ollama(client, "m", "p", Answer, num_ctx=4096, num_predict=99, think=False)

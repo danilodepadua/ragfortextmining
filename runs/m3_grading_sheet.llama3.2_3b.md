@@ -1,0 +1,154 @@
+# M3 grading sheet
+
+Grade each answer G01 to G10 with the fixed rubric in the README and return the grades in
+`runs/m3_grades.llama3.2_3b.csv` with the columns `g_id,grade,cited_supports,notes`.
+`grade` is Correct, Partial or Wrong. `cited_supports` is Yes, No or N/A (nothing cited).
+The two answers to the same question are next to each other, in a random order.
+
+## G01 · Q021 (highlighted)
+
+**Pergunta:** Por que ocorre o erro 'Não é possível criar uma conexão à fonte de dados do 'CRM'' no Microsoft Dynamics CRM 4.0?
+
+**Resposta do modelo** (answerable: true): Este problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+
+**Trechos citados:** `chk_D021_001_b8da8a09`
+
+> é possível criar uma conexão à fonte de dados do 'CRM'. ---> System.Data.SqlClient.SqlException: Não é possível abrir o banco de dados "MSCRM_CONFIG" solicitado pelo login. Falha de logon.Falha de logon para o usuário <Espaço reservado para conta de autenticação>. Voltar para o início | Submeter comentáriosCausaEste problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.Voltar para o início | Submeter comentáriosResoluçãoPara resolver esse problema, conceda a permissão de conta adequada para acessar os bancos de dados do Microsoft Dynamics CRM. Para fazer isso, execute as seguintes etapas:Identifique a conta que está sendo usada pelo Microsoft Dynamics CRM Data Connector para o Microsoft SQL Server que autentica o Microsoft SQL Server. Para Microsoft SQL Reporting Services 2005 Se o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services for instalado em uma instância do SQL Reporting Services 2005, o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services a autenticará para o SQL Server como a identidade do pool de aplicativos Internet Information Services (IIS) usado pelo SQL Reporting Services. Siga as etapas a seguir para determinar a identidade do pool de aplicativos do IIS usado pelo SQL Reporting Services: No servidor do Microsoft SQL Reporting Services, clique no botão Iniciar, e aponte para Todos os Programas, clique em Microsoft SQL Server 2005, em Ferramentas de Configuração e em Configuração do Reporting Services.Na Seleção da Instância de Instalação do Servidor de Relatório, selecione a instância do SQL Reporting Services na qual o Microsoft CRM Data Connector para Microsoft SQL Server Reporting Services foi instalado e clique em Conectar.Clique em Identificar serviço da Web. Observe o valor da Conta de serviço ASP.NET. Este valor
+
+`chk_D021_000_3fe2a25c`
+
+> Mensagem de erro ao executar um relatório no Microsoft Dynamics CRM 4.0: "Erro de Relatório. O relatório não pode ser exibido." Mensagem de erro ao executar um relatório no Microsoft Dynamics CRM 4.0: "Erro de Relatório. O relatório não pode ser exibido." Imprimir (ישראל (עברית (الشرق الاوسط (العربية Danmark (Dansk) Deutschland (Deutsch) España, Latinoamérica (Español) France (Français) Italia (Italiano) Nederland (Nederlands) Norge (Norsk Bokmål) Portugal (Português) Suomi (Suomi) Sverige (Svenska) Türkiye (Türkçe) United States (English) Česká republika (Čeština) भारत (हिंदी) ไทย (ไทย) 中国 (简体中文) 台灣 (繁體中文) 日本 (日本語) 대한민국 (한국어) ID do artigo: 946585 - Exibir os produtos aos quais esse artigo se aplica. O conteúdo limitado do Microsoft Dynamics é fornecido no site público da Base de Dados de Conhecimento Microsoft. Para obter o conteúdo completo e os recursos adicionais do Microsoft Dynamics, visite:Clientes do DynamicsMicrosoft Dynamics CustomerSource*Parceiros do DynamicsMicrosoft Dynamics PartnerSource* Requer que os clientes tenham um plano de serviço Microsoft Dynamics como o Plano de Aperfeiçoamento Business Ready ou o Software Assurance. Se você é um cliente do Microsoft para Pequenas Empresas, encontre recursos de solução de problemas e de aprendizagem no site Suporte para Pequenas Empresas.Expandir tudo | Recolher tudoSintomasAo executar um relatório no Microsoft Dynamics CRM 4.0, você receberá a seguinte mensagem de erro:Erro de Relatório. O relatório não pode ser exibido.Além disso, o seguinte evento é registrado no arquivo de log do servidor de relatório:w3wp!processing!5!12/10/2007-15:06:18:: e ERROR: Throwing Microsoft.ReportingServices.ReportProcessing.ReportProcessingException: Não é possível criar uma conexão à fonte de dados do 'CRM'. Info: Microsoft.ReportingServices.ReportProcessing.ReportProcessingException: Não é possível criar uma conexão à fonte de dados do 'CRM'. ---> System.Data.SqlClient.SqlException: Não é possível abrir o banco de dados "MSCRM_CONFIG" solicitado pelo login. Falha de logon.Falha de logon para o usuário <Espaço reservado para conta de autenticação>. Voltar para o início | Submeter comentáriosCausaEste problema ocorre porque a
+
+`chk_D021_002_fe1dcd38`
+
+> Seleção da Instância de Instalação do Servidor de Relatório, selecione a instância do SQL Reporting Services na qual o Microsoft CRM Data Connector para Microsoft SQL Server Reporting Services foi instalado e clique em Conectar.Clique em Identificar serviço da Web. Observe o valor da Conta de serviço ASP.NET. Este valor indica qual conta é usada para o pool de aplicativos IIS usado pelo SQL Reporting Services, a mesma conta que é usada pelo Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services durante a autenticação do SQL Server. Para SQL Reporting Services 2008 Se o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services for instalado em uma instância do SQL Reporting Services 2008, ele autenticará o SQL Server como a conta que executa o serviço SQL Server Reporting Services para Windows. Para determinar a execução da conta que executa o serviço SQL Server Reporting Services para Windows, siga estas etapas: No servidor do Microsoft SQL Reporting Services, clique no botão Iniciar, aponte para Ferramentas Administrativas e clique em Serviços.Localize o serviço SQL Server Reporting Services e observe o valor que está listado na coluna Fazer logon como. Conceda a permissão de conta adequada para acessar os bancos de dados do Microsoft Dynamics CRM.Se o SQL Reporting Services e os bancos de dados do SQL Server estiverem instalados no mesmo servidor e a conta identificada na etapa 1 for um Serviço de rede, siga estas etapas:Inicie o SQL Server Management Studio. Para fazer isso, clique no botão Iniciar,aponte para Todos os Programas, para Microsoft SQL Server 2005e clique em SQL Server Management Studio.Expanda Segurança, logins, clique com o botão direito em NT AUTHORITY\NETWORK SERVICE e clique em Propriedades.Clique em Mapeamentos de Usuários. Marque as caixas de seleção Nome_da_organização_MSCRM, público e CRMReaderRole.Observação O espaço reservado Nome_da_organização será
+
+**Resposta de referência:** Ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+
+**Evidência de referência:** Este problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+
+## G02 · Q021 (highlighted)
+
+**Pergunta:** Por que ocorre o erro 'Não é possível criar uma conexão à fonte de dados do 'CRM'' no Microsoft Dynamics CRM 4.0?
+
+**Resposta do modelo** (answerable: true): Este problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+
+**Trechos citados:** `chk_D021_001_b8da8a09`
+
+> é possível criar uma conexão à fonte de dados do 'CRM'. ---> System.Data.SqlClient.SqlException: Não é possível abrir o banco de dados "MSCRM_CONFIG" solicitado pelo login. Falha de logon.Falha de logon para o usuário <Espaço reservado para conta de autenticação>. Voltar para o início | Submeter comentáriosCausaEste problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.Voltar para o início | Submeter comentáriosResoluçãoPara resolver esse problema, conceda a permissão de conta adequada para acessar os bancos de dados do Microsoft Dynamics CRM. Para fazer isso, execute as seguintes etapas:Identifique a conta que está sendo usada pelo Microsoft Dynamics CRM Data Connector para o Microsoft SQL Server que autentica o Microsoft SQL Server. Para Microsoft SQL Reporting Services 2005 Se o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services for instalado em uma instância do SQL Reporting Services 2005, o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services a autenticará para o SQL Server como a identidade do pool de aplicativos Internet Information Services (IIS) usado pelo SQL Reporting Services. Siga as etapas a seguir para determinar a identidade do pool de aplicativos do IIS usado pelo SQL Reporting Services: No servidor do Microsoft SQL Reporting Services, clique no botão Iniciar, e aponte para Todos os Programas, clique em Microsoft SQL Server 2005, em Ferramentas de Configuração e em Configuração do Reporting Services.Na Seleção da Instância de Instalação do Servidor de Relatório, selecione a instância do SQL Reporting Services na qual o Microsoft CRM Data Connector para Microsoft SQL Server Reporting Services foi instalado e clique em Conectar.Clique em Identificar serviço da Web. Observe o valor da Conta de serviço ASP.NET. Este valor
+
+**Resposta de referência:** Ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+
+**Evidência de referência:** Este problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+
+## G03 · Q004 (highlighted)
+
+**Pergunta:** Como posso criar uma página web a partir do catálogo de artigos no CatWeb?
+
+**Resposta do modelo** (answerable: true): A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração), semelhante a este exemplo. A fotografia de cada artigo será incluída na página, desde que exista na mesma pasta do programa.
+
+**Trechos citados:** `chk_D004_001_ffa37118`
+
+> é automático e sequencial, mas pode ir ao menu Ficheiro / Configuração para alterar a sequência de números) A função Eliminar aplica-se apenas ao artigo seleccionado na lista. Para Eliminar TODOS OS ARTIGOS e reiniciar a base de dados a partir do número 1 ou outro por si escolhido, vá a menu Ficheiro / Configuração. A função Pesquisar é muito potente. Escreva uma ou mais palavras (ou parte delas) no campo e clique no botão. Serão listados os registos que contenham todas as palavras em qualquer dos campos. A lista de artigos passa a fundo azul. Podem ser feitas alterações nos campos de cada artigo. Prima Escape ou clique no botão Cancelar Pesquisa para voltar à situação inicial. A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração), semelhante a este exemplo. A fotografia de cada artigo será incluída na página, desde que exista na mesma pasta do programa. Se quer saber mais, clique Talvez queira experimentar também o CaTema, com bastantes características semelhantes a este, mas que permite criar vários Catálogos, organizados por Temas, Colecções ou Categorias. O Autor garante que o programa não tem qualquer tipo de vírus ou outro malware, mas não aceita responsabilizar-se por consequências que possam advir do seu (mau) uso ou de alterações não autorizadas. Não se compromete a prestar ajudas ou esclarecimentos para além dos disponibilizados, mas aceita e desde já agradece comentários e sugestões que possam contribuir para a melhoria do programa. A versão gratuita, tal como aqui se encontra, é de instalação e utilização livre, estando completamente funcional mas limitada à catalogação de 50 artigos. Mediante o pagamento prévio de 10 € (dez euros) será fornecida uma versão personalizada do executável com - total liberdade de
+
+**Resposta de referência:** Basta clicar na função 'Criar Página Web', que grava automaticamente um arquivo HTML na mesma pasta do programa, como 'Catwebpage.html'.
+
+**Evidência de referência:** A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração)
+
+## G04 · Q004 (highlighted)
+
+**Pergunta:** Como posso criar uma página web a partir do catálogo de artigos no CatWeb?
+
+**Resposta do modelo** (answerable: true): A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração), semelhante a este exemplo. A fotografia de cada artigo será incluída na página, desde que exista na mesma pasta do programa.
+
+**Trechos citados:** `chk_D004_001_ffa37118`
+
+> é automático e sequencial, mas pode ir ao menu Ficheiro / Configuração para alterar a sequência de números) A função Eliminar aplica-se apenas ao artigo seleccionado na lista. Para Eliminar TODOS OS ARTIGOS e reiniciar a base de dados a partir do número 1 ou outro por si escolhido, vá a menu Ficheiro / Configuração. A função Pesquisar é muito potente. Escreva uma ou mais palavras (ou parte delas) no campo e clique no botão. Serão listados os registos que contenham todas as palavras em qualquer dos campos. A lista de artigos passa a fundo azul. Podem ser feitas alterações nos campos de cada artigo. Prima Escape ou clique no botão Cancelar Pesquisa para voltar à situação inicial. A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração), semelhante a este exemplo. A fotografia de cada artigo será incluída na página, desde que exista na mesma pasta do programa. Se quer saber mais, clique Talvez queira experimentar também o CaTema, com bastantes características semelhantes a este, mas que permite criar vários Catálogos, organizados por Temas, Colecções ou Categorias. O Autor garante que o programa não tem qualquer tipo de vírus ou outro malware, mas não aceita responsabilizar-se por consequências que possam advir do seu (mau) uso ou de alterações não autorizadas. Não se compromete a prestar ajudas ou esclarecimentos para além dos disponibilizados, mas aceita e desde já agradece comentários e sugestões que possam contribuir para a melhoria do programa. A versão gratuita, tal como aqui se encontra, é de instalação e utilização livre, estando completamente funcional mas limitada à catalogação de 50 artigos. Mediante o pagamento prévio de 10 € (dez euros) será fornecida uma versão personalizada do executável com - total liberdade de
+
+**Resposta de referência:** Basta clicar na função 'Criar Página Web', que grava automaticamente um arquivo HTML na mesma pasta do programa, como 'Catwebpage.html'.
+
+**Evidência de referência:** A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração)
+
+## G05 · Q001 (highlighted)
+
+**Pergunta:** O que é o framework COBIT e quais são os principais standards de TI que ele integra?
+
+**Resposta do modelo** (answerable: true): O framework COBIT é um quadro de referência para a governança das tecnologias da informação (TI). Ele integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
+
+**Trechos citados:** `chk_D001_003_034d787c`
+
+> DE TI PO2 DEFINIR A ARQUITECTURA DA INFORMAÇÃO PO3 DETERMINAR A DIRECÇÃO TECNOLÓGICA PO4 DEFINIR OS PROCESSOS DE TI, ORGANIZAÇÃO E RELACIONAMENTOS PO5 GERIR O INVESTIMENTO EM TI PO6 COMUNICAR AS METAS E AS LINHAS DE ORIENTAÇÃO DE GESTÃO PO7 GERIR OS RECURSOS HUMANOS DE TI PO8 GERIR A QUALIDADE PO9 AVALIAR E GERIR OS RISCOS DE TI PO1O GESTÃO DE PROJECTOS José Oliveira 17 18 José Oliveira 18 19 O COBIT pode ser aplicado para: Aplicar controlos adequados à governação das TIC Facilitar o trabalho dos auditores (internos e externos) Ser usado como programa de auditoria das TIC As métricas (CMMI / níveis de risco) permitem: Efetuar trabalhos comparáveis Medir a performance da governação de TIC de um organismo ou setor de atividade Comparar os resultados obtidos com os níveis standard internacionais José Oliveira 19 20 José Oliveira 20 21 COBIT ISACA José Oliveira 21 22 Contacto: José António Oliveira José Oliveira 22
+
+**Resposta de referência:** O COBIT é um framework internacional unificador que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
+
+**Evidência de referência:** Framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO
+
+## G06 · Q001 (highlighted)
+
+**Pergunta:** O que é o framework COBIT e quais são os principais standards de TI que ele integra?
+
+**Resposta do modelo** (answerable: true): O COBIT é um framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
+
+**Trechos citados:** `chk_D001_001_05b0f5f9`
+
+> de gestão adequados e monitorização eficaz de performance para funcionar sem surpresas José Oliveira 7 8 Definição do trabalho a realizar Definição dos objetivos da auditoria Delimitação do âmbito Estudo inicial da entidade ou setor de atividade a auditar Seleção das entidades José Oliveira 8 9 Seleção do(s) domínio(s) do COBIT: Determinar os processos e respetivos objetivos de controlo a avaliar: Estão sujeitos aos objetivos do trabalho, ao âmbito definido, bem como, aos resultados do estudo inicial Seleção da métrica a utilizar: CMMI (Capability Maturity Model Integration); e/ou Níveis de risco (Alto/Médio/Baixo) Determinar os níveis adequados ou recomendados dos processos (quando possível) José Oliveira 9 10 C.O. Control Objectives; I/O Inputs and Outputs; RACI RACI Chart; G&M Goals and Metrics; M.M. Maturity Models; C.P. Control Practices; A.S. Assurance Steps José Oliveira 10 11 Elaboração do plano de auditoria Atividades Recursos Tempos José Oliveira 11 12 Trabalho de campo Utilização frequente de questionários e programas de auditoria Para que se adapte as exigências dos processos do COBIT à própria entidade é fundamental tomar em consideração (entre outros aspetos): O ambiente concreto em que está envolvida a entidade e O core business Exemplo: Os níveis de exigência em governação de TI para um Instituto de Informática ou uma DGCI não poderão ser idênticos aos níveis de exigência de uma DGAL Os primeiros têm de manter altos níveis de performance Para o outro os níveis poderão ser os mínimos que garantam a integridade, disponibilidade e confidencialidade dos sistemas e da informação José Oliveira 12 13 Relatório Elaboração de um relatório (sujeito a contraditório) por entidade As conclusões são específicas por entidade As recomendações são de caracter estratégico, tático e operacional, mas sempre focadas na entidade Ambas (conclusões e recomendações) têm em consideração apenas a avaliação específica da entidade Por exemplo: Não se recomenda
+
+**Resposta de referência:** O COBIT é um framework internacional unificador que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
+
+**Evidência de referência:** Framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO
+
+## G07 · Q024
+
+**Pergunta:** O que é a ferramenta Automapping no Tiled?
+
+**Resposta do modelo** (answerable: true): A ferramenta Automapping no Tiled é uma ferramenta que se baseia em regras definidas em outros arquivos TMX. Ela permite automatizar a preenchimento de áreas de colisão em mapas, economizando tempo e reduzindo a complexidade do processo.
+
+**Trechos citados:** `chk_D024_002_4cb5683f`
+
+> de tamanho menor, 5×5 por exemplo, com o mesmo tamanho dos tiles, ou seja, 32×32 pixels. No mapa recém-criado, adicione o mesmo arquivo de tileset adicionado no mapa anterior. O Automapping é uma ferramenta que se baseia em regras definidas em outros arquivos TMX. Nesse nosso caso, esse segundo mapa que estamos criando serve unicamente para descrever regras que serão seguidas no arquivo de mapa que criamos por primeiro. Para definirmos regras, primeiramente nomeie a camada de tiles desse novo mapa como “regions”. Nessa camada, pinte um tile qualquer com grama. Adicione uma nova camada e nomeie-a como “input_Borda”. Nessa camada, pinte com pedra sobre o tile que você preencheu com grama. Após isso, adicione outra camada com o nome “output_Colisao”. Nessa camada, pinte sobre os mesmos tiles com o tile vermelho. Deixe a camada “output_Colisao” mais acima, a camada “input_Borda” no meio e a camada “regions” mais embaixo. Acabamos de definir a regra que, onde há uma pedra sobre uma grama, é uma região de colisão, entenderam? As camadas devem ficar mais ou menos como mostrado na Figura 3 (a) e as regras devem ficar mais ou menos como na Figura 3 (b). Para finalizar a criação da regra, salve esse mapa com o nome “regras.tmx”. Figura 3: Regras no arquivo TMX Agora que criamos as regras a serem usadas no mapa nomeado “Mapa.tmx”, vamos fazer o Tiled adicionar a camada “Colisao” com os tiles preenchidos de vermelho exatamente sobre as pedras. Para isso, crie um arquivo texto na mesma pasta que estão salvos os dois mapas e nomeie-o como “rules.txt”. Abra-o e escreva nele o nome do arquivo TMX de regras, nesse caso “regras.tmx”. Abra o arquivo Mapa.tmx e veja a mágica acontecendo selecionando “Mapa”, no menu superior do Tiled, e clicando “Automapear”. Note que o Tiled criou
+
+**Resposta de referência:** A ferramenta Automapping no Tiled é usada para preencher camadas com tiles específicos conforme regras descritas em outros arquivos TMX.
+
+**Evidência de referência:** A principal ideia dela é preencher camadas com tiles específicos, conforme regras descritas em outros arquivos TMX.
+
+## G08 · Q024
+
+**Pergunta:** O que é a ferramenta Automapping no Tiled?
+
+**Resposta do modelo** (answerable: true): A ferramenta Automapping no Tiled é uma ferramenta que ajuda a preencher camadas com tiles específicos, conforme regras descritas em outros arquivos TMX.
+
+**Trechos citados:** `chk_D024_000_76a1bcf7`
+
+> Tutorial: Criando terrenos para Cocos2d-x: Introdução à ferramenta Tiled - Parte 5 - Fábrica de Jogos | Aprenda a Projetar Games Divertidos 17 de fevereiro de 2014 27 de maio de 2015 Santiago Viertel Tutoriais Criar áreas de colisão em jogos baseados em mapa de tiles pode se tornar um pouco maçante. Existe uma forma de fazer isso de forma mais rápida e prática. Estão curiosos? Veja nesse tutorial como fazer isso. No último tutorial eu mostrei como utilizar de forma inteligente a ferramenta de edição de terrenos. Vimos como o Tiled realiza o preenchimento automático de fronteiras de rios e barro, por exemplo. Nesse tutorial eu falarei sobre uma ferramenta que ajuda muito na confecção de cenários. Em certos momentos queremos criar áreas que são predefinidas, como áreas de colisão ou de interação. Veremos que o Tiled pode te ajudar a preencher essas áreas de maneira automática. Bora lá? O nome dessa ferramenta interessante é Automapping. A principal ideia dela é preencher camadas com tiles específicos, conforme regras descritas em outros arquivos TMX. Mas, como assim? Não entendi. Veremos. Para ficar melhor de entender, eu farei um conjunto de passos com vocês sem mais explicações iniciais. Primeiramente baixe esse arquivo de tileset. Eu baixei esse arquivo daqui, que mostra bons exemplos indicados pelo próprio site do Tiled. Crie um mapa de tamanho 10×10 com tiles de tamanho 32×32 pixels. Se você não lembra como fazer, veja nesse tutorial. Crie três camadas de tiles: uma mais acima chamada “Colisao”, outra intermediária chamada “Borda” e outra inferior chamada “Chao”. A Figura 1 mostra como devem ficar as camadas no lado direito da tela do Tiled, em “Camadas”. Figura 1: Camadas criadas Adicione, nesse mapa criado, o mesmo arquivo de tileset que vocês baixaram anteriormente. Após adicionar o tileset, selecione a camada
+
+**Resposta de referência:** A ferramenta Automapping no Tiled é usada para preencher camadas com tiles específicos conforme regras descritas em outros arquivos TMX.
+
+**Evidência de referência:** A principal ideia dela é preencher camadas com tiles específicos, conforme regras descritas em outros arquivos TMX.
+
+## G09 · Q009
+
+**Pergunta:** Qual é o princípio dos manipuladores de caixas de diálogo?
+
+**Resposta do modelo** (answerable: true): Definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar.
+
+**Trechos citados:** `chk_D009_000_69adcd2c`
+
+> Em seguida a atribuir macros a eventos ou criar listeners de eventos, pode-se utilizar manipuladores de caixas de diálogo, cujo princípio é definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar. O manipulador de eventos é responsável por executar métodos utilizando o protocolo vnd.sun.star.UNO:<method_name>. Diferente dos listeners que requerem definir todos os métodos suportados, mesmo que não utilizados, os manipuladores de caixa de diálogo requerem somente dois métodos a mais dos scripts de controle. Empacota o código que manipula macros acionadas por eventos, Desacopla eventos de nomes de macro, o que facilita a manutenção ou atualização, em particular ao mover macros ou módulos. Esse mecanismo é ilustrado aqui para as linguagens Python e Basic, utilizando uma copia importada da caixa de diálogo dlgTrace do Access2Base. O tratamento de exceções e da tradução foram omitidos por clareza. Métodos para atribuir diálogos. Exportar a caixa de diálogo dlgTrace do Access2Base e importar na biblioteca da aplicação MyLib. Dentro do painel das propriedades do controle do Editor de caixa de diálogo, utilize a aba Eventos para substituir a atribuição de macros por atribuição de componentes, e digite os nomes dos métodos: Defina o nome do método do componente botão do diálogo Despejar no arquivo para _dump2File Defina opcionalmente o nome do método do evento da tecla pressionada e botão do mouse txtTracelogcomo _openHelp Defina opcionalmente o botão Ok que recebe o foco do evento como onOkHasfocus As ações atribuídas a eventos devem mencionar o protocolo vnd.sun.star.UNO:. Criar o manipulador O método createDialogWithHandler do serviço com.sun.star.awt.DialogProvider2 é usado para definir o diálogo e seu manipulador. O manipulador é responsável por implementar a interface com.sun.star.awt.XDialogEventHandler. Ao usar um manipulador de diálogos, todos os nomes de componentes devem ser declarados explicitamente. Neste exemplo, a caixa de diálogo está localizada no computador.
+
+**Resposta de referência:** Definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar.
+
+**Evidência de referência:** cujo princípio é definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar.
+
+## G10 · Q009
+
+**Pergunta:** Qual é o princípio dos manipuladores de caixas de diálogo?
+
+**Resposta do modelo** (answerable: true): Definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar.
+
+**Trechos citados:** `chk_D009_000_69adcd2c`
+
+> Em seguida a atribuir macros a eventos ou criar listeners de eventos, pode-se utilizar manipuladores de caixas de diálogo, cujo princípio é definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar. O manipulador de eventos é responsável por executar métodos utilizando o protocolo vnd.sun.star.UNO:<method_name>. Diferente dos listeners que requerem definir todos os métodos suportados, mesmo que não utilizados, os manipuladores de caixa de diálogo requerem somente dois métodos a mais dos scripts de controle. Empacota o código que manipula macros acionadas por eventos, Desacopla eventos de nomes de macro, o que facilita a manutenção ou atualização, em particular ao mover macros ou módulos. Esse mecanismo é ilustrado aqui para as linguagens Python e Basic, utilizando uma copia importada da caixa de diálogo dlgTrace do Access2Base. O tratamento de exceções e da tradução foram omitidos por clareza. Métodos para atribuir diálogos. Exportar a caixa de diálogo dlgTrace do Access2Base e importar na biblioteca da aplicação MyLib. Dentro do painel das propriedades do controle do Editor de caixa de diálogo, utilize a aba Eventos para substituir a atribuição de macros por atribuição de componentes, e digite os nomes dos métodos: Defina o nome do método do componente botão do diálogo Despejar no arquivo para _dump2File Defina opcionalmente o nome do método do evento da tecla pressionada e botão do mouse txtTracelogcomo _openHelp Defina opcionalmente o botão Ok que recebe o foco do evento como onOkHasfocus As ações atribuídas a eventos devem mencionar o protocolo vnd.sun.star.UNO:. Criar o manipulador O método createDialogWithHandler do serviço com.sun.star.awt.DialogProvider2 é usado para definir o diálogo e seu manipulador. O manipulador é responsável por implementar a interface com.sun.star.awt.XDialogEventHandler. Ao usar um manipulador de diálogos, todos os nomes de componentes devem ser declarados explicitamente. Neste exemplo, a caixa de diálogo está localizada no computador.
+
+**Resposta de referência:** Definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar.
+
+**Evidência de referência:** cujo princípio é definir palavras chaves do UNO, ou métodos que são mapeados aos eventos a observar.

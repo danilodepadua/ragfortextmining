@@ -1,0 +1,57 @@
+# Models for the M3 RAG answers (read by src/rag.py).
+# The prompt, K = 3 and the retrievers are fixed in the code; this file only chooses the models and their
+# generation settings. Each model gets its own files under runs/ (m3_runs.<model>.jsonl and so on).
+
+# Models answered when --model is not given.
+run = ["gemini-3.5-flash-lite"]
+
+[models."gemini-3.5-flash-lite"]
+temperature = 0.0
+seed = 42
+pause = 4.0  # seconds between calls (15 requests per minute)
+
+# Weaker models for comparison, defined here but NOT in `run`: pick them with --model <name>.
+# (gemini-2.5-flash-lite was tried: the API answers 404, "no longer available to new users".)
+# The temperature and seed match the main model (the prompt is frozen), so the model is the only variable.
+# `pause` is cautious: the free-tier limits are per project and not published as a fixed table; a 429 is
+# logged as a failed attempt and the idempotent rerun retries only that call.
+
+# Previous Flash-Lite generation.
+[models."gemini-3.1-flash-lite"]
+temperature = 0.0
+seed = 42
+pause = 4.0
+
+# Small open model served by the Gemini API. It accepted structured output and seed in the final run.
+[models."gemma-4-26b-a4b-it"]
+temperature = 0.0
+seed = 42
+pause = 4.0
+
+# Local models served by the Ollama container in local-llm/ (see the README there; slow, CPU only).
+# The settings that change their answers (context size, output cap, thinking off) are fixed in src/rag.py.
+# `pause` is 0: there is no rate limit on your own machine. The tag must be pulled first.
+[models."llama3.1:8b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0
+
+[models."qwen3:8b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0
+
+[models."gemma4:e4b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0
+
+# The smallest of the four, the weak end of the comparison.
+[models."llama3.2:3b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0
