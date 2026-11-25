@@ -1,7 +1,7 @@
 # M3 grading sheet
 
 Grade each answer G01 to G10 with the fixed rubric in the README and return the grades in
-`runs/m3_grades.csv` with the columns `g_id,grade,cited_supports,notes`.
+`runs/m3_grades.gemma-4-26b-a4b-it.csv` with the columns `g_id,grade,cited_supports,notes`.
 `grade` is Correct, Partial or Wrong. `cited_supports` is Yes, No or N/A (nothing cited).
 The two answers to the same question are next to each other, in a random order.
 
@@ -9,7 +9,7 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** Por que ocorre o erro 'Não é possível criar uma conexão à fonte de dados do 'CRM'' no Microsoft Dynamics CRM 4.0?
 
-**Resposta do modelo** (answerable: true): Este problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+**Resposta do modelo** (answerable: true): Este erro ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
 
 **Trechos citados:** `chk_D021_001_b8da8a09`
 
@@ -27,9 +27,13 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** Por que ocorre o erro 'Não é possível criar uma conexão à fonte de dados do 'CRM'' no Microsoft Dynamics CRM 4.0?
 
-**Resposta do modelo** (answerable: true): O problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
+**Resposta do modelo** (answerable: true): Este problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.
 
-**Trechos citados:** `chk_D021_001_b8da8a09`
+**Trechos citados:** `chk_D021_000_3fe2a25c`
+
+> Mensagem de erro ao executar um relatório no Microsoft Dynamics CRM 4.0: "Erro de Relatório. O relatório não pode ser exibido." Mensagem de erro ao executar um relatório no Microsoft Dynamics CRM 4.0: "Erro de Relatório. O relatório não pode ser exibido." Imprimir (ישראל (עברית (الشرق الاوسط (العربية Danmark (Dansk) Deutschland (Deutsch) España, Latinoamérica (Español) France (Français) Italia (Italiano) Nederland (Nederlands) Norge (Norsk Bokmål) Portugal (Português) Suomi (Suomi) Sverige (Svenska) Türkiye (Türkçe) United States (English) Česká republika (Čeština) भारत (हिंदी) ไทย (ไทย) 中国 (简体中文) 台灣 (繁體中文) 日本 (日本語) 대한민국 (한국어) ID do artigo: 946585 - Exibir os produtos aos quais esse artigo se aplica. O conteúdo limitado do Microsoft Dynamics é fornecido no site público da Base de Dados de Conhecimento Microsoft. Para obter o conteúdo completo e os recursos adicionais do Microsoft Dynamics, visite:Clientes do DynamicsMicrosoft Dynamics CustomerSource*Parceiros do DynamicsMicrosoft Dynamics PartnerSource* Requer que os clientes tenham um plano de serviço Microsoft Dynamics como o Plano de Aperfeiçoamento Business Ready ou o Software Assurance. Se você é um cliente do Microsoft para Pequenas Empresas, encontre recursos de solução de problemas e de aprendizagem no site Suporte para Pequenas Empresas.Expandir tudo | Recolher tudoSintomasAo executar um relatório no Microsoft Dynamics CRM 4.0, você receberá a seguinte mensagem de erro:Erro de Relatório. O relatório não pode ser exibido.Além disso, o seguinte evento é registrado no arquivo de log do servidor de relatório:w3wp!processing!5!12/10/2007-15:06:18:: e ERROR: Throwing Microsoft.ReportingServices.ReportProcessing.ReportProcessingException: Não é possível criar uma conexão à fonte de dados do 'CRM'. Info: Microsoft.ReportingServices.ReportProcessing.ReportProcessingException: Não é possível criar uma conexão à fonte de dados do 'CRM'. ---> System.Data.SqlClient.SqlException: Não é possível abrir o banco de dados "MSCRM_CONFIG" solicitado pelo login. Falha de logon.Falha de logon para o usuário <Espaço reservado para conta de autenticação>. Voltar para o início | Submeter comentáriosCausaEste problema ocorre porque a
+
+`chk_D021_001_b8da8a09`
 
 > é possível criar uma conexão à fonte de dados do 'CRM'. ---> System.Data.SqlClient.SqlException: Não é possível abrir o banco de dados "MSCRM_CONFIG" solicitado pelo login. Falha de logon.Falha de logon para o usuário <Espaço reservado para conta de autenticação>. Voltar para o início | Submeter comentáriosCausaEste problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.Voltar para o início | Submeter comentáriosResoluçãoPara resolver esse problema, conceda a permissão de conta adequada para acessar os bancos de dados do Microsoft Dynamics CRM. Para fazer isso, execute as seguintes etapas:Identifique a conta que está sendo usada pelo Microsoft Dynamics CRM Data Connector para o Microsoft SQL Server que autentica o Microsoft SQL Server. Para Microsoft SQL Reporting Services 2005 Se o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services for instalado em uma instância do SQL Reporting Services 2005, o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services a autenticará para o SQL Server como a identidade do pool de aplicativos Internet Information Services (IIS) usado pelo SQL Reporting Services. Siga as etapas a seguir para determinar a identidade do pool de aplicativos do IIS usado pelo SQL Reporting Services: No servidor do Microsoft SQL Reporting Services, clique no botão Iniciar, e aponte para Todos os Programas, clique em Microsoft SQL Server 2005, em Ferramentas de Configuração e em Configuração do Reporting Services.Na Seleção da Instância de Instalação do Servidor de Relatório, selecione a instância do SQL Reporting Services na qual o Microsoft CRM Data Connector para Microsoft SQL Server Reporting Services foi instalado e clique em Conectar.Clique em Identificar serviço da Web. Observe o valor da Conta de serviço ASP.NET. Este valor
 
@@ -41,7 +45,7 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** Como posso criar uma página web a partir do catálogo de artigos no CatWeb?
 
-**Resposta do modelo** (answerable: true): Para criar uma página web a partir do catálogo, utilize a função Criar Página Web (ou a possibilidade de criar uma página web a partir do catálogo descrita no programa), que grava na mesma pasta do programa o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração). A fotografia de cada artigo será incluída na página, desde que exista na mesma pasta do programa, e o processo não exige conhecimentos da linguagem html.
+**Resposta do modelo** (answerable: true): Para criar uma página web a partir do catálogo, o programa permite a possibilidade de criar uma página web a partir desse catálogo para enviar aos interessados ou publicar na internet, sem precisar de conhecer a linguagem html. A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração).
 
 **Trechos citados:** `chk_D004_000_9c635e86`
 
@@ -59,7 +63,7 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** Como posso criar uma página web a partir do catálogo de artigos no CatWeb?
 
-**Resposta do modelo** (answerable: true): Para criar uma página web a partir do catálogo, você pode usar a função Criar Página Web, que grava na mesma pasta do programa o ficheiro Catwebpage.html (ou outro nome definido no menu Ficheiro / Configuração). Essa funcionalidade permite criar uma página web a partir do catálogo para enviar aos interessados ou publicar na internet, sem precisar de conhecer a linguagem html.
+**Resposta do modelo** (answerable: true): Para criar uma página web a partir do catálogo, o programa permite a criação de uma página sem precisar de conhecer a linguagem html. A função Criar Página Web grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração).
 
 **Trechos citados:** `chk_D004_000_9c635e86`
 
@@ -77,7 +81,7 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** O que é o framework COBIT e quais são os principais standards de TI que ele integra?
 
-**Resposta do modelo** (answerable: true): O COBIT é um modelo orientado para a governação das tecnologias de informação, funcionando como uma framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
+**Resposta do modelo** (answerable: true): O framework COBIT é um modelo orientado para a governação das tecnologias de informação, um framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
 
 **Trechos citados:** `chk_D001_000_22388f2f`
 
@@ -91,7 +95,7 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** O que é o framework COBIT e quais são os principais standards de TI que ele integra?
 
-**Resposta do modelo** (answerable: true): O COBIT é um modelo orientado para a governação das tecnologias de informação, sendo uma framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
+**Resposta do modelo** (answerable: true): O framework COBIT é um modelo orientado para a governação das tecnologias de informação, um framework internacional unificadorificador que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.
 
 **Trechos citados:** `chk_D001_000_22388f2f`
 
@@ -105,7 +109,7 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** O que é a ferramenta Automapping no Tiled?
 
-**Resposta do modelo** (answerable: true): O Automapping é uma ferramenta do Tiled baseada em regras definidas em outros arquivos TMX que serve para automatizar o preenchimento de áreas (como áreas de colisão), economizando tempo ao evitar preencher manualmente mapas grandes, preenchendo-os conforme regras definidas pelo usuário.
+**Resposta do modelo** (answerable: true): O Automapping é uma ferramenta que se baseia em regras definidas em outros arquivos TMX. Com ela, é possível economizar muito tempo, evitando preencher áreas de colisão, por exemplo, em mapas muito grandes.
 
 **Trechos citados:** `chk_D024_003_0dc95624`
 
@@ -127,13 +131,9 @@ The two answers to the same question are next to each other, in a random order.
 
 **Pergunta:** O que é a ferramenta Automapping no Tiled?
 
-**Resposta do modelo** (answerable: true): A ferramenta Automapping do Tiled tem como principal ideia preencher camadas com tiles específicos, conforme regras descritas em outros arquivos TMX. Com ela, você define regras que o próprio Tiled preenche conforme desejado, economizando muito tempo ao evitar o preenchimento manual de áreas de colisão ou de interação em cenários e mapas.
+**Resposta do modelo** (answerable: true): A principal ideia da ferramenta Automapping no Tiled é preencher camadas com tiles específicos, conforme regras descritas em outros arquivos TMX.
 
-**Trechos citados:** `chk_D024_003_0dc95624`
-
-> mesma pasta que estão salvos os dois mapas e nomeie-o como “rules.txt”. Abra-o e escreva nele o nome do arquivo TMX de regras, nesse caso “regras.tmx”. Abra o arquivo Mapa.tmx e veja a mágica acontecendo selecionando “Mapa”, no menu superior do Tiled, e clicando “Automapear”. Note que o Tiled criou uma camada chamada “Colisao” e adicionou automaticamente onde tinha pedra um tile vermelho na camada “Colisao”. Se você não entendeu o que aconteceu, o Santy explica. No arquivo de regras, na camada “regions”, você adicionou um tile de grama. Isso significa que você acabou de adicionar uma regra para regiões onde tem grama. Quando você adicionou a camada “input_Borda” e pintou com pedra, você acabou de especificar a regra para ser realizada quando existe grama com pedra. No momento que você criou a camada “output_Colisao” e pintou com o tile vermelho, você acabou de dizer que será criada uma camada chamada “Colisao” e que nessa camada será adicionado o tile vermelho em todo o lugar que tem grama com pedra. Simples, não? Você também pode adicionar mais de uma regra, bastando pintar como você deseja em “regions”, “input_Borda” e “output_Colisao”. Só tome cuidado para adicionar as regras em tiles que não são vizinhos a outras regras já predeterminadas. Você pode executar o Automapping sempre que você desejar. Vimos nesse tutorial sobre a ferramenta do Tiled chamada Automapping. Com ela você pode economizar muito tempo, evitando preencher áreas de colisão, por exemplo. Em mapas muito grandes essa tarefa é árdua e, com o uso do Automapping, você apenas define regras que o próprio Tiled preenche conforme você deseja. No próximo tutorial eu não falarei mais sobre o Tiled e mostrarei como podemos fazer uso do acelerômetro do celular. Gamers: Capítulo 15: A Montanha da Morte - O Rei Dodongo e o
-
-`chk_D024_000_76a1bcf7`
+**Trechos citados:** `chk_D024_000_76a1bcf7`
 
 > Tutorial: Criando terrenos para Cocos2d-x: Introdução à ferramenta Tiled - Parte 5 - Fábrica de Jogos | Aprenda a Projetar Games Divertidos 17 de fevereiro de 2014 27 de maio de 2015 Santiago Viertel Tutoriais Criar áreas de colisão em jogos baseados em mapa de tiles pode se tornar um pouco maçante. Existe uma forma de fazer isso de forma mais rápida e prática. Estão curiosos? Veja nesse tutorial como fazer isso. No último tutorial eu mostrei como utilizar de forma inteligente a ferramenta de edição de terrenos. Vimos como o Tiled realiza o preenchimento automático de fronteiras de rios e barro, por exemplo. Nesse tutorial eu falarei sobre uma ferramenta que ajuda muito na confecção de cenários. Em certos momentos queremos criar áreas que são predefinidas, como áreas de colisão ou de interação. Veremos que o Tiled pode te ajudar a preencher essas áreas de maneira automática. Bora lá? O nome dessa ferramenta interessante é Automapping. A principal ideia dela é preencher camadas com tiles específicos, conforme regras descritas em outros arquivos TMX. Mas, como assim? Não entendi. Veremos. Para ficar melhor de entender, eu farei um conjunto de passos com vocês sem mais explicações iniciais. Primeiramente baixe esse arquivo de tileset. Eu baixei esse arquivo daqui, que mostra bons exemplos indicados pelo próprio site do Tiled. Crie um mapa de tamanho 10×10 com tiles de tamanho 32×32 pixels. Se você não lembra como fazer, veja nesse tutorial. Crie três camadas de tiles: uma mais acima chamada “Colisao”, outra intermediária chamada “Borda” e outra inferior chamada “Chao”. A Figura 1 mostra como devem ficar as camadas no lado direito da tela do Tiled, em “Camadas”. Figura 1: Camadas criadas Adicione, nesse mapa criado, o mesmo arquivo de tileset que vocês baixaram anteriormente. Após adicionar o tileset, selecione a camada
 

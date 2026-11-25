@@ -119,19 +119,23 @@ Read these numbers with care:
 
 # M3: RAG answers
 
-`python src/rag.py` answers the 5 paired questions with both retrievers (10 answers) from retrieved chunks only. It reads `data/` (checked against `data/MANIFEST.json`) and `runs/rankings_v2.jsonl`, needs `GEMINI_API_KEY` in `.env`, and runs in the devcontainer. Options: `--model`, `--pause` (seconds between calls, default 4).
+`python src/rag.py` answers the 5 paired questions with both retrievers (10 answers per model) from retrieved chunks only. It reads `data/` (checked against `data/MANIFEST.json`) and `runs/rankings_v2.jsonl`, needs `GEMINI_API_KEY` in `.env`, and runs in the devcontainer.
 
-**Prompt and settings.** The top K = 3 chunks of each retriever go into the prompt in rank order, labelled `[1]` to `[3]`; the code maps the numbers back to chunk ids. One Portuguese prompt template serves both retrievers. The model returns structured output with `answerable`, `cited` (chunk numbers) and `answer`, in that order. Model `gemini-3.5-flash-lite`, temperature 0, seed 42. The prompt version is a hash of the template and the schema (`13c74fac6aa7`).
+**Models.** `rag_models.toml` holds a `run` list (the models answered by default) and one `[models."<name>"]` table per model with `temperature`, `seed` and `pause` (seconds between calls). `python src/rag.py` runs every model in `run`. `--model a,b` runs a subset (the names must exist in the config; a typo fails before any call), `--config PATH` uses another file, and `--pause` overrides the config. `run` is required: removing it is an error. To add a model, add a table with its API name and either list it in `run` or pass `--model <name>`. Only Gemini models work (`src/llm.py` uses `google-genai`). The committed config has `gemini-3.5-flash-lite` (temperature 0, seed 42, pause 4). Two more models are defined but not in `run`, so they run only with `--model`: `gemini-3.1-flash-lite` and `gemma-4-26b-a4b-it` (same temperature and seed). `gemini-2.5-flash-lite` was tried, but the API answers 404 "no longer available to new users", so it is not defined. Final runs exist for the three defined models (10 answers each); Gemma had one transient 503 that the rerun retried, kept in `runs/m3_runs_failures.gemma-4-26b-a4b-it.jsonl`.
 
-**Outputs** (under `runs/`):
-- `m3_runs.jsonl`: full log, one record per question and retriever: prompt text, retrieved chunks, raw response, finish reason, usage, checks and provenance (git HEAD, hashes of `src/rag.py` and `src/llm.py`, input file hashes).
-- `m3_runs_failures.jsonl`: failed attempts, kept even after a retry succeeds.
-- `m3_grading_sheet.md`: blind sheet for the grader.
-- `m3_dev_runs.jsonl`: development runs (below).
+**Controlled experiment.** The prompt, K = 3, the retrievers and the questions are frozen in the code; only the model, with its logged temperature and seed, varies. Disclosure: the prompt was developed on `gemini-3.5-flash-lite` only and is applied unchanged to other models, so differences between models mix model quality with prompt fit.
 
-**Rerun.** If all 10 answers succeeded, a rerun makes 0 calls. Otherwise it calls only the missing or failed ones. It refuses to run (delete `runs/m3_runs.jsonl` to start over) if an existing record used a different prompt, settings, `g_id` or input files.
+**Prompt and settings.** The top K = 3 chunks of each retriever go into the prompt in rank order, labelled `[1]` to `[3]`; the code maps the numbers back to chunk ids. One Portuguese prompt template serves both retrievers. The model returns structured output with `answerable`, `cited` (chunk numbers) and `answer`, in that order. The model, temperature and seed come from the config. The prompt version is a hash of the template and the schema (`13c74fac6aa7`).
 
-**Protocol.** The prompt and settings were developed only on non-paired questions and frozen before the paired run: `python src/rag.py --dev Q006,Q002,Q012`, plus an abstention probe, `--dev Q019 --dev-k 1`, to exercise `answerable = false`. `--dev` refuses paired ids and is the only place a k other than 3 is allowed (`--dev-k`). The development log `runs/m3_dev_runs.jsonl` is committed as evidence. K = 3 was chosen on protocol grounds (the middle of 1, 3 and 5). Disclosure: the author had already looked at the ranks of the paired questions while sizing the options.
+**Outputs** (under `runs/`). Every file carries the model name, with characters outside `A-Za-z0-9._-` replaced by `_`, for example `m3_runs.gemini-3.5-flash-lite.jsonl`:
+- `m3_runs.<model>.jsonl`: full log, one record per question and retriever: prompt text, retrieved chunks, raw response, finish reason, usage, checks and provenance (git HEAD, hashes of `src/rag.py` and `src/llm.py`, input file hashes).
+- `m3_runs_failures.<model>.jsonl`: failed attempts, kept even after a retry succeeds.
+- `m3_grading_sheet.<model>.md`: blind sheet for the grader.
+- `m3_dev_runs.<model>.jsonl`: development runs (below).
+
+**Rerun.** Per model: if all 10 answers succeeded, a rerun makes 0 calls; otherwise it calls only the missing or failed ones. A model refuses to run (delete its `runs/m3_runs.<model>.jsonl` to start over) if an existing record used a different prompt, settings, `g_id` or input files. A model that fails or is refused is reported and the other models still run; the exit code is 1 if any model failed.
+
+**Protocol.** The prompt and settings were developed only on non-paired questions and frozen before the paired run: `python src/rag.py --dev Q006,Q002,Q012`, plus an abstention probe, `--dev Q019 --dev-k 1`, to exercise `answerable = false`. `--dev` refuses paired ids and is the only place a k other than 3 is allowed (`--dev-k`). The development log `runs/m3_dev_runs.gemini-3.5-flash-lite.jsonl` is committed as evidence. K = 3 was chosen on protocol grounds (the middle of 1, 3 and 5). Disclosure: the author had already looked at the ranks of the paired questions while sizing the options.
 
 **Citation checks** in each record: `cited_numbers` mapped to `cited_chunk_ids`, `invalid_cited_numbers`, `cites_gold`, `gold_in_context` and `consistent` (an answer with no valid citation, or a refusal that cites, is inconsistent). These are auxiliary signals only; failure classification in M4 rests on the human grade.
 
@@ -141,7 +145,7 @@ Read these numbers with care:
 - Only Q021, Q001 and Q024 compare retrieval. The highlighted questions are Q021, Q004 and Q001.
 - With n = 5 the comparison is qualitative only; nothing is statistical.
 
-**Grading handoff.** The grader (Person B) uses `runs/m3_grading_sheet.md`: answers `G01` to `G10`, the two answers to a question side by side in a seeded random order, with the question, the answer, the cited chunks and the gold answer and evidence span. The retriever is hidden; `g_id` is the key in the log. Blinding holds by trust: the grader must not open the log or read `src/rag.py` until the grades are returned. Grades come back in a separate file, `runs/m3_grades.csv`, with columns `g_id,grade,cited_supports,notes`.
+**Grading handoff.** The grader (Person B) uses `runs/m3_grading_sheet.<model>.md`, one sheet per model: answers `G01` to `G10` (the same for every model), the two answers to a question side by side in a seeded random order, with the question, the answer, the cited chunks and the gold answer and evidence span. The retriever is hidden; `g_id` is the key in the log. Blinding holds by trust: the grader must not open the log or read `src/rag.py` until the grades are returned. Grades come back in a separate file per model, `runs/m3_grades.<model>.csv`, with columns `g_id,grade,cited_supports,notes`.
 
 **Rubric** (written before any paired answer exists; for the team to confirm):
 - Correct: same substance as the gold answer and no wrong claim.
@@ -193,10 +197,10 @@ python -m pytest                     # tests
 | `runs/rankings_v2.jsonl` | Full ranking of all chunks per question and retriever (50 lines), with config and `chunks_sha256` |
 | `runs/retrieval_metrics.json` | Evidence recall@k, MRR, first gold rank per question, exact random baseline, paired counts |
 | `runs/embeddings_gemini-embedding-001_3072.npz` | Embedding cache (chunks and questions), content keyed |
-| `runs/m3_dev_runs.jsonl` | M3 development runs on non-paired questions (prompt and settings protocol) |
-| `runs/m3_runs.jsonl` | M3 full log: prompt, retrieved chunks, raw response, checks, provenance (10 records) |
-| `runs/m3_runs_failures.jsonl` | M3 failed attempts, kept |
-| `runs/m3_grading_sheet.md` | M3 blind grading sheet (G01-G10) |
-| `runs/m3_grades.csv` | Grades from the grader: `g_id,grade,cited_supports,notes` |
+| `runs/m3_dev_runs.<model>.jsonl` | M3 development runs on non-paired questions (prompt and settings protocol) |
+| `runs/m3_runs.<model>.jsonl` | M3 full log per model: prompt, retrieved chunks, raw response, checks, provenance (10 records per model) |
+| `runs/m3_runs_failures.<model>.jsonl` | M3 failed attempts, kept |
+| `runs/m3_grading_sheet.<model>.md` | M3 blind grading sheet per model (G01-G10) |
+| `runs/m3_grades.<model>.csv` | Grades from the grader, per model: `g_id,grade,cited_supports,notes` |
 
 The v1 data and scripts (English, RAGBench TechQA) were removed. Recover any v1 file with `git show 046dcd2:<path>`, for example `git show 046dcd2:data/corpus_v1.jsonl`.
