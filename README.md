@@ -1,10 +1,26 @@
 # RAG for text mining
 
-Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The v2 foundation (curated corpus, chunks, evaluation set) is committed and frozen. The two retrievers (M2) and the RAG runner (M3) are implemented; the M3 answers are not graded yet.
+Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The v2 foundation (curated corpus, chunks, evaluation set) is committed and frozen. The two retrievers (M2) and the RAG runner (M3) are implemented and merged; M3 has 7 final runs (10 answers each) that are not graded yet (see Grading handoff).
+
+# Layout
+
+| Path | Content |
+| --- | --- |
+| `src/curate.py` | Corpus curation: stream, filter, judge (`collect`), apply the human review (`finalize`) |
+| `src/build_dataset.py` | Chunks, eval set, paired questions, validation and manifest (`build`, `check`, `manifest`) |
+| `src/retrieve.py` | TF-IDF and dense retrieval, rankings and metrics (M2) |
+| `src/rag.py` | RAG runner, citation checks and grading sheets (M3) |
+| `src/llm.py`, `src/common.py` | Gemini and Ollama wrappers; paths, JSONL I/O, chunking, manifest check |
+| `rag_models.toml` | Models for M3 and their settings |
+| `tests/` | `pytest` tests (`pytest.ini` sets `pythonpath = src`) |
+| `data/` | Frozen v2 corpus and eval set (see Data files) |
+| `runs/` | Retrieval and M3 outputs, tracked in git (see Run outputs) |
+| `local-llm/` | Optional Ollama server for local models ([README](local-llm/README.md)) |
+| `.devcontainer/` | Devcontainer (see below) |
 
 # Configuring the environment
 
-Run every command from the repository root (`python src/...`, not from `src`).
+Run every command from the repository root (`python src/...`, not from `src`). Python 3.11 or newer is required (`rag_models.toml` is read with `tomllib`); the devcontainer has 3.12.
 
 ## Step 1: Create a virtual environment
 ```python -m venv venv```
@@ -26,7 +42,10 @@ To run the tests, also install the development dependencies:
 Copy `.env.example` to `.env` in the repository root and set your Gemini API key (Gemini replaced OpenAI):
 ```GEMINI_API_KEY=your_actual_gemini_api_key_here```
 
-Only `python src/curate.py collect` and building or extending the embedding cache in `python src/retrieve.py`, and `python src/rag.py` need the key (see M2: retrieval and M3: RAG answers).
+The key is needed only by `python src/curate.py collect`, by `python src/retrieve.py` when the embedding cache lacks entries (the committed cache does not), and by `python src/rag.py` for a Gemini model that still has answers to make. Local Ollama models need no key. `OLLAMA_BASE_URL` in `.env` is optional (see [local-llm/README.md](local-llm/README.md)).
+
+## Step 5: Check the setup
+```python -m pytest```
 
 # Devcontainer (optional)
 
@@ -38,6 +57,7 @@ An alternative to the virtual environment above: Python 3.12 with all dependenci
 - Run git commands that change files under `data/` (`pull`, `checkout`, `merge`, `stash`) on the host: inside the container they fail on the read-only mount and can leave the working tree half-updated.
 - Write run outputs (logs, answers) to `runs/`, which is writable and tracked in git.
 - Run the tests in the container with `python -m pytest`.
+- The optional Ollama server runs on the host, outside the devcontainer (see [local-llm/README.md](local-llm/README.md)).
 
 # Protocol of document curating
 
@@ -49,7 +69,7 @@ An alternative to the virtual environment above: Python 3.12 with all dependenci
 
 **Cheap filters** (applied before any LLM call). A row is rejected if it:
 - is not `pt-br`, or its domain is not `tecnologia`
-- has a `doc_type` other than tutorial, manual, guia or faq (`--include-doc-type` adds more)
+- has a `doc_type` other than tutorial, manual, guia or faq (`collect --include-doc-type` adds more)
 - has fewer than 400 words (at least 2 chunks) or more than 1,500
 - is empty or broken (replacement character, or under 60% letters, digits and spaces)
 - is code heavy (more than 5 code-like tokens per 100 words)
@@ -93,7 +113,7 @@ Chosen randomly (seed 42) with `random.Random(42).sample(sorted(qa_ids), 5)`: Q0
 - TF-IDF: scikit-learn `TfidfVectorizer(strip_accents='unicode', lowercase=True)`, fit on the chunks only, no stop words.
 - Dense: `gemini-embedding-001`, 3072 dimensions. Chunks use task type `RETRIEVAL_DOCUMENT`, questions use `QUESTION_ANSWERING`. Cosine similarity in float64 after normalizing the vectors.
 
-**Ranking file.** `runs/rankings_v2.jsonl` holds the full ranking of all 83 chunks for each of the 25 questions and both retrievers (50 lines). Each line has the question, the ranking (rank, chunk id, score), the retriever `config` and `chunks_sha256`. M3 will read it.
+**Ranking file.** `runs/rankings_v2.jsonl` holds the full ranking of all 83 chunks for each of the 25 questions and both retrievers (50 lines). Each line has the question, the ranking (rank, chunk id, score), the retriever `config` and `chunks_sha256`. M3 reads it.
 
 **Metrics** (`runs/retrieval_metrics.json`):
 - Evidence recall@k for k = 1, 3, 5: a gold chunk is in the top k (equals hit@k).
@@ -119,27 +139,40 @@ Read these numbers with care:
 
 # M3: RAG answers
 
-`python src/rag.py` answers the 5 paired questions with both retrievers (10 answers per model) from retrieved chunks only. It reads `data/` (checked against `data/MANIFEST.json`) and `runs/rankings_v2.jsonl`, needs `GEMINI_API_KEY` in `.env` for Gemini models (not for local Ollama models), and runs in the devcontainer.
+`python src/rag.py` answers the 5 paired questions with both retrievers (10 answers per model) from retrieved chunks only. It reads `data/` (checked against `data/MANIFEST.json`) and `runs/rankings_v2.jsonl`. It needs `GEMINI_API_KEY` in `.env` for Gemini models that still have answers to make, and a running Ollama server for local models.
 
-**Models.** `rag_models.toml` holds a `run` list (the models answered by default) and one `[models."<name>"]` table per model with `temperature`, `seed`, `pause` (seconds between calls) and optionally `provider` (`gemini`, the default, or `ollama`). `python src/rag.py` runs every model in `run`. `--model a,b` runs a subset (the names must exist in the config; a typo fails before any call), `--config PATH` uses another file, and `--pause` overrides the config. `run` is required: removing it is an error. To add a model, add a table with its API name and either list it in `run` or pass `--model <name>`. Gemini models are called through `google-genai`; models with `provider = "ollama"` go to the optional local server (below). The committed config has `gemini-3.5-flash-lite` (temperature 0, seed 42, pause 4). Two more models are defined but not in `run`, so they run only with `--model`: `gemini-3.1-flash-lite` and `gemma-4-26b-a4b-it` (same temperature and seed). `gemini-2.5-flash-lite` was tried, but the API answers 404 "no longer available to new users", so it is not defined. The config also defines four local models (see Local models). Final runs exist for the three Gemini models (10 answers each); Gemma had one transient 503 that the rerun retried, kept in `runs/m3_runs_failures.gemma-4-26b-a4b-it.jsonl`.
+**Models.** `rag_models.toml` has a required `run` list (the models answered by default) and one `[models."<name>"]` table per model with `temperature` (0 to 2), `seed`, `pause` (seconds between calls) and optionally `provider` (`gemini`, the default, or `ollama`). Unknown keys, a missing `run` or a `run` entry without a table are errors. Options:
+- `--model a,b` runs a subset; the names must exist in the config, so a typo fails before any call.
+- `--config PATH` uses another config file.
+- `--pause` overrides the config's pause.
 
-**Local models (Ollama).** An optional Ollama server in `local-llm/` serves open models on your own machine; setup, commands and warnings are in [local-llm/README.md](local-llm/README.md). The config defines `llama3.1:8b`, `qwen3:8b`, `gemma4:e4b` and `llama3.2:3b` with `provider = "ollama"` and `pause = 0`; they are not in `run`, so use `--model <tag>`. The tag must be pulled first, and the runner fails with the command to run when the server is down or the model is missing. `OLLAMA_BASE_URL` (optional, see `.env.example`) points to another server. Each of the four was probed once on a non-paired question (`--dev Q006`, 2 answers, valid JSON, thinking off), and the probe logs are `runs/m3_dev_runs.<model>.jsonl`. Final runs exist for all four (10 answers each, no failed call); each took roughly 5 to 20 minutes on a CPU-only laptop with other applications open, so treat the speed as indicative only.
-- Fixed in `src/rag.py` and logged as settings: `num_ctx` 8192, `num_predict` 1024, thinking off. `truncate` and `shift` are off in the request, so a prompt that does not fit the context is an error instead of silently dropping chunks, and an answer cut at `num_predict` is a failed attempt.
+To add a model, add a table with its API name (the Ollama tag for local models) and list it in `run` or pass `--model <name>`.
+
+The committed config defines seven models, all with temperature 0 and seed 42. Only `gemini-3.5-flash-lite` is in `run`, so a bare `python src/rag.py` runs only that one; the others run with `--model`.
+
+| Model | Provider | Pause |
+| --- | --- | --- |
+| `gemini-3.5-flash-lite` (default) | Gemini | 4 s |
+| `gemini-3.1-flash-lite` | Gemini | 4 s |
+| `gemma-4-26b-a4b-it` | Gemini | 4 s |
+| `llama3.1:8b`, `qwen3:8b`, `gemma4:e4b`, `llama3.2:3b` | Ollama | 0 |
+
+`gemini-2.5-flash-lite` was tried, but the API answers 404 "no longer available to new users", so it is not defined. Final runs (10 answers, no answer left failed) exist for all seven models. Gemini calls go through `google-genai`, which retries 408, 429 and 5xx errors; one call to `gemini-3.5-flash-lite` (Q024, TF-IDF) and one to `gemma-4-26b-a4b-it` (Q004, dense) still failed with a 503, were retried by a rerun and are kept in the `m3_runs_failures` files.
+
+**Local models (Ollama).** The server in `local-llm/` serves open models on your own machine; setup, commands and warnings are in [local-llm/README.md](local-llm/README.md). Pull the tag first: the runner fails with the command to run when the server is down or the tag is missing. The server address comes from `OLLAMA_BASE_URL` (default `http://ragfortextmining-ollama:11434`).
+- Fixed in `src/rag.py` and logged as settings: `num_ctx` 8192, `num_predict` 1024, thinking off. The request also sets `truncate` and `shift` off, so a prompt that does not fit the context is an error instead of silently dropping chunks, and an answer cut at `num_predict` is a failed attempt.
 - The log records the model digest (`model_version`), the server version, usage (token counts and durations) and the thinking text if the model returns any.
-- Digest check: if a rerun finds the tag now points to other weights than the answers already in the log, it refuses and asks you to delete the file, so one log never mixes two digests.
-- Disclosure: the frozen prompt was tuned on a Gemini model, so for local models the prompt fit is probably worse (see Controlled experiment).
+- Digest check: at the start of a run, if the tag now points to other weights than the answers already in the log, the run refuses and asks you to delete the file, so one log never mixes two digests. The digest is checked once: a tag re-pulled in the middle of a run is not detected.
+- Each local model was probed once on a non-paired question (`--dev Q006`, 2 answers, valid JSON, thinking off). The final runs took about 5 to 17 minutes per model (sum of the logged call latencies) on a CPU-only laptop with other applications open, so treat the speed as indicative only.
+- The `done_reason=length` path (an answer cut at `num_predict`) is covered by unit tests only; no live call has hit it.
 
-**Controlled experiment.** The prompt, K = 3, the retrievers and the questions are frozen in the code; only the model, with its logged temperature and seed, varies. Disclosure: the prompt was developed on `gemini-3.5-flash-lite` only and is applied unchanged to other models, so differences between models mix model quality with prompt fit.
+**Controlled experiment.** The prompt, K = 3, the retrievers and the questions are frozen in the code; only the model, with its logged temperature and seed, varies. Disclosure: the prompt was developed on `gemini-3.5-flash-lite` only and is applied unchanged to every other model (including the local ones), so differences between models mix model quality with prompt fit.
 
-**Prompt and settings.** The top K = 3 chunks of each retriever go into the prompt in rank order, labelled `[1]` to `[3]`; the code maps the numbers back to chunk ids. One Portuguese prompt template serves both retrievers. The model returns structured output with `answerable`, `cited` (chunk numbers) and `answer`, in that order. The model, temperature and seed come from the config. The prompt version is a hash of the template and the schema (`13c74fac6aa7`).
+**Prompt and settings.** The top K = 3 chunks of each retriever go into the prompt in rank order, labelled `[1]` to `[3]`; the code maps the numbers back to chunk ids. One Portuguese prompt template serves both retrievers. The model returns structured output with `answerable`, `cited` (chunk numbers) and `answer`, in that order. The prompt version is a hash of the template and the schema (`13c74fac6aa7`); every committed run uses it.
 
-**Outputs** (under `runs/`). Every file carries the model name, with characters outside `A-Za-z0-9._-` replaced by `_`, for example `m3_runs.gemini-3.5-flash-lite.jsonl`; the `:` of a local tag becomes `_` (`llama3.1:8b` gives `m3_runs.llama3.1_8b.jsonl`):
-- `m3_runs.<model>.jsonl`: full log, one record per question and retriever: prompt text, retrieved chunks, raw response, finish reason, usage, checks and provenance (git HEAD, hashes of `src/rag.py` and `src/llm.py`, input file hashes).
-- `m3_runs_failures.<model>.jsonl`: failed attempts, kept even after a retry succeeds.
-- `m3_grading_sheet.<model>.md`: blind sheet for the grader.
-- `m3_dev_runs.<model>.jsonl`: development runs (below).
+**Outputs** (under `runs/`). Every file carries the model name with characters outside `A-Za-z0-9._-` replaced by `_`; for example `m3_runs.gemini-3.5-flash-lite.jsonl`, and `llama3.1:8b` gives `m3_runs.llama3.1_8b.jsonl`. The full list is in Run outputs. Each record of `m3_runs.<model>.jsonl` has the prompt text, retrieved chunks, raw response, finish reason, usage, citation checks and provenance (git HEAD, hashes of `src/rag.py` and `src/llm.py`, input file hashes).
 
-**Rerun.** Per model: if all 10 answers succeeded, a rerun makes 0 calls; otherwise it calls only the missing or failed ones. A model refuses to run (delete its `runs/m3_runs.<model>.jsonl` to start over) if an existing record used a different prompt, settings, `g_id` or input files. A model that fails or is refused is reported and the other models still run; the exit code is 1 if any model failed.
+**Rerun.** Records are keyed by (`qa_id`, retriever). Per model: if all 10 answers succeeded, a rerun makes 0 calls (the Gemini `settings` keep exactly 5 keys, so the committed logs rerun with 0 calls); otherwise it calls only the missing or failed ones. A model refuses to run (delete its `runs/m3_runs.<model>.jsonl` to start over) if an existing record used a different prompt, settings, `g_id` or input files. A failed attempt is appended to the failures file and the log keeps the retry. A model that fails or is refused is reported and the other models still run; the exit code is 1 if any model failed. Five failed calls in a row abort that model's run; finished answers stay in the log. With a local server that hangs, that can take up to 5 x 900 s (the timeout per call is 900 s).
 
 **Protocol.** The prompt and settings were developed only on non-paired questions and frozen before the paired run: `python src/rag.py --dev Q006,Q002,Q012`, plus an abstention probe, `--dev Q019 --dev-k 1`, to exercise `answerable = false`. `--dev` refuses paired ids and is the only place a k other than 3 is allowed (`--dev-k`). The development log `runs/m3_dev_runs.gemini-3.5-flash-lite.jsonl` is committed as evidence. K = 3 was chosen on protocol grounds (the middle of 1, 3 and 5). Disclosure: the author had already looked at the ranks of the paired questions while sizing the options.
 
@@ -151,7 +184,7 @@ Read these numbers with care:
 - Only Q021, Q001 and Q024 compare retrieval. The highlighted questions are Q021, Q004 and Q001.
 - With n = 5 the comparison is qualitative only; nothing is statistical.
 
-**Grading handoff.** The grader (Person B) uses `runs/m3_grading_sheet.<model>.md`, one sheet per model: answers `G01` to `G10` (the same for every model), the two answers to a question side by side in a seeded random order, with the question, the answer, the cited chunks and the gold answer and evidence span. The retriever is hidden; `g_id` is the key in the log. Blinding holds by trust: the grader must not open the log or read `src/rag.py` until the grades are returned. Grades come back in a separate file per model, `runs/m3_grades.<model>.csv`, with columns `g_id,grade,cited_supports,notes`.
+**Grading handoff.** The grader (Person B) uses `runs/m3_grading_sheet.<model>.md`: answers `G01` to `G10` (the same ids for every model), the two answers to a question side by side in a seeded random order, with the question, the answer, the cited chunks and the gold answer and evidence span. The retriever is hidden; `g_id` is the key in the log. Blinding holds by trust: the grader must not open the log or read `src/rag.py` until the grades are returned. Grades come back in a separate file per model, `runs/m3_grades.<model>.csv`, with columns `g_id,grade,cited_supports,notes`. Status: sheets exist for all 7 models, but no grades have been returned yet, and which of the 7 models are graded is still to be agreed.
 
 **Rubric** (written before any paired answer exists; for the team to confirm):
 - Correct: same substance as the gold answer and no wrong claim.
@@ -172,14 +205,19 @@ python src/build_dataset.py build    # write chunks, eval set and paired questio
 python src/build_dataset.py check    # validate the files and that a rebuild is identical
 python src/build_dataset.py manifest # write data/MANIFEST.json (runs check first)
 python src/retrieve.py               # rank all chunks with both retrievers, write runs/ (key only if the cache lacks entries)
-python src/rag.py                    # answer the 5 paired questions with both retrievers (GEMINI_API_KEY for Gemini models)
+python src/rag.py                    # answer the 5 paired questions with both retrievers (default model from rag_models.toml)
+python src/rag.py --model llama3.1:8b          # a chosen model, here a local one (server and pulled tag needed)
+python src/rag.py --dev Q006 --model llama3.1:8b  # development run on a non-paired question
 python -m pytest                     # tests
 ```
 
-- `collect` options: `--resume` (continue an existing pool and log, for example after a quota error), `--overwrite` (replace them), `--pool-size` (accepted documents to keep, default 30), `--include-doc-type` (extra document type, repeatable). Without `--resume` or `--overwrite` it refuses to run if a pool or log exists.
+- `collect` options: `--resume` (continue an existing pool and log, for example after a quota error), `--overwrite` (replace them), `--pool-size` (accepted documents to keep, default 30), `--include-doc-type` (extra document type, repeatable), `--max-rows` (default 50,000), `--max-judge-calls` (default 100), `--sleep` (seconds between judge calls, default 4) and `--model` (judge model, default `gemini-3.5-flash-lite`). Without `--resume` or `--overwrite` it refuses to run if a pool or log exists.
 - `data/` is read-only in the devcontainer, so `collect`, `finalize`, `build` and `manifest` run on the host. `check` and `python -m pytest` only read, so they also work in the container.
 - `retrieve.py` option: `--pause` (seconds between embedding requests, default 15). It only reads `data/` and writes `runs/`, so it also runs in the container; it needs `GEMINI_API_KEY` only when the cache is missing entries.
+- `rag.py` options are described in M3: `--model`, `--config`, `--pause`, `--dev`, `--dev-k`. It writes only to `runs/`, so it also runs in the container.
 - Rebuilding changes the hashes in `data/MANIFEST.json`: the corpus is frozen, so only do it deliberately.
+
+To reproduce the committed results from a fresh clone, run `python -m pytest`, `python src/retrieve.py` and `python src/rag.py --model <each of the seven>`: with the committed cache and logs they make 0 API calls.
 
 # Data files
 
@@ -203,10 +241,13 @@ python -m pytest                     # tests
 | `runs/rankings_v2.jsonl` | Full ranking of all chunks per question and retriever (50 lines), with config and `chunks_sha256` |
 | `runs/retrieval_metrics.json` | Evidence recall@k, MRR, first gold rank per question, exact random baseline, paired counts |
 | `runs/embeddings_gemini-embedding-001_3072.npz` | Embedding cache (chunks and questions), content keyed |
-| `runs/m3_dev_runs.<model>.jsonl` | M3 development runs on non-paired questions (prompt and settings protocol) |
-| `runs/m3_runs.<model>.jsonl` | M3 full log per model: prompt, retrieved chunks, raw response, checks, provenance (10 records per model) |
-| `runs/m3_runs_failures.<model>.jsonl` | M3 failed attempts, kept |
-| `runs/m3_grading_sheet.<model>.md` | M3 blind grading sheet per model (G01-G10) |
-| `runs/m3_grades.<model>.csv` | Grades from the grader, per model: `g_id,grade,cited_supports,notes` |
+| `runs/m3_runs.<model>.jsonl` | M3 full log per model: prompt, retrieved chunks, raw response, checks, provenance (10 records per model; 7 committed) |
+| `runs/m3_runs_failures.<model>.jsonl` | M3 failed attempts, kept even after a retry succeeds (committed for `gemini-3.5-flash-lite` and `gemma-4-26b-a4b-it`; created on the first failure) |
+| `runs/m3_grading_sheet.<model>.md` | M3 blind grading sheet per model (G01-G10), written when all 10 answers succeeded (7 committed) |
+| `runs/m3_dev_runs.<model>.jsonl` | M3 development runs on non-paired questions (committed for `gemini-3.5-flash-lite` and the four local models) |
+| `runs/m3_dev_runs_failures.<model>.jsonl` | Failed attempts of development runs (none committed) |
+| `runs/m3_grades.<model>.csv` | Grades from the grader, per model: `g_id,grade,cited_supports,notes` (none yet) |
+
+`<model>` is the model name made filename-safe (see M3: Outputs). The 7 committed models are `gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`, `gemma-4-26b-a4b-it`, `llama3.1_8b`, `qwen3_8b`, `gemma4_e4b` and `llama3.2_3b`.
 
 The v1 data and scripts (English, RAGBench TechQA) were removed. Recover any v1 file with `git show 046dcd2:<path>`, for example `git show 046dcd2:data/corpus_v1.jsonl`.
