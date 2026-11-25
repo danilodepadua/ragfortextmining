@@ -1,4 +1,5 @@
 import json
+import re
 from types import SimpleNamespace
 
 import pytest
@@ -332,6 +333,14 @@ def test_the_repo_config_loads_and_keeps_the_settings_used_for_the_committed_run
     config = rag.load_config(rag.CONFIG_PATH)
     assert config["run"] == ["gemini-3.5-flash-lite"]
     assert config["models"]["gemini-3.5-flash-lite"] == {"provider": "gemini", "temperature": 0.0, "seed": 42, "pause": 4.0}
+
+
+def test_the_model_names_in_the_rag_docstring_examples_exist_in_the_repo_config():
+    config = rag.load_config(rag.CONFIG_PATH)
+    examples = re.findall(r"--model\s+(\S+)", rag.__doc__)
+    assert examples
+    for example in examples:
+        assert set(example.split(",")) <= set(config["models"]), example
 
 
 def test_config_defaults_and_values(tmp_path):

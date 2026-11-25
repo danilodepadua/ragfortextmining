@@ -2,10 +2,10 @@
 
 Run from the repository root:
 
-    python src/rag.py                          # final run for every model in rag_models.toml "run"
-    python src/rag.py --model gemini-3.5-flash # only the named model(s), comma-separated; must be in the config
-    python src/rag.py --config other.toml      # another config file
-    python src/rag.py --dev Q010,Q011          # development run on NON-paired questions only
+    python src/rag.py                                  # final run for every model in rag_models.toml "run"
+    python src/rag.py --model gemini-3.5-flash-lite    # only the named model(s), comma-separated; must be in the config
+    python src/rag.py --config other.toml              # another config file
+    python src/rag.py --dev Q010,Q011                  # development run on NON-paired questions only
 
 A final run answers the 5 paired questions x 2 retrievers (10 answers) per model. The prompt, K and the
 retrievers are fixed in the code; the config only chooses models, their provider (gemini or a local
