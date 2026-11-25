@@ -8,7 +8,8 @@ Run from the repository root:
     python src/rag.py --dev Q010,Q011          # development run on NON-paired questions only
 
 A final run answers the 5 paired questions x 2 retrievers (10 answers) per model. The prompt, K and the
-retrievers are fixed in the code; the config only chooses models and their temperature, seed and pause.
+retrievers are fixed in the code; the config only chooses models, their provider (gemini or a local
+ollama server, see local-llm/) and their temperature, seed and pause.
 It is idempotent: records that already succeeded with the same prompt and settings are kept, only missing
 or failed ones are called, and it refuses to continue if an existing record was made with a different
 prompt or settings (delete that model's log to start over). For each model <m> it writes, under runs/:
@@ -38,7 +39,7 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from common import DATA, ROOT, RUNS, read_jsonl, sha256_file, verify_manifest, write_jsonl
-from llm import GenerationError, generate_json, make_client
+from llm import GenerationError, generate_json, generate_json_ollama, make_client, make_ollama_client
 from retrieve import RETRIEVERS
 
 # Fixed before any paired question was answered (see the README for the protocol).
@@ -47,6 +48,10 @@ SHEET_SEED = 42
 CONFIG_PATH = ROOT / "rag_models.toml"
 DEFAULT_PARAMS = {"temperature": 0.0, "seed": 42}
 DEFAULT_PAUSE = 4.0
+PROVIDERS = ("gemini", "ollama")
+# Fixed for every local (Ollama) model and part of its logged settings: the context holds the prompt (about
+# 2k to 3k tokens) and the answer, output is capped, and thinking is off so models are compared on equal terms.
+OLLAMA_SETTINGS = {"num_ctx": 8192, "num_predict": 1024, "think": False}
 MAX_ERRORS_IN_A_ROW = 5
 
 PROMPT_TEMPLATE = """Você responde perguntas sobre documentação técnica usando APENAS os trechos numerados abaixo.
@@ -105,7 +110,7 @@ class RunAborted(RuntimeError):
 
 
 def load_config(path: Path = CONFIG_PATH) -> dict:
-    """Read the model config: {"run": [names], "models": {name: {temperature, seed, pause}}}."""
+    """Read the model config: {"run": [names], "models": {name: {provider, temperature, seed, pause}}}."""
     raw = tomllib.loads(path.read_text(encoding="utf-8"))
     extra = set(raw) - {"run", "models"}
     if extra:
@@ -116,12 +121,15 @@ def load_config(path: Path = CONFIG_PATH) -> dict:
     models = {}
     for name, table in tables.items():
         if not isinstance(table, dict):
-            raise ValueError(f"{path.name}: models.{name} must be a table with temperature, seed and pause")
+            raise ValueError(f"{path.name}: models.{name} must be a table with provider, temperature, seed and pause")
         if not name or name != name.strip() or "," in name:
             raise ValueError(f"{path.name}: model name {name!r} must be non-empty, without outer spaces or commas")
-        unknown = set(table) - {"temperature", "seed", "pause"}
+        unknown = set(table) - {"provider", "temperature", "seed", "pause"}
         if unknown:
             raise ValueError(f"{path.name}: model {name!r} has unknown keys {sorted(unknown)}")
+        provider = table.get("provider", "gemini")
+        if provider not in PROVIDERS:
+            raise ValueError(f"{path.name}: model {name!r}: provider must be one of {list(PROVIDERS)}")
         temperature = table.get("temperature", DEFAULT_PARAMS["temperature"])
         seed = table.get("seed", DEFAULT_PARAMS["seed"])
         pause = table.get("pause", DEFAULT_PAUSE)
@@ -131,7 +139,7 @@ def load_config(path: Path = CONFIG_PATH) -> dict:
             raise ValueError(f"{path.name}: model {name!r}: seed must be an integer")
         if isinstance(pause, bool) or not isinstance(pause, (int, float)) or not math.isfinite(pause) or pause < 0:
             raise ValueError(f"{path.name}: model {name!r}: pause must be a number of seconds, 0 or more")
-        models[name] = {"temperature": float(temperature), "seed": seed, "pause": float(pause)}
+        models[name] = {"provider": provider, "temperature": float(temperature), "seed": seed, "pause": float(pause)}
     slugs: dict[str, str] = {}
     for name in models:  # case-folded: two names must not share a file on a case-insensitive filesystem
         if slugs.setdefault(model_slug(name).lower(), name) != name:
@@ -240,13 +248,26 @@ def source_state() -> dict:
 
 
 def settings_for(model: str, k: int, params: dict) -> dict:
-    return {
+    """What a run is compared on. Gemini keeps exactly its original keys (committed logs depend on it);
+    a local model adds the provider and the fixed generation limits, which change its answers."""
+    settings = {
         "model_requested": model,
         "temperature": params["temperature"],
         "seed": params["seed"],
         "k": k,
         "prompt_version": prompt_version(),
     }
+    if params.get("provider", "gemini") == "ollama":
+        settings.update(provider="ollama", **OLLAMA_SETTINGS)
+    return settings
+
+
+def generate(client, settings: dict, prompt: str):
+    """The one place that picks the provider; both return (RagAnswer, metadata) or raise GenerationError."""
+    args = (client, settings["model_requested"], prompt, RagAnswer, settings["temperature"], settings["seed"])
+    if settings.get("provider") == "ollama":
+        return generate_json_ollama(*args, num_ctx=settings["num_ctx"], num_predict=settings["num_predict"], think=settings["think"])
+    return generate_json(*args)
 
 
 def call_one(job: dict, client, settings: dict, provenance: dict) -> dict:
@@ -260,9 +281,7 @@ def call_one(job: dict, client, settings: dict, provenance: dict) -> dict:
     }
     started = time.monotonic()
     try:
-        answer, meta = generate_json(
-            client, settings["model_requested"], job["prompt_text"], RagAnswer, settings["temperature"], settings["seed"]
-        )
+        answer, meta = generate(client, settings, job["prompt_text"])
     except GenerationError as exc:
         record.update(error=str(exc), generation=exc.meta)
     except Exception as exc:  # network, quota or other API error: log it, do not hide it
@@ -288,6 +307,7 @@ def run(
     pause: float = DEFAULT_PAUSE,
     dev_ids: list[str] | None = None,
     dev_k: int = K,
+    ollama_factory=make_ollama_client,
 ) -> dict:
     """Run (or finish) the final run, or a development run, for one model. Returns a summary."""
     files = paths_for(runs_dir, model)
@@ -339,7 +359,11 @@ def run(
     client = None
     for job in todo:
         if client is None:
-            client = client_factory()
+            if settings.get("provider") == "ollama":
+                client = ollama_factory(model)
+                _refuse_if_the_model_changed(records, client, out)
+            else:
+                client = client_factory()
         if calls:
             time.sleep(pause)
         record = call_one(job, client, settings, provenance)
@@ -358,6 +382,14 @@ def run(
         final = [records[(j["qa_id"], j["retriever"])] for j in jobs]
         files["sheet"].write_text(grading_sheet(final, inputs, files["grades"].name), encoding="utf-8", newline="\n")
     return {"model": model, "calls": calls, "failed": sorted(failed), "records": len(jobs), "out": out}
+
+
+def _refuse_if_the_model_changed(records: dict, client, out: Path) -> None:
+    """A re-pull can move a tag to other weights; answers of two digests must not share one log."""
+    seen = {(r.get("generation") or {}).get("model_version") for r in records.values() if r["error"] is None}
+    stale = sorted(str(d) for d in seen - {client.digest})
+    if stale:
+        raise RuntimeError(f"{out.name} holds answers from model digest {stale} but the server has {client.digest}: delete the file to start over")
 
 
 def run_models(models: list[str], config: dict, pause: float | None = None, **kwargs):

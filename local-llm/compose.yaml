@@ -1,0 +1,34 @@
+# Optional local model server (Ollama) for the M3 RAG runner. It is NOT part of the devcontainer: start it only when you want to run the local models (see README.md in this folder).
+name: ragfortextmining-llm
+
+services:
+  ollama:
+    image: ollama/ollama:0.40.18@sha256:1cabd20e1762a7a8444bf4a7110b346d923cd77ab6c97c984434140638c913ec
+    container_name: ragfortextmining-ollama
+    restart: "no"
+    ports:
+      - "127.0.0.1:11434:11434" # host only (curl, debugging); nothing is exposed to the LAN
+    volumes:
+      - models:/root/.ollama
+    environment:
+      OLLAMA_MAX_LOADED_MODELS: "1" # one model in RAM at a time (the host has little memory)
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_KEEP_ALIVE: "5m" # unload an idle model after 5 minutes
+    
+    mem_limit: ${OLLAMA_MEM_LIMIT:-9g} # if memory runs out, the Ollama process is killed instead of another project's containers.
+    memswap_limit: ${OLLAMA_MEM_LIMIT:-9g} # same value: no swap, so the cap is a real cap
+    networks:
+      - llm
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+volumes:
+  models:
+    name: ragfortextmining-ollama-models
+
+networks:
+  llm:
+    name: ragfortextmining-llm
