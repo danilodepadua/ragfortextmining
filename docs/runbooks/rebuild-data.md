@@ -6,7 +6,7 @@ Rebuilds the corpus, chunks, eval set and manifest under `data/`. The corpus is 
 
 - Context: the host (or a virtual environment with a writable `data/`), repository root as working directory. The devcontainer mounts `data/` read-only, so the write steps fail there ([../devcontainer.md](../devcontainer.md)).
 - `GEMINI_API_KEY` in `.env` for `collect` only; network access to the dataset.
-- Python 3.11 or newer with `pip install -r requirements.txt`.
+- Python 3.12 or newer (the pinned `numpy` requires it) with `pip install -r requirements.txt`.
 - Commit or stash local work first: this procedure rewrites tracked files.
 
 ## Steps

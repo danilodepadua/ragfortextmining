@@ -4,7 +4,7 @@ Evaluation of retrieval for question answering over 25 Brazilian Portuguese tech
 
 ## Quick start
 
-Run every command from the repository root (`python src/...`, not from `src`). Python 3.11 or newer is required (`rag_models.toml` is read with `tomllib`); the devcontainer has 3.12.
+Run every command from the repository root (`python src/...`, not from `src`). Python 3.12 or newer is required (the pinned `numpy` needs it, and `rag_models.toml` is read with `tomllib`); the devcontainer has 3.12.
 
 1. Create the environment, either a virtual environment or the devcontainer.
    - Virtual environment: `python -m venv venv`, activate it (`source venv/bin/activate` on macOS and Linux, `venv\Scripts\activate` on Windows), then `pip install -r requirements.txt -r .devcontainer/requirements-dev.txt`.
