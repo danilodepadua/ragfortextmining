@@ -27,3 +27,31 @@ pause = 4.0
 temperature = 0.0
 seed = 42
 pause = 4.0
+
+# Local models served by the Ollama container in local-llm/ (see the README there; slow, CPU only).
+# The settings that change their answers (context size, output cap, thinking off) are fixed in src/rag.py.
+# `pause` is 0: there is no rate limit on your own machine. The tag must be pulled first.
+[models."llama3.1:8b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0
+
+[models."qwen3:8b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0
+
+[models."gemma4:e4b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0
+
+# The smallest of the four, the weak end of the comparison.
+[models."llama3.2:3b"]
+provider = "ollama"
+temperature = 0.0
+seed = 42
+pause = 0.0

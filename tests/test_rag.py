@@ -331,14 +331,14 @@ seed = 7
 def test_the_repo_config_loads_and_keeps_the_settings_used_for_the_committed_runs():
     config = rag.load_config(rag.CONFIG_PATH)
     assert config["run"] == ["gemini-3.5-flash-lite"]
-    assert config["models"]["gemini-3.5-flash-lite"] == {"temperature": 0.0, "seed": 42, "pause": 4.0}
+    assert config["models"]["gemini-3.5-flash-lite"] == {"provider": "gemini", "temperature": 0.0, "seed": 42, "pause": 4.0}
 
 
 def test_config_defaults_and_values(tmp_path):
     config = rag.load_config(write_config(tmp_path, TWO_MODELS))
     assert config["run"] == ["model-a", "model-b"]
-    assert config["models"]["model-a"] == {"temperature": 0.0, "seed": 42, "pause": 1.0}
-    assert config["models"]["model-b"] == {"temperature": 0.7, "seed": 7, "pause": rag.DEFAULT_PAUSE}
+    assert config["models"]["model-a"] == {"provider": "gemini", "temperature": 0.0, "seed": 42, "pause": 1.0}
+    assert config["models"]["model-b"] == {"provider": "gemini", "temperature": 0.7, "seed": 7, "pause": rag.DEFAULT_PAUSE}
 
 
 @pytest.mark.parametrize(
@@ -359,6 +359,7 @@ def test_config_defaults_and_values(tmp_path):
         ('run = ["x"]\n[models."m"]\n', "without a .models. table"),
         ('run = []\n[models."m"]\n', "non-empty list"),
         ('run = ["m"]\n[models."m"]\npause = -1\n', "pause"),
+        ('run = ["m"]\n[models."m"]\nprovider = "openai"\n', "provider"),
         ('run = ["m"]\n[models."m"]\ntemperature = 3\n', "temperature"),
         ('run = ["m"]\n[models."m"]\nseed = 1.5\n', "seed"),
         ('run = ["m"]\n[models."m"]\nseed = true\n', "seed"),
@@ -515,3 +516,129 @@ def test_cli_exits_non_zero_when_a_model_failed(tmp_path, monkeypatch, capsys):
     assert exc.value.code == 1
     captured = capsys.readouterr()
     assert "model-a: 10 answers requested" in captured.out and "model-b: ERROR" in captured.err
+
+
+# ---------------------------------------------------------------- local (Ollama) models
+
+OLLAMA_PARAMS = {"provider": "ollama", "temperature": 0.0, "seed": 42, "pause": 0.0}
+LOCAL = "llama3.1:8b"
+
+
+class FakeOllama:
+    """The part of OllamaClient that generation uses: request(), digest, version, base_url."""
+
+    def __init__(self, digest="sha256:aaa", reply=None, done_reason="stop", fail=False):
+        self.digest, self.version, self.base_url = digest, "0.40.18", "http://fake:11434"
+        self.bodies = []
+        self.reply = reply or {"answerable": True, "cited": [1], "answer": "Resposta local."}
+        self.done_reason, self.fail = done_reason, fail
+
+    def request(self, method, path, body=None):
+        assert (method, path) == ("POST", "/api/chat")
+        self.bodies.append(body)
+        if self.fail:
+            raise RuntimeError("Ollama answered HTTP 400 for /api/chat: the prompt is longer than the context length")
+        return {
+            "message": {"content": json.dumps(self.reply), "thinking": None},
+            "done_reason": self.done_reason,
+            "prompt_eval_count": 2500,
+            "eval_count": 30,
+        }
+
+
+def test_gemini_settings_keep_exactly_their_original_keys_and_ollama_adds_its_own():
+    gemini = rag.settings_for("m", 3, {"provider": "gemini", "temperature": 0.0, "seed": 42})
+    assert set(gemini) == {"model_requested", "temperature", "seed", "k", "prompt_version"}
+    local = rag.settings_for(LOCAL, 3, OLLAMA_PARAMS)
+    assert set(local) - set(gemini) == {"provider", "num_ctx", "num_predict", "think"}
+    assert local["think"] is False and local["provider"] == "ollama"
+
+
+def test_committed_logs_still_match_the_settings_the_config_would_produce():
+    config = rag.load_config(rag.CONFIG_PATH)
+    logs = sorted(rag.RUNS.glob("m3_runs.*.jsonl"))
+    assert logs, "the repository commits M3 logs"
+    for path in logs:
+        for record in read_jsonl(path):
+            model = record["settings"]["model_requested"]
+            assert record["settings"] == rag.settings_for(model, record["k"], config["models"][model]), path.name
+
+
+def test_the_repo_config_defines_the_four_local_models_outside_the_default_run():
+    config = rag.load_config(rag.CONFIG_PATH)
+    local = [m for m, p in config["models"].items() if p["provider"] == "ollama"]
+    assert sorted(local) == ["gemma4:e4b", "llama3.1:8b", "llama3.2:3b", "qwen3:8b"]
+    assert not set(local) & set(config["run"])
+
+
+def test_ollama_run_sends_the_frozen_request_and_logs_digest_and_usage(tmp_path):
+    data, runs = make_world(tmp_path)
+    server = FakeOllama()
+    summary = rag.run(LOCAL, data, runs, never_a_client, params=OLLAMA_PARAMS, pause=0, ollama_factory=lambda m: server)
+    assert summary["calls"] == 4 and summary["failed"] == []
+    body = server.bodies[0]
+    assert body["format"] == rag.RagAnswer.model_json_schema()
+    assert body["think"] is False and body["truncate"] is False and body["shift"] is False and body["stream"] is False
+    assert body["options"] == {"temperature": 0.0, "seed": 42, "num_ctx": 8192, "num_predict": 1024}
+    assert body["messages"] == [{"role": "user", "content": body["messages"][0]["content"]}]
+    paths = rag.paths_for(runs, LOCAL)
+    assert paths["runs"].name == "m3_runs.llama3.1_8b.jsonl"
+    for r in read_jsonl(paths["runs"]):
+        assert r["error"] is None and r["settings"] == rag.settings_for(LOCAL, 3, OLLAMA_PARAMS)
+        g = r["generation"]
+        assert g["model_version"] == "sha256:aaa" and g["server_version"] == "0.40.18" and g["finish_reason"] == "stop"
+        assert g["usage"]["prompt_eval_count"] == 2500 and g["provider"] == "ollama"
+
+
+def test_an_ollama_rerun_needs_no_server_when_the_log_is_complete(tmp_path):
+    data, runs = make_world(tmp_path)
+    rag.run(LOCAL, data, runs, never_a_client, params=OLLAMA_PARAMS, pause=0, ollama_factory=lambda m: FakeOllama())
+
+    def no_server(model):
+        raise AssertionError("a complete log must not need the server")
+
+    summary = rag.run(LOCAL, data, runs, never_a_client, params=OLLAMA_PARAMS, pause=0, ollama_factory=no_server)
+    assert summary["calls"] == 0
+
+
+def test_an_ollama_rerun_refuses_when_the_tag_now_points_to_other_weights(tmp_path):
+    data, runs = make_world(tmp_path)
+    rag.run(LOCAL, data, runs, never_a_client, params=OLLAMA_PARAMS, pause=0, ollama_factory=lambda m: FakeOllama("sha256:aaa"))
+    path = rag.paths_for(runs, LOCAL)["runs"]
+    write_jsonl(path, read_jsonl(path)[:3])  # one answer missing, so the server is needed again
+    with pytest.raises(RuntimeError, match="digest .*aaa.* but the server has sha256:bbb"):
+        rag.run(LOCAL, data, runs, never_a_client, params=OLLAMA_PARAMS, pause=0, ollama_factory=lambda m: FakeOllama("sha256:bbb"))
+    summary = rag.run(LOCAL, data, runs, never_a_client, params=OLLAMA_PARAMS, pause=0, ollama_factory=lambda m: FakeOllama("sha256:aaa"))
+    assert summary["calls"] == 1
+
+
+def test_an_ollama_error_is_logged_with_the_servers_explanation(tmp_path):
+    data, runs = make_world(tmp_path)
+    summary = rag.run(LOCAL, data, runs, never_a_client, params=OLLAMA_PARAMS, pause=0,
+                      ollama_factory=lambda m: FakeOllama(fail=True), dev_ids=["Q003"])
+    assert summary["calls"] == 2 and len(summary["failed"]) == 2
+    assert all("longer than the context length" in r["error"] for r in read_jsonl(rag.paths_for(runs, LOCAL)["dev"]))
+
+
+def test_a_gemini_and_an_ollama_model_run_side_by_side(tmp_path):
+    data, runs = make_world(tmp_path)
+    config = rag.load_config(write_config(
+        tmp_path, 'run = ["model-a", "llama3.1:8b"]\n[models."model-a"]\n[models."llama3.1:8b"]\nprovider = "ollama"\npause = 0\n'))
+    summaries = list(rag.run_models(
+        ["model-a", LOCAL], config, data_dir=data, runs_dir=runs, client_factory=FakeClient, ollama_factory=lambda m: FakeOllama()))
+    assert [s["calls"] for s in summaries] == [4, 4]
+    assert {p.name for p in runs.glob("m3_runs.*.jsonl")} == {"m3_runs.model-a.jsonl", "m3_runs.llama3.1_8b.jsonl"}
+    assert "provider" not in read_jsonl(rag.paths_for(runs, "model-a")["runs"])[0]["settings"]
+
+
+def test_an_unreachable_or_unpulled_local_model_is_reported_and_the_next_model_runs(tmp_path):
+    data, runs = make_world(tmp_path)
+    config = rag.load_config(write_config(
+        tmp_path, 'run = ["llama3.1:8b", "model-a"]\n[models."model-a"]\n[models."llama3.1:8b"]\nprovider = "ollama"\npause = 0\n'))
+
+    def not_pulled(model):
+        raise RuntimeError(f"model {model} is not on http://fake: run `docker exec ragfortextmining-ollama ollama pull {model}`")
+
+    summaries = list(rag.run_models(
+        [LOCAL, "model-a"], config, pause=0, data_dir=data, runs_dir=runs, client_factory=FakeClient, ollama_factory=not_pulled))
+    assert "ollama pull llama3.1:8b" in summaries[0]["error"] and summaries[1]["calls"] == 4
