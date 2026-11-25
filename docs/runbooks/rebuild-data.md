@@ -1,6 +1,6 @@
 # Rebuild the frozen data
 
-Rebuilds the v2 corpus, chunks, eval set and manifest under `data/`. The corpus is frozen and the rebuild changes the sha256 values in `data/MANIFEST.json`, so do it only deliberately. Selection rules are in [../curation.md](../curation.md).
+Rebuilds the corpus, chunks, eval set and manifest under `data/`. The corpus is frozen and the rebuild changes the sha256 values in `data/MANIFEST.json`, so do it only deliberately. Selection rules are in [../curation.md](../curation.md).
 
 ## Prerequisites and context
 
@@ -17,7 +17,7 @@ Rebuilds the v2 corpus, chunks, eval set and manifest under `data/`. The corpus 
 4. Write chunks, eval set and paired questions: `python src/build_dataset.py build`.
 5. Validate: `python src/build_dataset.py check`. Stop if it fails.
 6. Write the manifest: `python src/build_dataset.py manifest` (runs `check` first).
-7. In the devcontainer, run `python -m pytest`. Inference: a changed corpus changes the chunks, so `python src/retrieve.py` and the M3 logs in `runs/` would have to be regenerated (the M3 runner refuses logs whose input file hashes differ).
+7. In the devcontainer, run `python -m pytest`. Inference: a changed corpus changes the chunks, so `python src/retrieve.py` and the RAG logs in `runs/` would have to be regenerated (the RAG runner refuses logs whose input file hashes differ).
 
 ## Stop conditions
 
@@ -31,7 +31,7 @@ Rebuilds the v2 corpus, chunks, eval set and manifest under `data/`. The corpus 
 
 ## Recovery
 
-`git restore data/` (on the host) returns the committed frozen files. The v1 data can be recovered with `git show 046dcd2:<path>`.
+`git restore data/` (on the host) returns the committed frozen files. The earlier English dataset can be recovered with `git show 046dcd2:<path>`.
 
 ## References
 

@@ -6,8 +6,8 @@ The models are the four `provider = "ollama"` tables in `rag_models.toml`: `llam
 
 ## Prerequisites and context
 
-- Host: Docker with Compose, a clone of the repository, and `python3` 3.11 or newer (`pull-models.sh` reads `rag_models.toml` with `tomllib` when called without arguments). Run steps 1 to 3 from the repository root on the host.
-- Devcontainer: running (for step 3 and the runs in step 4). Run step 4 inside it.
+- Host: Docker with Compose, a clone of the repository, and `python3` 3.11 or newer (`pull-models.sh` reads `rag_models.toml` with `tomllib` when called without arguments). Run the server, download and connect steps from the repository root on the host.
+- Devcontainer: running (to connect it and to run the questions). Run the question step inside it.
 - Disk about 20 GB for the models, and RAM: an 8B model at Q4 needs about 5 GB, and `gemma4:e4b` more. With the default 9 GB cap, stop other containers first.
 
 ## Steps
@@ -33,14 +33,14 @@ The models are the four `provider = "ollama"` tables in `rag_models.toml`: `llam
    python src/rag.py --dev Q006 --model llama3.1:8b
    python src/rag.py --model llama3.1:8b
    ```
-   Validation: the summary line shows the answers written to `runs/`. More on runs and reruns: [../docs/runbooks/run-m3-models.md](../docs/runbooks/run-m3-models.md).
+   Validation: the summary line shows the answers written to `runs/`. More on runs and reruns: [../docs/runbooks/run-models.md](../docs/runbooks/run-models.md).
 
 The runner reaches the server at `OLLAMA_BASE_URL`, default `http://ragfortextmining-ollama:11434` (the container name on the shared network). To use a server elsewhere, set the variable in `.env` (see `.env.example`) or in the environment.
 
 ## Stop conditions
 
-- Step 3 reports `no running devcontainer found` or `more than one devcontainer matches`: start (or disambiguate) the devcontainer and repeat; do not run it inside the devcontainer.
-- The runner stops with the command to run when the server is down or the tag is missing: run step 1 or 2.
+- The connect step reports `no running devcontainer found` or `more than one devcontainer matches`: start (or disambiguate) the devcontainer and repeat; do not run it inside the devcontainer.
+- The runner stops with the command to run when the server is down or the tag is missing: start the server or download the model.
 - Memory runs out: the Ollama process is killed (not other containers). Stop other containers or lower the model size.
 - Each call has a 900 s timeout and five errors in a row abort that model's run, so a hung server can cost up to 5 x 900 s before the abort. Finished answers stay in the log, and a rerun continues.
 - The model digest is checked once, at the start of a run: a tag re-pulled in the middle of a run is not detected.
@@ -52,7 +52,7 @@ The container is healthy, the tags are listed, and each run writes `runs/m3_runs
 
 ## Recovery and shutdown
 
-The connection is lost when the devcontainer is recreated or the network is removed: repeat step 3 (it is safe to repeat).
+The connection is lost when the devcontainer is recreated or the network is removed: repeat the connect step (it is safe to repeat).
 
 - `docker compose -f local-llm/compose.yaml stop`: stops the container and frees its RAM; the models stay.
 - `local-llm/connect-devcontainer.sh --disconnect`, then `docker compose -f local-llm/compose.yaml down`: removes the container. Disconnect first, otherwise the network cannot be removed.

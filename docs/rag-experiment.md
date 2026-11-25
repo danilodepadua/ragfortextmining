@@ -1,6 +1,6 @@
-# M3 experiment design
+# RAG experiment design
 
-The M3 runner ([rag-runner.md](rag-runner.md)) is a controlled experiment: the prompt, K = 3, the retrievers and the questions are frozen in `src/rag.py`; only the model, with its logged temperature and seed, varies. This page records the prompt, the protocol that froze it, the citation checks and the limits of the comparison.
+The RAG runner ([rag-runner.md](rag-runner.md)) is a controlled experiment: the prompt, K = 3, the retrievers and the questions are frozen in `src/rag.py`; only the model, with its logged temperature and seed, varies. This page records the prompt, the protocol that froze it, the citation checks and the limits of the comparison.
 
 ## Controlled experiment
 
@@ -16,7 +16,7 @@ The prompt and settings were developed only on non-paired questions and frozen b
 
 ## Citation checks
 
-Each record has `cited_numbers` mapped to `cited_chunk_ids`, `invalid_cited_numbers`, `cites_gold`, `gold_in_context` and `consistent` (an answer with no valid citation, or a refusal that cites, is inconsistent). These are auxiliary signals only; failure classification in M4 rests on the human grade ([grading.md](grading.md)).
+Each record has `cited_numbers` mapped to `cited_chunk_ids`, `invalid_cited_numbers`, `cites_gold`, `gold_in_context` and `consistent` (an answer with no valid citation, or a refusal that cites, is inconsistent). These are auxiliary signals only; failure classification rests on the human grade ([grading.md](grading.md)).
 
 ## What "paired" means here
 

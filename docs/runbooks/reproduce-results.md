@@ -1,6 +1,6 @@
 # Reproduce the committed results
 
-Rebuilds the retrieval and M3 outputs from a fresh clone using the committed embedding cache and run logs, so no API call is made.
+Rebuilds the retrieval and RAG runner outputs from a fresh clone using the committed embedding cache and run logs, so no API call is made.
 
 ## Prerequisites and context
 

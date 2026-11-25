@@ -1,4 +1,4 @@
-# RAG runner (M3)
+# RAG runner
 
 `python src/rag.py` answers the 5 paired questions with both retrievers (10 answers per model) from retrieved chunks only. It reads `data/` (checked against `data/MANIFEST.json`) and `runs/rankings_v2.jsonl`, and writes only to `runs/`, so it also runs in the devcontainer. It needs `GEMINI_API_KEY` in `.env` for Gemini models that still have answers to make, and a running Ollama server for local models. The experiment design is in [rag-experiment.md](rag-experiment.md).
 
@@ -45,7 +45,7 @@ Records are keyed by (`qa_id`, retriever).
 - A model that fails or is refused is reported and the other models still run; the exit code is 1 if any model failed.
 - Five failed calls in a row abort that model's run; finished answers stay in the log. With a local server that hangs, that can take up to 5 x 900 s (the timeout per call is 900 s).
 
-The step-by-step procedure is [runbooks/run-m3-models.md](runbooks/run-m3-models.md).
+The step-by-step procedure is [runbooks/run-models.md](runbooks/run-models.md).
 
 ## Validation
 

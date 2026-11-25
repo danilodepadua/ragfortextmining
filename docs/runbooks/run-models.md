@@ -1,4 +1,4 @@
-# Run or rerun M3 for chosen models
+# Run or rerun the RAG runner for chosen models
 
 Answers the 5 paired questions with both retrievers for one or more models and writes the logs and grading sheets under `runs/`.
 

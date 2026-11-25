@@ -1,4 +1,4 @@
-# Retrieval (M2)
+# Retrieval
 
 `python src/retrieve.py` ranks all chunks for each question with two retrievers, TF-IDF and dense, and writes the rankings and metrics. It reads `data/` (chunks and eval set, checked against `data/MANIFEST.json`) and writes three files under `runs/`: `rankings_v2.jsonl`, `retrieval_metrics.json` and the embedding cache `embeddings_gemini-embedding-001_3072.npz`. The protocol it implements is in [curation.md](curation.md).
 
@@ -10,7 +10,7 @@ Settings were fixed before any result was seen and never tuned on the eval set.
 
 ## Outputs
 
-`runs/rankings_v2.jsonl` holds the full ranking of all 83 chunks for each of the 25 questions and both retrievers (50 lines). Each line has the question, the ranking (rank, chunk id, score), the retriever `config` and `chunks_sha256`. M3 ([rag-runner.md](rag-runner.md)) reads it.
+`runs/rankings_v2.jsonl` holds the full ranking of all 83 chunks for each of the 25 questions and both retrievers (50 lines). Each line has the question, the ranking (rank, chunk id, score), the retriever `config` and `chunks_sha256`. The RAG runner ([rag-runner.md](rag-runner.md)) reads it.
 
 `runs/retrieval_metrics.json` holds:
 - Evidence recall@k for k = 1, 3, 5: a gold chunk is in the top k (equals hit@k).

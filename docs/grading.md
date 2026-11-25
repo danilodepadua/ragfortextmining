@@ -1,6 +1,6 @@
 # Grading handoff and rubric
 
-The M3 answers are graded by hand by a second person (Person B, the grader) from blind sheets, one per model. This page defines the sheet, the return format and the rubric. The answers come from [rag-runner.md](rag-runner.md).
+The RAG answers are graded by hand by a second person (the grader) from blind sheets, one per model. This page defines the sheet, the return format and the rubric. The answers come from [rag-runner.md](rag-runner.md).
 
 ## Status
 
@@ -8,7 +8,7 @@ Sheets exist for all 7 models, but no grades have been returned yet, and which o
 
 ## Handoff
 
-The grader uses `runs/m3_grading_sheet.<model>.md`: answers `G01` to `G10` (the same ids for every model), the two answers to a question side by side in a seeded random order, with the question, the answer, the cited chunks and the gold answer and evidence span. The retriever is hidden; `g_id` is the key in the log. A sheet is written when all 10 answers of the model succeeded.
+The grader uses `runs/m3_grading_sheet.<model>.md`: answers labelled with grading ids `G01` to `G10` (the same ids for every model), the two answers to a question side by side in a seeded random order, with the question, the answer, the cited chunks and the gold answer and evidence span. The retriever is hidden; `g_id` is the key in the log. A sheet is written when all 10 answers of the model succeeded.
 
 Blinding holds by trust: the grader must not open the log or read `src/rag.py` until the grades are returned. Grades come back in a separate file per model, `runs/m3_grades.<model>.csv`, with columns `g_id,grade,cited_supports,notes`.
 

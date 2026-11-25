@@ -1,4 +1,4 @@
-# Corpus curation and evaluation protocol (M1)
+# Corpus curation and evaluation protocol
 
 This page describes how the 25 documents were chosen and how retrieval and answers are measured. The results are committed under `data/` and frozen; the files are listed in [data-and-run-outputs.md](data-and-run-outputs.md). The code is `src/curate.py` (selection) and `src/build_dataset.py` (chunks and eval set); the procedure to rebuild is [runbooks/rebuild-data.md](runbooks/rebuild-data.md).
 
@@ -6,7 +6,7 @@ This page describes how the 25 documents were chosen and how retrieval and answe
 
 - Dataset: `Madras1/rag-qa-fulltext-ptbr` (Brazilian Portuguese, licensed ODC-By: attribution required), configuration `documents`, pinned to revision `a9546f0d67416f3f2df57007f0ae60fde0cc0fab`.
 - Rows are read by streaming, shuffled with seed 42 (buffer 10,000), so the pick is reproducible.
-- We use 25 documents, IDs D001-D025, in `data/corpus_v2.jsonl`. They do not change after M1.
+- We use 25 documents, IDs D001-D025, in `data/corpus_v2.jsonl`. They are frozen.
 
 **Cheap filters** (applied before any LLM call). A row is rejected if it:
 - is not `pt-br`, or its domain is not `tecnologia`
@@ -32,7 +32,7 @@ This page describes how the 25 documents were chosen and how retrieval and answe
 
 **Gold:** every chunk of the document that contains the whole evidence span (`gold_chunk_ids`).
 
-**Retrieval:** compare TF-IDF and dense search (same chunks, same k). The search covers the whole corpus (all chunks of all 25 documents), and the query is the question only. Score = evidence recall@k, for k = 1, 3, 5: whether a gold chunk is in the top k. With one evidence span per question this equals hit@k. MRR is reported in M2 ([retrieval.md](retrieval.md)).
+**Retrieval:** compare TF-IDF and dense search (same chunks, same k). The search covers the whole corpus (all chunks of all 25 documents), and the query is the question only. Score = evidence recall@k, for k = 1, 3, 5: whether a gold chunk is in the top k. With one evidence span per question this equals hit@k. MRR is reported in [retrieval.md](retrieval.md).
 
 **Answers:** grade 10 answers by hand: Correct / Partial / Wrong, and whether the cited chunk supports the answer (Yes / No). See [grading.md](grading.md).
 

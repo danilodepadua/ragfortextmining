@@ -1,6 +1,6 @@
 # RAG for text mining
 
-Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The v2 foundation (curated corpus, chunks, evaluation set) is committed and frozen. The two retrievers (M2) and the RAG runner (M3) are implemented and merged; M3 has 7 final runs (10 answers each) that are not graded yet (see [docs/grading.md](docs/grading.md)).
+Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The curated corpus, chunks and evaluation set are committed and frozen. The two retrievers and the RAG runner are implemented and merged; the RAG runner has 7 final runs (10 answers each) that are not graded yet (see [docs/grading.md](docs/grading.md)).
 
 ## Quick start
 
@@ -18,10 +18,10 @@ To reproduce the committed results from a fresh clone, follow [docs/runbooks/rep
 
 | Document | Content |
 | --- | --- |
-| [docs/curation.md](docs/curation.md) | M1: document selection, filters, judge, human review, chunks, gold, evaluation protocol |
-| [docs/retrieval.md](docs/retrieval.md) | M2: TF-IDF and dense retrievers, rankings, metrics, results |
-| [docs/rag-runner.md](docs/rag-runner.md) | M3: `python src/rag.py`, models config, local models, rerun rules, outputs |
-| [docs/rag-experiment.md](docs/rag-experiment.md) | M3: controlled experiment, prompt, protocol, citation checks, paired questions, caveats |
+| [docs/curation.md](docs/curation.md) | Document selection, filters, judge, human review, chunks, gold, evaluation protocol |
+| [docs/retrieval.md](docs/retrieval.md) | TF-IDF and dense retrievers, rankings, metrics, results |
+| [docs/rag-runner.md](docs/rag-runner.md) | `python src/rag.py`, models config, local models, rerun rules, outputs |
+| [docs/rag-experiment.md](docs/rag-experiment.md) | Controlled experiment, prompt, protocol, citation checks, paired questions, caveats |
 | [docs/grading.md](docs/grading.md) | Grading handoff, rubric and status |
 | [docs/data-and-run-outputs.md](docs/data-and-run-outputs.md) | Files under `data/` and `runs/` |
 | [docs/devcontainer.md](docs/devcontainer.md) | Devcontainer behavior, read-only `data/`, execution contexts |
@@ -34,13 +34,13 @@ To reproduce the committed results from a fresh clone, follow [docs/runbooks/rep
 | --- | --- |
 | `src/curate.py` | Corpus curation: stream, filter, judge (`collect`), apply the human review (`finalize`) |
 | `src/build_dataset.py` | Chunks, eval set, paired questions, validation and manifest (`build`, `check`, `manifest`) |
-| `src/retrieve.py` | TF-IDF and dense retrieval, rankings and metrics (M2) |
-| `src/rag.py` | RAG runner, citation checks and grading sheets (M3) |
+| `src/retrieve.py` | TF-IDF and dense retrieval, rankings and metrics |
+| `src/rag.py` | RAG runner, citation checks and grading sheets |
 | `src/llm.py`, `src/common.py` | Gemini and Ollama wrappers; paths, JSONL I/O, chunking, manifest check |
-| `rag_models.toml` | Models for M3 and their settings |
+| `rag_models.toml` | Models for the RAG runner and their settings |
 | `tests/` | `pytest` tests (`pytest.ini` sets `pythonpath = src`) |
-| `data/` | Frozen v2 corpus and eval set |
-| `runs/` | Retrieval and M3 outputs, tracked in git |
+| `data/` | Frozen corpus and eval set |
+| `runs/` | Retrieval and RAG runner outputs, tracked in git |
 | `local-llm/` | Optional Ollama server for local models |
 | `.devcontainer/` | Devcontainer configuration |
 
@@ -54,4 +54,4 @@ python src/rag.py --dev Q006 --model llama3.1:8b  # development run on a non-pai
 python -m pytest                                  # tests
 ```
 
-The data-building commands (`python src/curate.py ...`, `python src/build_dataset.py ...`) write to the frozen `data/` and run on the host; see [docs/runbooks/rebuild-data.md](docs/runbooks/rebuild-data.md). The v1 data and scripts (English, RAGBench TechQA) were removed; recover any v1 file with `git show 046dcd2:<path>`, for example `git show 046dcd2:data/corpus_v1.jsonl`.
+The data-building commands (`python src/curate.py ...`, `python src/build_dataset.py ...`) write to the frozen `data/` and run on the host; see [docs/runbooks/rebuild-data.md](docs/runbooks/rebuild-data.md). The earlier English dataset (RAGBench TechQA) and its scripts were removed; recover any of its files with `git show 046dcd2:<path>`, for example `git show 046dcd2:data/corpus_v1.jsonl`.

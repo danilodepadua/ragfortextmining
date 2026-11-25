@@ -1,6 +1,6 @@
 # Data files and run outputs
 
-This page lists the committed files under `data/` and `runs/`. `data/` is the frozen v2 corpus and eval set: `data/MANIFEST.json` records the sha256 of every file, and the devcontainer mounts the folder read-only ([devcontainer.md](devcontainer.md)). `runs/` holds the retrieval and M3 outputs, tracked in git.
+This page lists the committed files under `data/` and `runs/`. `data/` is the frozen corpus and eval set: `data/MANIFEST.json` records the sha256 of every file, and the devcontainer mounts the folder read-only ([devcontainer.md](devcontainer.md)). `runs/` holds the retrieval and RAG runner outputs, tracked in git.
 
 ## Data files
 
@@ -26,10 +26,10 @@ Rebuilding changes the hashes in `data/MANIFEST.json`: the corpus is frozen, so 
 | `runs/rankings_v2.jsonl` | Full ranking of all chunks per question and retriever (50 lines), with config and `chunks_sha256` |
 | `runs/retrieval_metrics.json` | Evidence recall@k, MRR, first gold rank per question, exact random baseline, paired counts |
 | `runs/embeddings_gemini-embedding-001_3072.npz` | Embedding cache (chunks and questions), content keyed |
-| `runs/m3_runs.<model>.jsonl` | M3 full log per model: prompt, retrieved chunks, raw response, checks, provenance (10 records per model; 7 committed) |
-| `runs/m3_runs_failures.<model>.jsonl` | M3 failed attempts, kept even after a retry succeeds (committed for `gemini-3.5-flash-lite` and `gemma-4-26b-a4b-it`; created on the first failure) |
-| `runs/m3_grading_sheet.<model>.md` | M3 blind grading sheet per model (G01-G10), written when all 10 answers succeeded (7 committed) |
-| `runs/m3_dev_runs.<model>.jsonl` | M3 development runs on non-paired questions (committed for `gemini-3.5-flash-lite` and the four local models) |
+| `runs/m3_runs.<model>.jsonl` | Full log per model: prompt, retrieved chunks, raw response, checks, provenance (10 records per model; 7 committed) |
+| `runs/m3_runs_failures.<model>.jsonl` | Failed attempts, kept even after a retry succeeds (committed for `gemini-3.5-flash-lite` and `gemma-4-26b-a4b-it`; created on the first failure) |
+| `runs/m3_grading_sheet.<model>.md` | Blind grading sheet per model (grading ids G01-G10), written when all 10 answers succeeded (7 committed) |
+| `runs/m3_dev_runs.<model>.jsonl` | Development runs on non-paired questions (committed for `gemini-3.5-flash-lite` and the four local models) |
 | `runs/m3_dev_runs_failures.<model>.jsonl` | Failed attempts of development runs (none committed) |
 | `runs/m3_grades.<model>.csv` | Grades from the grader, per model: `g_id,grade,cited_supports,notes` (none yet) |
 
