@@ -1,6 +1,6 @@
 # Data files and run outputs
 
-This page lists the committed files under `data/` and `runs/`. `data/` is the frozen corpus and eval set: `data/MANIFEST.json` records the sha256 of every file, and the devcontainer mounts the folder read-only ([devcontainer.md](devcontainer.md)). `runs/` holds the retrieval and RAG runner outputs, tracked in git.
+This page lists the experiment inputs and outputs. `data/MANIFEST.json` records the SHA-256 hashes of the frozen corpus and evaluation files. The devcontainer mounts `data/` read-only. `runs/` holds retrieval results, saved RAG logs, returned grades and the M4 summary. [Devcontainer](devcontainer.md)
 
 ## Data files
 
@@ -31,8 +31,19 @@ Rebuilding changes the hashes in `data/MANIFEST.json`: the corpus is frozen, so 
 | `runs/m3_grading_sheet.<model>.md` | Blind grading sheet per model (grading ids G01-G10), written when all 10 answers succeeded (7 committed) |
 | `runs/m3_dev_runs.<model>.jsonl` | Development runs on non-paired questions (committed for `gemini-3.5-flash-lite` and the four local models) |
 | `runs/m3_dev_runs_failures.<model>.jsonl` | Failed attempts of development runs (none committed) |
-| `runs/m3_grades.<model>.csv` | Grades from the grader, per model: `g_id,grade,cited_supports,notes` (none yet) |
+| `runs/m3_grades.<model>.csv` | Seven returned blind grading CSVs with ten records each. Header is `g_id,grade,cited_supports,notes` |
+| `runs/m4_evaluation_summary.json` | Deterministic offline aggregation of retrieval, blind grades, citation checks, latency, usage and logged failures |
 
 `<model>` is the model name made filename-safe (characters outside `A-Za-z0-9._-` become `_`). The 7 committed models are `gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`, `gemma-4-26b-a4b-it`, `llama3.1_8b`, `qwen3_8b`, `gemma4_e4b` and `llama3.2_3b`.
+
+## M4 analysis artifacts
+
+| File | Content |
+| --- | --- |
+| `src/evaluate.py`, `tests/test_evaluate.py` | Summary generation and evaluation tests |
+| `src/build_report.py`, `tests/test_build_report.py` | PDF report builder from `report/report.md` and figures, with a two-page check |
+| `notebooks/rag_evaluation.ipynb` | Executed evaluation with tables, figures and quoted failure evidence |
+| `report/report.md`, `report/report.pdf` | Editable report and verified two-page PDF |
+| `report/figures/*.png` | Figures for retrieval, model grounding and the question-by-model grade matrix |
 
 Related: [retrieval.md](retrieval.md), [rag-runner.md](rag-runner.md), [grading.md](grading.md).

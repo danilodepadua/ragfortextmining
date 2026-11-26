@@ -1,0 +1,11 @@
+g_id,grade,cited_supports,notes
+G01,Correct,No,"O único trecho citado (chk_D021_000_3fe2a25c) corta em ""CausaEste problema ocorre porque a"" e não contém a causa."
+G02,Correct,Yes,
+G03,Correct,Yes,"Os trechos confirmam a função Criar Página Web, o arquivo Catwebpage.html, a inclusão de fotos e que não exige conhecer HTML."
+G04,Correct,Yes,"Os trechos confirmam a função Criar Página Web, o arquivo Catwebpage.html, a inclusão de fotos e que não exige conhecer HTML."
+G05,Correct,No,O trecho citado chk_D001_003_034d787c não define o COBIT como framework internacional unificador nem menciona ITIL ou ISO.
+G06,Correct,No,O trecho citado chk_D001_001_05b0f5f9 não define o COBIT como framework internacional unificador nem menciona ITIL ou ISO.
+G07,Correct,Yes,Descreve o preenchimento automático pelo Tiled conforme regras definidas em outros arquivos TMX com o exemplo de áreas de colisão.
+G08,Correct,Yes,
+G09,Correct,Yes,
+G10,Correct,Yes,

@@ -1,6 +1,6 @@
 # RAG for text mining
 
-Evaluation of retrieval for question answering over 25 Brazilian Portuguese technical documents. The curated corpus, chunks and evaluation set are committed and frozen. The two retrievers and the RAG runner are implemented and merged; the RAG runner has 7 final runs (10 answers each) that are not graded yet (see [docs/grading.md](docs/grading.md)).
+Evaluation of retrieval and citation-grounded answering over 25 Brazilian Portuguese technical documents. The curated corpus, chunks and evaluation set are frozen. The M4 evaluation uses blind human grades for all 70 final answers across seven models. `gemini-3.5-flash-lite` remains the primary model. [Report](report/report.pdf) · [Executed notebook](notebooks/rag_evaluation.ipynb) · [Grading protocol](docs/grading.md)
 
 ## Quick start
 
@@ -9,7 +9,7 @@ Run every command from the repository root (`python src/...`, not from `src`). P
 1. Create the environment, either a virtual environment or the devcontainer.
    - Virtual environment: `python -m venv venv`, activate it (`source venv/bin/activate` on macOS and Linux, `venv\Scripts\activate` on Windows), then `pip install -r requirements.txt -r .devcontainer/requirements-dev.txt`.
    - Devcontainer: open the repository in VS Code and choose **Reopen in Container**, or run `devcontainer up --workspace-folder .`. Python 3.12 and all dependencies are preinstalled. See [docs/devcontainer.md](docs/devcontainer.md).
-2. Copy `.env.example` to `.env` and set `GEMINI_API_KEY` (Gemini replaced OpenAI). The key is needed only by `python src/curate.py collect`, by `python src/retrieve.py` when the embedding cache lacks entries (the committed cache does not), and by `python src/rag.py` for a Gemini model that still has answers to make. Local Ollama models need no key. `OLLAMA_BASE_URL` is optional (see [local-llm/README.md](local-llm/README.md)).
+2. The saved cache and complete run logs are sufficient to reproduce the results offline. For new Gemini embeddings, answers or curation calls, copy `.env.example` to `.env` and set `GEMINI_API_KEY`. To run new Ollama generations, start a local server and optionally set `OLLAMA_BASE_URL`. [Ollama setup](local-llm/README.md)
 3. Check the setup with `python -m pytest`.
 
 To reproduce the committed results from a fresh clone, follow [docs/runbooks/reproduce-results.md](docs/runbooks/reproduce-results.md).
@@ -36,11 +36,15 @@ To reproduce the committed results from a fresh clone, follow [docs/runbooks/rep
 | `src/build_dataset.py` | Chunks, eval set, paired questions, validation and manifest (`build`, `check`, `manifest`) |
 | `src/retrieve.py` | TF-IDF and dense retrieval, rankings and metrics |
 | `src/rag.py` | RAG runner, citation checks and grading sheets |
+| `src/evaluate.py`, `tests/test_evaluate.py` | Offline evaluation and validation of the blind grades and retrieval results |
+| `src/build_report.py`, `tests/test_build_report.py` | Rebuilds `report/report.pdf` from `report/report.md` and `report/figures/` (enforces `<= 2` pages) |
 | `src/llm.py`, `src/common.py` | Gemini and Ollama wrappers; paths, JSONL I/O, chunking, manifest check |
 | `rag_models.toml` | Models for the RAG runner and their settings |
 | `tests/` | `pytest` tests (`pytest.ini` sets `pythonpath = src`) |
 | `data/` | Frozen corpus and eval set |
-| `runs/` | Retrieval and RAG runner outputs, tracked in git |
+| `runs/` | Retrieval rankings, RAG logs, returned grading CSVs and M4 summary |
+| `notebooks/rag_evaluation.ipynb` | Executed M1–M4 evaluation and failure analyses |
+| `report/` | Two-page report in Markdown and PDF, plus the notebook figures |
 | `local-llm/` | Optional Ollama server for local models |
 | `.devcontainer/` | Devcontainer configuration |
 
@@ -51,6 +55,8 @@ python src/retrieve.py                            # rank all chunks with both re
 python src/rag.py                                 # answer the 5 paired questions with both retrievers (default model from rag_models.toml)
 python src/rag.py --model llama3.1:8b             # a chosen model, here a local one (server and pulled tag needed)
 python src/rag.py --dev Q006 --model llama3.1:8b  # development run on a non-paired question
+python src/evaluate.py                            # recompute the M4 summary from saved files
+python src/build_report.py                        # rebuild report/report.pdf from report/report.md (<= 2 pages)
 python -m pytest                                  # tests
 ```
 

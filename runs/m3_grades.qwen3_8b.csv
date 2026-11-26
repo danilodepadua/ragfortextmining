@@ -1,0 +1,11 @@
+g_id,grade,cited_supports,notes
+G01,Correct,Yes,
+G02,Correct,Yes,
+G03,Correct,Yes,
+G04,Correct,No,"O único trecho citado trata de versão paga, download e ActiveX, sem mencionar Criar Página Web, Catwebpage.html ou fotos na página."
+G05,Correct,No,O trecho citado chk_D001_003_034d787c não define o COBIT como modelo internacional unificador nem menciona ITIL ou ISO.
+G06,Correct,No,Os trechos citados não definem o COBIT como modelo internacional unificador nem mencionam ITIL ou ISO.
+G07,Correct,Yes,Descreve criação de camadas e adição de tiles conforme regras definidas em outros arquivos TMX.
+G08,Partial,No,"Atribui incorretamente ao Automapping fronteiras de rios e barro, que em chk_D024_000_76a1bcf7 referem-se à ferramenta de edição de terrenos do tutorial anterior."
+G09,Correct,Yes,
+G10,Correct,Yes,

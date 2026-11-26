@@ -1,0 +1,11 @@
+g_id,grade,cited_supports,notes
+G01,Correct,Yes,
+G02,Correct,Yes,
+G03,Correct,Yes,"Os trechos confirmam a função Criar Página Web, o arquivo Catwebpage.html e que não exige conhecer HTML."
+G04,Correct,Yes,"Os trechos confirmam a função Criar Página Web, o arquivo Catwebpage.html e que não exige conhecer HTML."
+G05,Correct,Yes,
+G06,Correct,Yes,"Contém erro de digitação (""unificadorificador""), mas o sentido equivale à referência e é suportado pelo trecho."
+G07,Partial,Yes,"Menciona regras em outros arquivos TMX e economia de tempo em áreas de colisão, mas omite que a ferramenta preenche automaticamente camadas/tiles."
+G08,Correct,Yes,
+G09,Correct,Yes,
+G10,Correct,Yes,

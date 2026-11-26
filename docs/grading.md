@@ -4,7 +4,7 @@ The RAG answers are graded by hand by a second person (the grader) from blind sh
 
 ## Status
 
-Sheets exist for all 7 models, but no grades have been returned yet, and which of the 7 models are graded is still to be agreed.
+Member B returned completed blind grades for all seven models, ten answers per model. `python src/evaluate.py` validates the exact CSV header, the G01–G10 coverage and the N/A rule before joining by `g_id`. The evaluation resolves the grade files through `rag_models.toml`. [Summary](../runs/m4_evaluation_summary.json) · [Executed notebook](../notebooks/rag_evaluation.ipynb)
 
 ## Handoff
 
@@ -14,11 +14,13 @@ Blinding holds by trust: the grader must not open the log or read `src/rag.py` u
 
 ## Rubric
 
-Written before any paired answer exists; for the team to confirm.
+Fixed before the paired answers were generated.
 - Correct: same substance as the gold answer and no wrong claim.
 - Partial: right but incomplete, or with an unsupported or wrong extra claim.
 - Wrong: contradicts the gold answer, answers another question, or abstains. An abstention is never Correct; `gold_in_context` in the log says whether retrieval is to blame.
 - `cited_supports`: Yes if the cited chunks together contain what the answer states, No otherwise, N/A when nothing is cited.
+
+The blind K = 3 grades include 66 Correct, four Partial and zero Wrong. The report also discusses a Q019 development abstention at K = 1, which qualifies as Wrong under the rubric and sits outside the blind sample. [Failure analyses](../report/report.md#failure-analyses)
 
 ## Related
 

@@ -1,0 +1,11 @@
+g_id,grade,cited_supports,notes
+G01,Correct,Yes,
+G02,Correct,Yes,
+G03,Correct,Yes,
+G04,Correct,Yes,
+G05,Correct,Yes,
+G06,Correct,Yes,
+G07,Correct,Yes,"Descreve o preenchimento automático de camadas/tiles, o exemplo de colisão e as regras em outros arquivos TMX."
+G08,Correct,Yes,Os trechos confirmam o preenchimento de camadas conforme regras TMX e os exemplos de áreas de colisão ou interação.
+G09,Correct,Yes,
+G10,Correct,Yes,

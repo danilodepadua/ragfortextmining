@@ -1,0 +1,4127 @@
+{
+  "corpus": {
+    "dataset": "Madras1/rag-qa-fulltext-ptbr",
+    "revision": "a9546f0d67416f3f2df57007f0ae60fde0cc0fab",
+    "documents": 25,
+    "chunks": 83,
+    "document_types": {
+      "faq": 3,
+      "manual": 10,
+      "tutorial": 12
+    },
+    "document_words": {
+      "n": 25,
+      "total": 18943,
+      "median": 691,
+      "min": 408,
+      "max": 1340
+    },
+    "chunk_words": {
+      "n": 83,
+      "total": 21843,
+      "median": 300,
+      "min": 53,
+      "max": 300
+    },
+    "chunk_size_words": 300,
+    "chunk_overlap_words": 50
+  },
+  "retrieval": {
+    "n_questions": 25,
+    "n_chunks": 83,
+    "retrievers": {
+      "tfidf": {
+        "evidence_recall_at_k": {
+          "1": 0.64,
+          "3": 1.0,
+          "5": 1.0
+        },
+        "mrr": 0.8,
+        "first_gold_rank": {
+          "Q001": 1,
+          "Q002": 1,
+          "Q003": 1,
+          "Q004": 3,
+          "Q005": 2,
+          "Q006": 1,
+          "Q007": 2,
+          "Q008": 1,
+          "Q009": 1,
+          "Q010": 1,
+          "Q011": 1,
+          "Q012": 1,
+          "Q013": 2,
+          "Q014": 1,
+          "Q015": 2,
+          "Q016": 1,
+          "Q017": 2,
+          "Q018": 1,
+          "Q019": 3,
+          "Q020": 1,
+          "Q021": 2,
+          "Q022": 1,
+          "Q023": 1,
+          "Q024": 3,
+          "Q025": 1
+        },
+        "doc_recall_at_1": 0.96,
+        "doc_hits_at_1": 24,
+        "wrong_doc_at_1": [
+          {
+            "qa_id": "Q005",
+            "question": "Em que formatos os dados estão disponíveis?",
+            "gold_doc_id": "D005",
+            "ranked_doc_id": "D011",
+            "ranked_chunk_id": "chk_D011_001_a3d053f3",
+            "first_gold_rank": 2
+          }
+        ],
+        "evidence_misses": {
+          "1": {
+            "target_document_present": [
+              "Q004",
+              "Q007",
+              "Q013",
+              "Q015",
+              "Q017",
+              "Q019",
+              "Q021",
+              "Q024"
+            ],
+            "target_document_absent": [
+              "Q005"
+            ]
+          },
+          "3": {
+            "target_document_present": [],
+            "target_document_absent": []
+          },
+          "5": {
+            "target_document_present": [],
+            "target_document_absent": []
+          }
+        }
+      },
+      "dense": {
+        "evidence_recall_at_k": {
+          "1": 0.64,
+          "3": 0.96,
+          "5": 1.0
+        },
+        "mrr": 0.8033333333333332,
+        "first_gold_rank": {
+          "Q001": 1,
+          "Q002": 2,
+          "Q003": 1,
+          "Q004": 2,
+          "Q005": 1,
+          "Q006": 1,
+          "Q007": 2,
+          "Q008": 1,
+          "Q009": 1,
+          "Q010": 1,
+          "Q011": 1,
+          "Q012": 1,
+          "Q013": 2,
+          "Q014": 1,
+          "Q015": 2,
+          "Q016": 2,
+          "Q017": 3,
+          "Q018": 1,
+          "Q019": 1,
+          "Q020": 1,
+          "Q021": 1,
+          "Q022": 2,
+          "Q023": 1,
+          "Q024": 4,
+          "Q025": 1
+        },
+        "doc_recall_at_1": 1.0,
+        "doc_hits_at_1": 25,
+        "wrong_doc_at_1": [],
+        "evidence_misses": {
+          "1": {
+            "target_document_present": [
+              "Q002",
+              "Q004",
+              "Q007",
+              "Q013",
+              "Q015",
+              "Q016",
+              "Q017",
+              "Q022",
+              "Q024"
+            ],
+            "target_document_absent": []
+          },
+          "3": {
+            "target_document_present": [
+              "Q024"
+            ],
+            "target_document_absent": []
+          },
+          "5": {
+            "target_document_present": [],
+            "target_document_absent": []
+          }
+        }
+      }
+    },
+    "random": {
+      "evidence_recall_at_k": {
+        "1": 0.013012048192771117,
+        "3": 0.03896561857184837,
+        "5": 0.0648251542756391
+      },
+      "mrr": 0.06325352588189602,
+      "doc_recall_at_1": 0.04
+    },
+    "paired_counts": {
+      "1": {
+        "both": 13,
+        "dense_only": 3,
+        "tfidf_only": 3,
+        "neither": 6
+      },
+      "3": {
+        "both": 24,
+        "dense_only": 0,
+        "tfidf_only": 1,
+        "neither": 0
+      },
+      "5": {
+        "both": 25,
+        "dense_only": 0,
+        "tfidf_only": 0,
+        "neither": 0
+      }
+    },
+    "chunks_sha256": "374814ce983264a8a7c42f8e48f02f7333c58bbb0afe5edde0dfcc13bb0cf8a2",
+    "rrf": {
+      "k": 60,
+      "evidence_recall_at_k": {
+        "1": 0.64,
+        "3": 0.96,
+        "5": 1
+      },
+      "mrr": 0.8033333333333333,
+      "first_gold_rank": {
+        "Q001": 1,
+        "Q002": 1,
+        "Q003": 1,
+        "Q004": 2,
+        "Q005": 1,
+        "Q006": 1,
+        "Q007": 2,
+        "Q008": 1,
+        "Q009": 1,
+        "Q010": 1,
+        "Q011": 1,
+        "Q012": 1,
+        "Q013": 2,
+        "Q014": 1,
+        "Q015": 2,
+        "Q016": 1,
+        "Q017": 3,
+        "Q018": 1,
+        "Q019": 2,
+        "Q020": 1,
+        "Q021": 2,
+        "Q022": 2,
+        "Q023": 1,
+        "Q024": 4,
+        "Q025": 1
+      },
+      "doc_recall_at_1": 1.0,
+      "doc_hits_at_1": 25,
+      "wrong_doc_at_1": [],
+      "evidence_misses": {
+        "1": {
+          "target_document_present": [
+            "Q004",
+            "Q007",
+            "Q013",
+            "Q015",
+            "Q017",
+            "Q019",
+            "Q021",
+            "Q022",
+            "Q024"
+          ],
+          "target_document_absent": []
+        },
+        "3": {
+          "target_document_present": [
+            "Q024"
+          ],
+          "target_document_absent": []
+        },
+        "5": {
+          "target_document_present": [],
+          "target_document_absent": []
+        }
+      }
+    }
+  },
+  "paired": {
+    "seed": 42,
+    "method": "random.Random(seed).sample(sorted(qa_ids), 5)",
+    "paired": [
+      "Q021",
+      "Q004",
+      "Q001",
+      "Q024",
+      "Q009"
+    ],
+    "highlighted": [
+      "Q021",
+      "Q004",
+      "Q001"
+    ],
+    "slots": [
+      {
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "highlighted": true,
+        "retrieved_chunk_ids": [
+          "chk_D021_001_b8da8a09",
+          "chk_D021_000_3fe2a25c",
+          "chk_D021_002_fe1dcd38"
+        ],
+        "first_gold_rank": 1
+      },
+      {
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "highlighted": true,
+        "retrieved_chunk_ids": [
+          "chk_D021_000_3fe2a25c",
+          "chk_D021_001_b8da8a09",
+          "chk_D021_004_ab6a132c"
+        ],
+        "first_gold_rank": 2
+      },
+      {
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "highlighted": true,
+        "retrieved_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_001_ffa37118",
+          "chk_D004_002_f6344311"
+        ],
+        "first_gold_rank": 2
+      },
+      {
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "highlighted": true,
+        "retrieved_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_002_f6344311",
+          "chk_D004_001_ffa37118"
+        ],
+        "first_gold_rank": 3
+      },
+      {
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "highlighted": true,
+        "retrieved_chunk_ids": [
+          "chk_D001_000_22388f2f",
+          "chk_D001_002_230726b0",
+          "chk_D001_003_034d787c"
+        ],
+        "first_gold_rank": 1
+      },
+      {
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "highlighted": true,
+        "retrieved_chunk_ids": [
+          "chk_D001_000_22388f2f",
+          "chk_D001_003_034d787c",
+          "chk_D001_001_05b0f5f9"
+        ],
+        "first_gold_rank": 1
+      },
+      {
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "highlighted": false,
+        "retrieved_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "first_gold_rank": 4
+      },
+      {
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "highlighted": false,
+        "retrieved_chunk_ids": [
+          "chk_D024_004_3471c6d4",
+          "chk_D024_003_0dc95624",
+          "chk_D024_000_76a1bcf7"
+        ],
+        "first_gold_rank": 3
+      },
+      {
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "highlighted": false,
+        "retrieved_chunk_ids": [
+          "chk_D009_000_69adcd2c",
+          "chk_D009_001_21eb6e3b",
+          "chk_D018_002_1d895d07"
+        ],
+        "first_gold_rank": 1
+      },
+      {
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "highlighted": false,
+        "retrieved_chunk_ids": [
+          "chk_D009_000_69adcd2c",
+          "chk_D009_001_21eb6e3b",
+          "chk_D018_002_1d895d07"
+        ],
+        "first_gold_rank": 1
+      }
+    ]
+  },
+  "rag": {
+    "default_models": [
+      "gemini-3.5-flash-lite"
+    ],
+    "models": {
+      "gemini-3.5-flash-lite": {
+        "provider": "gemini",
+        "settings": {
+          "model_requested": "gemini-3.5-flash-lite",
+          "temperature": 0.0,
+          "seed": 42,
+          "k": 3,
+          "prompt_version": "13c74fac6aa7"
+        },
+        "overall": {
+          "n": 10,
+          "grades": {
+            "Correct": 10,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 10,
+            "No": 0,
+            "N/A": 0
+          },
+          "correct_without_support": 0,
+          "gold_in_context": 9,
+          "cites_gold": 9,
+          "consistent": 10,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 10,
+            "total": 60197,
+            "median": 5001.5,
+            "min": 2103,
+            "max": 15607
+          },
+          "tokens": {
+            "prompt": {
+              "n": 10,
+              "total": 14015,
+              "median": 1411.5,
+              "min": 1113,
+              "max": 1643
+            },
+            "output": {
+              "n": 10,
+              "total": 824,
+              "median": 71.5,
+              "min": 54,
+              "max": 125
+            },
+            "reported_total": {
+              "n": 10,
+              "total": 14839,
+              "median": 1503.5,
+              "min": 1216,
+              "max": 1709
+            }
+          }
+        },
+        "by_retriever": {
+          "tfidf": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 5,
+              "No": 0,
+              "N/A": 0
+            },
+            "correct_without_support": 0,
+            "gold_in_context": 5,
+            "cites_gold": 5,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 22371,
+              "median": 3222,
+              "min": 2693,
+              "max": 8967
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 6877,
+                "median": 1373,
+                "min": 1113,
+                "max": 1643
+              },
+              "output": {
+                "n": 5,
+                "total": 407,
+                "median": 72,
+                "min": 54,
+                "max": 112
+              },
+              "reported_total": {
+                "n": 5,
+                "total": 7284,
+                "median": 1445,
+                "min": 1216,
+                "max": 1709
+              }
+            }
+          },
+          "dense": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 5,
+              "No": 0,
+              "N/A": 0
+            },
+            "correct_without_support": 0,
+            "gold_in_context": 4,
+            "cites_gold": 4,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 37826,
+              "median": 5625,
+              "min": 2103,
+              "max": 15607
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 7138,
+                "median": 1450,
+                "min": 1298,
+                "max": 1532
+              },
+              "output": {
+                "n": 5,
+                "total": 417,
+                "median": 71,
+                "min": 54,
+                "max": 125
+              },
+              "reported_total": {
+                "n": 5,
+                "total": 7555,
+                "median": 1575,
+                "min": 1352,
+                "max": 1603
+              }
+            }
+          }
+        },
+        "highlighted": {
+          "n": 6,
+          "grades": {
+            "Correct": 6,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 6,
+            "No": 0,
+            "N/A": 0
+          },
+          "correct_without_support": 0,
+          "gold_in_context": 6,
+          "cites_gold": 6,
+          "consistent": 6,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 6,
+            "total": 41876,
+            "median": 6065.5,
+            "min": 2103,
+            "max": 15607
+          },
+          "tokens": {
+            "prompt": {
+              "n": 6,
+              "total": 8800,
+              "median": 1450.0,
+              "min": 1352,
+              "max": 1643
+            },
+            "output": {
+              "n": 6,
+              "total": 516,
+              "median": 71.5,
+              "min": 66,
+              "max": 125
+            },
+            "reported_total": {
+              "n": 6,
+              "total": 9316,
+              "median": 1568.5,
+              "min": 1423,
+              "max": 1709
+            }
+          }
+        },
+        "development_answers": 8,
+        "failed_attempts": [
+          {
+            "g_id": "G08",
+            "qa_id": "Q024",
+            "retriever": "tfidf",
+            "error": "ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+            "latency_ms": 23491,
+            "recovered": true
+          }
+        ]
+      },
+      "gemini-3.1-flash-lite": {
+        "provider": "gemini",
+        "settings": {
+          "model_requested": "gemini-3.1-flash-lite",
+          "temperature": 0.0,
+          "seed": 42,
+          "k": 3,
+          "prompt_version": "13c74fac6aa7"
+        },
+        "overall": {
+          "n": 10,
+          "grades": {
+            "Correct": 10,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 10,
+            "No": 0,
+            "N/A": 0
+          },
+          "correct_without_support": 0,
+          "gold_in_context": 9,
+          "cites_gold": 9,
+          "consistent": 10,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 10,
+            "total": 28022,
+            "median": 1881.0,
+            "min": 1214,
+            "max": 8581
+          },
+          "tokens": {
+            "prompt": {
+              "n": 10,
+              "total": 14015,
+              "median": 1411.5,
+              "min": 1113,
+              "max": 1643
+            },
+            "output": {
+              "n": 10,
+              "total": 743,
+              "median": 63.5,
+              "min": 53,
+              "max": 113
+            },
+            "reported_total": {
+              "n": 10,
+              "total": 14758,
+              "median": 1486.5,
+              "min": 1207,
+              "max": 1705
+            }
+          }
+        },
+        "by_retriever": {
+          "tfidf": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 5,
+              "No": 0,
+              "N/A": 0
+            },
+            "correct_without_support": 0,
+            "gold_in_context": 5,
+            "cites_gold": 5,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 15836,
+              "median": 1710,
+              "min": 1425,
+              "max": 8581
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 6877,
+                "median": 1373,
+                "min": 1113,
+                "max": 1643
+              },
+              "output": {
+                "n": 5,
+                "total": 361,
+                "median": 62,
+                "min": 53,
+                "max": 98
+              },
+              "reported_total": {
+                "n": 5,
+                "total": 7238,
+                "median": 1426,
+                "min": 1207,
+                "max": 1705
+              }
+            }
+          },
+          "dense": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 5,
+              "No": 0,
+              "N/A": 0
+            },
+            "correct_without_support": 0,
+            "gold_in_context": 4,
+            "cites_gold": 4,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 12186,
+              "median": 2052,
+              "min": 1214,
+              "max": 4710
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 7138,
+                "median": 1450,
+                "min": 1298,
+                "max": 1532
+              },
+              "output": {
+                "n": 5,
+                "total": 382,
+                "median": 65,
+                "min": 53,
+                "max": 113
+              },
+              "reported_total": {
+                "n": 5,
+                "total": 7520,
+                "median": 1547,
+                "min": 1352,
+                "max": 1619
+              }
+            }
+          }
+        },
+        "highlighted": {
+          "n": 6,
+          "grades": {
+            "Correct": 6,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 6,
+            "No": 0,
+            "N/A": 0
+          },
+          "correct_without_support": 0,
+          "gold_in_context": 6,
+          "cites_gold": 6,
+          "consistent": 6,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 6,
+            "total": 18761,
+            "median": 2272.5,
+            "min": 1425,
+            "max": 8581
+          },
+          "tokens": {
+            "prompt": {
+              "n": 6,
+              "total": 8800,
+              "median": 1450.0,
+              "min": 1352,
+              "max": 1643
+            },
+            "output": {
+              "n": 6,
+              "total": 428,
+              "median": 63.5,
+              "min": 53,
+              "max": 98
+            },
+            "reported_total": {
+              "n": 6,
+              "total": 9228,
+              "median": 1547.5,
+              "min": 1405,
+              "max": 1705
+            }
+          }
+        },
+        "development_answers": 0,
+        "failed_attempts": []
+      },
+      "gemma-4-26b-a4b-it": {
+        "provider": "gemini",
+        "settings": {
+          "model_requested": "gemma-4-26b-a4b-it",
+          "temperature": 0.0,
+          "seed": 42,
+          "k": 3,
+          "prompt_version": "13c74fac6aa7"
+        },
+        "overall": {
+          "n": 10,
+          "grades": {
+            "Correct": 9,
+            "Partial": 1,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 10,
+            "No": 0,
+            "N/A": 0
+          },
+          "correct_without_support": 0,
+          "gold_in_context": 9,
+          "cites_gold": 9,
+          "consistent": 10,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 10,
+            "total": 56641,
+            "median": 3221.0,
+            "min": 1683,
+            "max": 11942
+          },
+          "tokens": {
+            "prompt": {
+              "n": 10,
+              "total": 14015,
+              "median": 1411.5,
+              "min": 1113,
+              "max": 1643
+            },
+            "output": {
+              "n": 10,
+              "total": 587,
+              "median": 56.0,
+              "min": 41,
+              "max": 96
+            },
+            "reported_total": {
+              "n": 10,
+              "total": 14602,
+              "median": 1481.5,
+              "min": 1154,
+              "max": 1695
+            }
+          }
+        },
+        "by_retriever": {
+          "tfidf": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 5,
+              "No": 0,
+              "N/A": 0
+            },
+            "correct_without_support": 0,
+            "gold_in_context": 5,
+            "cites_gold": 5,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 21476,
+              "median": 3166,
+              "min": 1683,
+              "max": 11112
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 6877,
+                "median": 1373,
+                "min": 1113,
+                "max": 1643
+              },
+              "output": {
+                "n": 5,
+                "total": 275,
+                "median": 52,
+                "min": 41,
+                "max": 80
+              },
+              "reported_total": {
+                "n": 5,
+                "total": 7152,
+                "median": 1433,
+                "min": 1154,
+                "max": 1695
+              }
+            }
+          },
+          "dense": {
+            "n": 5,
+            "grades": {
+              "Correct": 4,
+              "Partial": 1,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 5,
+              "No": 0,
+              "N/A": 0
+            },
+            "correct_without_support": 0,
+            "gold_in_context": 4,
+            "cites_gold": 4,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 35165,
+              "median": 7389,
+              "min": 2038,
+              "max": 11942
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 7138,
+                "median": 1450,
+                "min": 1298,
+                "max": 1532
+              },
+              "output": {
+                "n": 5,
+                "total": 312,
+                "median": 60,
+                "min": 42,
+                "max": 96
+              },
+              "reported_total": {
+                "n": 5,
+                "total": 7450,
+                "median": 1546,
+                "min": 1340,
+                "max": 1584
+              }
+            }
+          }
+        },
+        "highlighted": {
+          "n": 6,
+          "grades": {
+            "Correct": 6,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 6,
+            "No": 0,
+            "N/A": 0
+          },
+          "correct_without_support": 0,
+          "gold_in_context": 6,
+          "cites_gold": 6,
+          "consistent": 6,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 6,
+            "total": 23108,
+            "median": 2139.5,
+            "min": 1683,
+            "max": 11942
+          },
+          "tokens": {
+            "prompt": {
+              "n": 6,
+              "total": 8800,
+              "median": 1450.0,
+              "min": 1352,
+              "max": 1643
+            },
+            "output": {
+              "n": 6,
+              "total": 400,
+              "median": 60.0,
+              "min": 52,
+              "max": 96
+            },
+            "reported_total": {
+              "n": 6,
+              "total": 9200,
+              "median": 1538.0,
+              "min": 1412,
+              "max": 1695
+            }
+          }
+        },
+        "development_answers": 0,
+        "failed_attempts": [
+          {
+            "g_id": "G03",
+            "qa_id": "Q004",
+            "retriever": "dense",
+            "error": "ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+            "latency_ms": 20819,
+            "recovered": true
+          }
+        ]
+      },
+      "llama3.1:8b": {
+        "provider": "ollama",
+        "settings": {
+          "model_requested": "llama3.1:8b",
+          "temperature": 0.0,
+          "seed": 42,
+          "k": 3,
+          "prompt_version": "13c74fac6aa7",
+          "provider": "ollama",
+          "num_ctx": 8192,
+          "num_predict": 1024,
+          "think": false
+        },
+        "overall": {
+          "n": 10,
+          "grades": {
+            "Correct": 9,
+            "Partial": 1,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 8,
+            "No": 2,
+            "N/A": 0
+          },
+          "correct_without_support": 2,
+          "gold_in_context": 9,
+          "cites_gold": 7,
+          "consistent": 9,
+          "invalid_citations": 1,
+          "latency_ms": {
+            "n": 10,
+            "total": 950613,
+            "median": 102180.0,
+            "min": 8359,
+            "max": 134691
+          },
+          "tokens": {
+            "prompt": {
+              "n": 10,
+              "total": 15971,
+              "median": 1621.5,
+              "min": 1303,
+              "max": 1762
+            },
+            "output": {
+              "n": 10,
+              "total": 628,
+              "median": 65.0,
+              "min": 44,
+              "max": 86
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "by_retriever": {
+          "tfidf": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 4,
+              "No": 1,
+              "N/A": 0
+            },
+            "correct_without_support": 1,
+            "gold_in_context": 5,
+            "cites_gold": 4,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 412699,
+              "median": 87842,
+              "min": 8359,
+              "max": 127956
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 7838,
+                "median": 1585,
+                "min": 1303,
+                "max": 1762
+              },
+              "output": {
+                "n": 5,
+                "total": 313,
+                "median": 64,
+                "min": 44,
+                "max": 86
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          },
+          "dense": {
+            "n": 5,
+            "grades": {
+              "Correct": 4,
+              "Partial": 1,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 4,
+              "No": 1,
+              "N/A": 0
+            },
+            "correct_without_support": 1,
+            "gold_in_context": 4,
+            "cites_gold": 3,
+            "consistent": 4,
+            "invalid_citations": 1,
+            "latency_ms": {
+              "n": 5,
+              "total": 537914,
+              "median": 114651,
+              "min": 68842,
+              "max": 134691
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 8133,
+                "median": 1658,
+                "min": 1524,
+                "max": 1748
+              },
+              "output": {
+                "n": 5,
+                "total": 315,
+                "median": 66,
+                "min": 44,
+                "max": 71
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          }
+        },
+        "highlighted": {
+          "n": 6,
+          "grades": {
+            "Correct": 6,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 4,
+            "No": 2,
+            "N/A": 0
+          },
+          "correct_without_support": 2,
+          "gold_in_context": 6,
+          "cites_gold": 4,
+          "consistent": 5,
+          "invalid_citations": 1,
+          "latency_ms": {
+            "n": 6,
+            "total": 634682,
+            "median": 109792.5,
+            "min": 68842,
+            "max": 134691
+          },
+          "tokens": {
+            "prompt": {
+              "n": 6,
+              "total": 9872,
+              "median": 1661.0,
+              "min": 1539,
+              "max": 1762
+            },
+            "output": {
+              "n": 6,
+              "total": 405,
+              "median": 68.0,
+              "min": 48,
+              "max": 86
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "development_answers": 2,
+        "failed_attempts": []
+      },
+      "qwen3:8b": {
+        "provider": "ollama",
+        "settings": {
+          "model_requested": "qwen3:8b",
+          "temperature": 0.0,
+          "seed": 42,
+          "k": 3,
+          "prompt_version": "13c74fac6aa7",
+          "provider": "ollama",
+          "num_ctx": 8192,
+          "num_predict": 1024,
+          "think": false
+        },
+        "overall": {
+          "n": 10,
+          "grades": {
+            "Correct": 9,
+            "Partial": 1,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 6,
+            "No": 4,
+            "N/A": 0
+          },
+          "correct_without_support": 3,
+          "gold_in_context": 9,
+          "cites_gold": 6,
+          "consistent": 10,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 10,
+            "total": 1028646,
+            "median": 107937.5,
+            "min": 17574,
+            "max": 144392
+          },
+          "tokens": {
+            "prompt": {
+              "n": 10,
+              "total": 15989,
+              "median": 1635.0,
+              "min": 1313,
+              "max": 1804
+            },
+            "output": {
+              "n": 10,
+              "total": 973,
+              "median": 90.5,
+              "min": 56,
+              "max": 141
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "by_retriever": {
+          "tfidf": {
+            "n": 5,
+            "grades": {
+              "Correct": 4,
+              "Partial": 1,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 2,
+              "No": 3,
+              "N/A": 0
+            },
+            "correct_without_support": 2,
+            "gold_in_context": 5,
+            "cites_gold": 3,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 448894,
+              "median": 104752,
+              "min": 17574,
+              "max": 130434
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 7854,
+                "median": 1588,
+                "min": 1313,
+                "max": 1804
+              },
+              "output": {
+                "n": 5,
+                "total": 482,
+                "median": 89,
+                "min": 56,
+                "max": 129
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          },
+          "dense": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 4,
+              "No": 1,
+              "N/A": 0
+            },
+            "correct_without_support": 1,
+            "gold_in_context": 4,
+            "cites_gold": 3,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 579752,
+              "median": 125554,
+              "min": 61211,
+              "max": 144392
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 8135,
+                "median": 1682,
+                "min": 1467,
+                "max": 1753
+              },
+              "output": {
+                "n": 5,
+                "total": 491,
+                "median": 92,
+                "min": 59,
+                "max": 141
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          }
+        },
+        "highlighted": {
+          "n": 6,
+          "grades": {
+            "Correct": 6,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 3,
+            "No": 3,
+            "N/A": 0
+          },
+          "correct_without_support": 3,
+          "gold_in_context": 6,
+          "cites_gold": 3,
+          "consistent": 6,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 6,
+            "total": 657725,
+            "median": 117509.5,
+            "min": 61211,
+            "max": 144392
+          },
+          "tokens": {
+            "prompt": {
+              "n": 6,
+              "total": 9989,
+              "median": 1682.0,
+              "min": 1546,
+              "max": 1804
+            },
+            "output": {
+              "n": 6,
+              "total": 527,
+              "median": 90.5,
+              "min": 56,
+              "max": 120
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "development_answers": 2,
+        "failed_attempts": []
+      },
+      "gemma4:e4b": {
+        "provider": "ollama",
+        "settings": {
+          "model_requested": "gemma4:e4b",
+          "temperature": 0.0,
+          "seed": 42,
+          "k": 3,
+          "prompt_version": "13c74fac6aa7",
+          "provider": "ollama",
+          "num_ctx": 8192,
+          "num_predict": 1024,
+          "think": false
+        },
+        "overall": {
+          "n": 10,
+          "grades": {
+            "Correct": 10,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 7,
+            "No": 3,
+            "N/A": 0
+          },
+          "correct_without_support": 3,
+          "gold_in_context": 9,
+          "cites_gold": 6,
+          "consistent": 10,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 10,
+            "total": 332201,
+            "median": 34238.5,
+            "min": 5486,
+            "max": 50898
+          },
+          "tokens": {
+            "prompt": {
+              "n": 10,
+              "total": 14085,
+              "median": 1418.5,
+              "min": 1120,
+              "max": 1650
+            },
+            "output": {
+              "n": 10,
+              "total": 724,
+              "median": 63.5,
+              "min": 52,
+              "max": 114
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "by_retriever": {
+          "tfidf": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 4,
+              "No": 1,
+              "N/A": 0
+            },
+            "correct_without_support": 1,
+            "gold_in_context": 5,
+            "cites_gold": 4,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 146470,
+              "median": 33020,
+              "min": 5486,
+              "max": 42342
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 6912,
+                "median": 1380,
+                "min": 1120,
+                "max": 1650
+              },
+              "output": {
+                "n": 5,
+                "total": 370,
+                "median": 65,
+                "min": 52,
+                "max": 114
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          },
+          "dense": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 3,
+              "No": 2,
+              "N/A": 0
+            },
+            "correct_without_support": 2,
+            "gold_in_context": 4,
+            "cites_gold": 2,
+            "consistent": 5,
+            "invalid_citations": 0,
+            "latency_ms": {
+              "n": 5,
+              "total": 185731,
+              "median": 41172,
+              "min": 19688,
+              "max": 50898
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 7173,
+                "median": 1457,
+                "min": 1305,
+                "max": 1539
+              },
+              "output": {
+                "n": 5,
+                "total": 354,
+                "median": 62,
+                "min": 52,
+                "max": 100
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          }
+        },
+        "highlighted": {
+          "n": 6,
+          "grades": {
+            "Correct": 6,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 3,
+            "No": 3,
+            "N/A": 0
+          },
+          "correct_without_support": 3,
+          "gold_in_context": 6,
+          "cites_gold": 3,
+          "consistent": 6,
+          "invalid_citations": 0,
+          "latency_ms": {
+            "n": 6,
+            "total": 220140,
+            "median": 38523.5,
+            "min": 19688,
+            "max": 50898
+          },
+          "tokens": {
+            "prompt": {
+              "n": 6,
+              "total": 8842,
+              "median": 1457.0,
+              "min": 1359,
+              "max": 1650
+            },
+            "output": {
+              "n": 6,
+              "total": 445,
+              "median": 63.5,
+              "min": 52,
+              "max": 114
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "development_answers": 2,
+        "failed_attempts": []
+      },
+      "llama3.2:3b": {
+        "provider": "ollama",
+        "settings": {
+          "model_requested": "llama3.2:3b",
+          "temperature": 0.0,
+          "seed": 42,
+          "k": 3,
+          "prompt_version": "13c74fac6aa7",
+          "provider": "ollama",
+          "num_ctx": 8192,
+          "num_predict": 1024,
+          "think": false
+        },
+        "overall": {
+          "n": 10,
+          "grades": {
+            "Correct": 9,
+            "Partial": 1,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 7,
+            "No": 3,
+            "N/A": 0
+          },
+          "correct_without_support": 2,
+          "gold_in_context": 9,
+          "cites_gold": 7,
+          "consistent": 8,
+          "invalid_citations": 2,
+          "latency_ms": {
+            "n": 10,
+            "total": 409772,
+            "median": 45129.0,
+            "min": 4041,
+            "max": 53438
+          },
+          "tokens": {
+            "prompt": {
+              "n": 10,
+              "total": 16121,
+              "median": 1636.5,
+              "min": 1318,
+              "max": 1777
+            },
+            "output": {
+              "n": 10,
+              "total": 668,
+              "median": 64.5,
+              "min": 44,
+              "max": 94
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "by_retriever": {
+          "tfidf": {
+            "n": 5,
+            "grades": {
+              "Correct": 5,
+              "Partial": 0,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 4,
+              "No": 1,
+              "N/A": 0
+            },
+            "correct_without_support": 1,
+            "gold_in_context": 5,
+            "cites_gold": 4,
+            "consistent": 4,
+            "invalid_citations": 1,
+            "latency_ms": {
+              "n": 5,
+              "total": 179290,
+              "median": 39090,
+              "min": 4041,
+              "max": 51059
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 7913,
+                "median": 1600,
+                "min": 1318,
+                "max": 1777
+              },
+              "output": {
+                "n": 5,
+                "total": 327,
+                "median": 61,
+                "min": 44,
+                "max": 94
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          },
+          "dense": {
+            "n": 5,
+            "grades": {
+              "Correct": 4,
+              "Partial": 1,
+              "Wrong": 0
+            },
+            "cited_supports": {
+              "Yes": 3,
+              "No": 2,
+              "N/A": 0
+            },
+            "correct_without_support": 1,
+            "gold_in_context": 4,
+            "cites_gold": 3,
+            "consistent": 4,
+            "invalid_citations": 1,
+            "latency_ms": {
+              "n": 5,
+              "total": 230482,
+              "median": 51996,
+              "min": 29252,
+              "max": 53438
+            },
+            "tokens": {
+              "prompt": {
+                "n": 5,
+                "total": 8208,
+                "median": 1673,
+                "min": 1539,
+                "max": 1763
+              },
+              "output": {
+                "n": 5,
+                "total": 341,
+                "median": 68,
+                "min": 44,
+                "max": 94
+              },
+              "reported_total": {
+                "n": 0,
+                "total": null,
+                "median": null,
+                "min": null,
+                "max": null
+              }
+            }
+          }
+        },
+        "highlighted": {
+          "n": 6,
+          "grades": {
+            "Correct": 6,
+            "Partial": 0,
+            "Wrong": 0
+          },
+          "cited_supports": {
+            "Yes": 4,
+            "No": 2,
+            "N/A": 0
+          },
+          "correct_without_support": 2,
+          "gold_in_context": 6,
+          "cites_gold": 4,
+          "consistent": 4,
+          "invalid_citations": 2,
+          "latency_ms": {
+            "n": 6,
+            "total": 271451,
+            "median": 49158.5,
+            "min": 29252,
+            "max": 52796
+          },
+          "tokens": {
+            "prompt": {
+              "n": 6,
+              "total": 9962,
+              "median": 1676.0,
+              "min": 1554,
+              "max": 1777
+            },
+            "output": {
+              "n": 6,
+              "total": 437,
+              "median": 68.0,
+              "min": 53,
+              "max": 94
+            },
+            "reported_total": {
+              "n": 0,
+              "total": null,
+              "median": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "development_answers": 2,
+        "failed_attempts": []
+      }
+    },
+    "overall": {
+      "n": 70,
+      "grades": {
+        "Correct": 66,
+        "Partial": 4,
+        "Wrong": 0
+      },
+      "cited_supports": {
+        "Yes": 58,
+        "No": 12,
+        "N/A": 0
+      },
+      "correct_without_support": 10,
+      "gold_in_context": 63,
+      "cites_gold": 53,
+      "consistent": 67,
+      "invalid_citations": 3,
+      "latency_ms": {
+        "n": 70,
+        "total": 2866092,
+        "median": 24470.0,
+        "min": 1214,
+        "max": 144392
+      },
+      "tokens": {
+        "prompt": {
+          "n": 70,
+          "total": 104211,
+          "median": 1506.0,
+          "min": 1113,
+          "max": 1804
+        },
+        "output": {
+          "n": 70,
+          "total": 5147,
+          "median": 66.0,
+          "min": 41,
+          "max": 141
+        },
+        "reported_total": {
+          "n": 30,
+          "total": 44199,
+          "median": 1487.5,
+          "min": 1154,
+          "max": 1709
+        }
+      }
+    },
+    "by_provider": {
+      "gemini": {
+        "n": 30,
+        "grades": {
+          "Correct": 29,
+          "Partial": 1,
+          "Wrong": 0
+        },
+        "cited_supports": {
+          "Yes": 30,
+          "No": 0,
+          "N/A": 0
+        },
+        "correct_without_support": 0,
+        "gold_in_context": 27,
+        "cites_gold": 27,
+        "consistent": 30,
+        "invalid_citations": 0,
+        "latency_ms": {
+          "n": 30,
+          "total": 144860,
+          "median": 3117.0,
+          "min": 1214,
+          "max": 15607
+        },
+        "tokens": {
+          "prompt": {
+            "n": 30,
+            "total": 42045,
+            "median": 1411.5,
+            "min": 1113,
+            "max": 1643
+          },
+          "output": {
+            "n": 30,
+            "total": 2154,
+            "median": 63.5,
+            "min": 41,
+            "max": 125
+          },
+          "reported_total": {
+            "n": 30,
+            "total": 44199,
+            "median": 1487.5,
+            "min": 1154,
+            "max": 1709
+          }
+        }
+      },
+      "ollama": {
+        "n": 40,
+        "grades": {
+          "Correct": 37,
+          "Partial": 3,
+          "Wrong": 0
+        },
+        "cited_supports": {
+          "Yes": 28,
+          "No": 12,
+          "N/A": 0
+        },
+        "correct_without_support": 10,
+        "gold_in_context": 36,
+        "cites_gold": 26,
+        "consistent": 37,
+        "invalid_citations": 3,
+        "latency_ms": {
+          "n": 40,
+          "total": 2721232,
+          "median": 52396.0,
+          "min": 4041,
+          "max": 144392
+        },
+        "tokens": {
+          "prompt": {
+            "n": 40,
+            "total": 62166,
+            "median": 1550.0,
+            "min": 1120,
+            "max": 1804
+          },
+          "output": {
+            "n": 40,
+            "total": 2993,
+            "median": 68.0,
+            "min": 44,
+            "max": 141
+          },
+          "reported_total": {
+            "n": 0,
+            "total": null,
+            "median": null,
+            "min": null,
+            "max": null
+          }
+        }
+      }
+    },
+    "by_retriever": {
+      "tfidf": {
+        "n": 35,
+        "grades": {
+          "Correct": 34,
+          "Partial": 1,
+          "Wrong": 0
+        },
+        "cited_supports": {
+          "Yes": 29,
+          "No": 6,
+          "N/A": 0
+        },
+        "correct_without_support": 5,
+        "gold_in_context": 35,
+        "cites_gold": 30,
+        "consistent": 34,
+        "invalid_citations": 1,
+        "latency_ms": {
+          "n": 35,
+          "total": 1247036,
+          "median": 11112,
+          "min": 1425,
+          "max": 130434
+        },
+        "tokens": {
+          "prompt": {
+            "n": 35,
+            "total": 51148,
+            "median": 1450,
+            "min": 1113,
+            "max": 1804
+          },
+          "output": {
+            "n": 35,
+            "total": 2535,
+            "median": 65,
+            "min": 41,
+            "max": 129
+          },
+          "reported_total": {
+            "n": 15,
+            "total": 21674,
+            "median": 1433,
+            "min": 1154,
+            "max": 1709
+          }
+        }
+      },
+      "dense": {
+        "n": 35,
+        "grades": {
+          "Correct": 32,
+          "Partial": 3,
+          "Wrong": 0
+        },
+        "cited_supports": {
+          "Yes": 29,
+          "No": 6,
+          "N/A": 0
+        },
+        "correct_without_support": 5,
+        "gold_in_context": 28,
+        "cites_gold": 23,
+        "consistent": 33,
+        "invalid_citations": 2,
+        "latency_ms": {
+          "n": 35,
+          "total": 1619056,
+          "median": 32383,
+          "min": 1214,
+          "max": 144392
+        },
+        "tokens": {
+          "prompt": {
+            "n": 35,
+            "total": 53063,
+            "median": 1524,
+            "min": 1298,
+            "max": 1763
+          },
+          "output": {
+            "n": 35,
+            "total": 2612,
+            "median": 68,
+            "min": 42,
+            "max": 141
+          },
+          "reported_total": {
+            "n": 15,
+            "total": 22525,
+            "median": 1547,
+            "min": 1340,
+            "max": 1619
+          }
+        }
+      }
+    },
+    "highlighted": {
+      "n": 42,
+      "grades": {
+        "Correct": 42,
+        "Partial": 0,
+        "Wrong": 0
+      },
+      "cited_supports": {
+        "Yes": 32,
+        "No": 10,
+        "N/A": 0
+      },
+      "correct_without_support": 10,
+      "gold_in_context": 42,
+      "cites_gold": 32,
+      "consistent": 39,
+      "invalid_citations": 3,
+      "latency_ms": {
+        "n": 42,
+        "total": 1867743,
+        "median": 32811.0,
+        "min": 1425,
+        "max": 144392
+      },
+      "tokens": {
+        "prompt": {
+          "n": 42,
+          "total": 65065,
+          "median": 1542.5,
+          "min": 1352,
+          "max": 1804
+        },
+        "output": {
+          "n": 42,
+          "total": 3158,
+          "median": 68.0,
+          "min": 48,
+          "max": 125
+        },
+        "reported_total": {
+          "n": 18,
+          "total": 27744,
+          "median": 1547.5,
+          "min": 1405,
+          "max": 1709
+        }
+      }
+    },
+    "answer_grades": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09",
+          "chk_D021_000_3fe2a25c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 8909
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 8967
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2103
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 3068
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_000_22388f2f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 3222
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_000_22388f2f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 15607
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 5625
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2693
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 5582
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 4421
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09",
+          "chk_D021_000_3fe2a25c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2725
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2493
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 1485
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 8581
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_000_22388f2f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 1425
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_000_22388f2f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2052
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 4710
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 1710
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 1214
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 1627
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09",
+          "chk_D021_000_3fe2a25c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2038
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_000_3fe2a25c",
+          "chk_D021_001_b8da8a09"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 1683
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 11942
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 3166
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_000_22388f2f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2239
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_000_22388f2f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 2040
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Partial",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 11756
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 3276
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 7389
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 11112
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09",
+          "chk_D021_000_3fe2a25c",
+          "chk_D021_002_fe1dcd38"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 134691
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 127956
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 114651
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 83608
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 104934
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          4
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9"
+        ],
+        "invalid_cited_numbers": [
+          4
+        ],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": false,
+        "latency_ms": 68842
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Partial",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 120304
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 87842
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 99426
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 8359
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09",
+          "chk_D021_000_3fe2a25c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 144392
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 130434
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 125554
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_002_f6344311"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 86669
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 109465
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9",
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 61211
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 142185
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Partial",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_004_3471c6d4",
+          "chk_D024_003_0dc95624",
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 104752
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 106410
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 17574
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_000_3fe2a25c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 50898
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_000_3fe2a25c",
+          "chk_D021_001_b8da8a09"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 42342
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 41590
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_000_9c635e86",
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 30165
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 35457
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 19688
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 41172
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 33020
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 32383
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 5486
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09",
+          "chk_D021_000_3fe2a25c",
+          "chk_D021_002_fe1dcd38"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 52796
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G02",
+        "qa_id": "Q021",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_001_b8da8a09"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 51059
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G03",
+        "qa_id": "Q004",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 51996
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_001_ffa37118"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 39090
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          4
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [
+          4
+        ],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": false,
+        "latency_ms": 47258
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          17
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9"
+        ],
+        "invalid_cited_numbers": [
+          17
+        ],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": false,
+        "latency_ms": 29252
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Partial",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_002_4cb5683f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 53438
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 37842
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G09",
+        "qa_id": "Q009",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 43000
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G10",
+        "qa_id": "Q009",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1
+        ],
+        "cited_chunk_ids": [
+          "chk_D009_000_69adcd2c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 4041
+      }
+    ],
+    "non_perfect": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 5625,
+        "answer": "O Automapping é uma ferramenta do Tiled baseada em regras definidas em outros arquivos TMX que serve para automatizar o preenchimento de áreas (como áreas de colisão), economizando tempo ao evitar preencher manualmente mapas grandes, preenchendo-os conforme regras definidas pelo usuário.",
+        "notes": "Descreve o preenchimento automático com o exemplo de áreas de colisão e indica que as regras vêm de outros arquivos TMX."
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 4710,
+        "answer": "O Automapping é uma ferramenta do Tiled que permite automatizar o preenchimento de áreas, como camadas de colisão, economizando tempo em mapas grandes. Ela se baseia em regras definidas em outros arquivos TMX, onde o usuário especifica condições (como regiões e entradas) e o resultado desejado (saídas), permitindo que o próprio Tiled preencha os tiles conforme definido.",
+        "notes": "Descreve o preenchimento automático de camadas/tiles, o exemplo de colisão e as regras em outros arquivos TMX."
+      },
+      {
+        "model": "gemma-4-26b-a4b-it",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Partial",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 11756,
+        "answer": "O Automapping é uma ferramenta que se baseia em regras definidas em outros arquivos TMX. Com ela, é possível economizar muito tempo, evitando preencher áreas de colisão, por exemplo, em mapas muito grandes.",
+        "notes": "Menciona regras em outros arquivos TMX e economia de tempo em áreas de colisão, mas omite que a ferramenta preenche automaticamente camadas/tiles."
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 104934,
+        "answer": "Framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "O trecho citado chk_D001_003_034d787c não define o COBIT como framework internacional unificador nem menciona ITIL ou ISO."
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          4
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9"
+        ],
+        "invalid_cited_numbers": [
+          4
+        ],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": false,
+        "latency_ms": 68842,
+        "answer": "O framework COBIT é um modelo orientado para a governação das tecnologias de informação, que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "Define o COBIT como modelo de governação de TI e lista ITIL, CMMI e ISO, mas o trecho citado chk_D001_001_05b0f5f9 não menciona ITIL, ISO nem essa definição."
+      },
+      {
+        "model": "llama3.1:8b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Partial",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 120304,
+        "answer": "A ferramenta Automapping no Tiled é uma ferramenta que se baseia em regras definidas em outros arquivos TMX e permite automatizar o preenchimento de áreas de colisão em mapas.",
+        "notes": "Indica regras em outros arquivos TMX e preenchimento automático, mas restringe a definição a áreas de colisão sem mencionar camadas/tiles ou que é apenas um exemplo."
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G04",
+        "qa_id": "Q004",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D004_002_f6344311"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 86669,
+        "answer": "Para criar uma página web a partir do catálogo de artigos no CatWeb, utilize a função 'Criar Página Web' que grava, na mesma pasta do programa, o ficheiro Catwebpage.html (ou outro nome, se o definir no menu Ficheiro / Configuração), semelhante a este exemplo. A fotografia de cada artigo será incluída na página, desde que exista na mesma pasta do programa.",
+        "notes": "O único trecho citado trata de versão paga, download e ActiveX, sem mencionar Criar Página Web, Catwebpage.html ou fotos na página."
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 109465,
+        "answer": "O framework COBIT é um modelo internacional unificador que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "O trecho citado chk_D001_003_034d787c não define o COBIT como modelo internacional unificador nem menciona ITIL ou ISO."
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9",
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 61211,
+        "answer": "O framework COBIT é um modelo internacional unificador que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "Os trechos citados não definem o COBIT como modelo internacional unificador nem mencionam ITIL ou ISO."
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 142185,
+        "answer": "A ferramenta Automapping no Tiled é uma função que se baseia em regras definidas em outros arquivos TMX. Ela permite automatizar tarefas como preencher áreas de colisão, evitando a necessidade de preencher manualmente cada tile. Com o Automapping, você define regras em um arquivo TMX de regras, e o Tiled aplica essas regras automaticamente em outro mapa, criando camadas e adicionando tiles conforme definido nas regras.",
+        "notes": "Descreve criação de camadas e adição de tiles conforme regras definidas em outros arquivos TMX."
+      },
+      {
+        "model": "qwen3:8b",
+        "g_id": "G08",
+        "qa_id": "Q024",
+        "retriever": "tfidf",
+        "grade": "Partial",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_004_3471c6d4",
+          "chk_D024_003_0dc95624",
+          "chk_D024_000_76a1bcf7"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "latency_ms": 104752,
+        "answer": "A ferramenta Automapping no Tiled é uma funcionalidade que permite preencher camadas com tiles específicos, conforme regras definidas em outros arquivos TMX. Ela ajuda a economizar tempo ao automatizar tarefas como a criação de áreas de colisão, fronteiras de rios e barro, entre outros. Com o Automapping, o usuário define regras e o próprio Tiled preenche conforme deseja.",
+        "notes": "Atribui incorretamente ao Automapping fronteiras de rios e barro, que em chk_D024_000_76a1bcf7 referem-se à ferramenta de edição de terrenos do tutorial anterior."
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G01",
+        "qa_id": "Q021",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D021_000_3fe2a25c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 50898,
+        "answer": "Este problema ocorre porque a conta que o Microsoft Dynamics CRM Data Connector para Microsoft SQL Server Reporting Services está usando para autenticação não tem permissões para os bancos de dados do Microsoft CRM.",
+        "notes": "O único trecho citado (chk_D021_000_3fe2a25c) corta em \"CausaEste problema ocorre porque a\" e não contém a causa."
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 35457,
+        "answer": "O COBIT é um framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "O trecho citado chk_D001_003_034d787c não define o COBIT como framework internacional unificador nem menciona ITIL ou ISO."
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 19688,
+        "answer": "O COBIT é um framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "O trecho citado chk_D001_001_05b0f5f9 não define o COBIT como framework internacional unificador nem menciona ITIL ou ISO."
+      },
+      {
+        "model": "gemma4:e4b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "Yes",
+        "answerable": true,
+        "cited_numbers": [
+          1,
+          2,
+          3
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_003_0dc95624",
+          "chk_D024_002_4cb5683f",
+          "chk_D024_001_913d73a2"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 41172,
+        "answer": "O Automapping é uma ferramenta do Tiled que permite economizar tempo, evitando preencher áreas de colisão, por exemplo, pois com ela você apenas define regras que o próprio Tiled preenche conforme você deseja. O Automapping é uma ferramenta que se baseia em regras definidas em outros arquivos TMX.",
+        "notes": "Descreve o preenchimento automático pelo Tiled conforme regras definidas em outros arquivos TMX com o exemplo de áreas de colisão."
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G05",
+        "qa_id": "Q001",
+        "retriever": "tfidf",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          4
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_003_034d787c"
+        ],
+        "invalid_cited_numbers": [
+          4
+        ],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": false,
+        "latency_ms": 47258,
+        "answer": "O framework COBIT é um quadro de referência para a governança das tecnologias da informação (TI). Ele integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "Define o COBIT como quadro de referência para governança de TI e lista ITIL, CMMI e ISO, mas o trecho citado chk_D001_003_034d787c não menciona ITIL nem ISO."
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G06",
+        "qa_id": "Q001",
+        "retriever": "dense",
+        "grade": "Correct",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          3,
+          17
+        ],
+        "cited_chunk_ids": [
+          "chk_D001_001_05b0f5f9"
+        ],
+        "invalid_cited_numbers": [
+          17
+        ],
+        "gold_in_context": true,
+        "cites_gold": false,
+        "consistent": false,
+        "latency_ms": 29252,
+        "answer": "O COBIT é um framework internacional unificadora que integra os principais standards de TI, incluindo ITIL, CMMI e ISO.",
+        "notes": "O trecho citado chk_D001_001_05b0f5f9 não define o COBIT como framework internacional unificador nem menciona ITIL ou ISO."
+      },
+      {
+        "model": "llama3.2:3b",
+        "g_id": "G07",
+        "qa_id": "Q024",
+        "retriever": "dense",
+        "grade": "Partial",
+        "cited_supports": "No",
+        "answerable": true,
+        "cited_numbers": [
+          2
+        ],
+        "cited_chunk_ids": [
+          "chk_D024_002_4cb5683f"
+        ],
+        "invalid_cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "latency_ms": 53438,
+        "answer": "A ferramenta Automapping no Tiled é uma ferramenta que se baseia em regras definidas em outros arquivos TMX. Ela permite automatizar a preenchimento de áreas de colisão em mapas, economizando tempo e reduzindo a complexidade do processo.",
+        "notes": "Restringe o preenchimento automático a áreas de colisão sem indicar camadas/tiles em geral, e o único trecho citado (chk_D024_002_4cb5683f) não menciona economia de tempo nem redução de complexidade."
+      }
+    ],
+    "development_probe": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "qa_id": "Q019",
+        "retriever": "tfidf",
+        "k": 1,
+        "answerable": false,
+        "answer": "O contexto fornecido não contém informações sobre o que os triângulos superiores no Histograma indicam, portanto não é possível responder.",
+        "cited_numbers": [],
+        "gold_in_context": false,
+        "cites_gold": false,
+        "consistent": true,
+        "retrieved_chunk_ids": [
+          "chk_D019_000_7645ac03"
+        ],
+        "rubric_grade": "Wrong"
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "qa_id": "Q019",
+        "retriever": "dense",
+        "k": 1,
+        "answerable": true,
+        "answer": "Os dois pequenos triângulos na parte superior esquerda e à direita do histograma indicam os Alertas de Clipping (recortes de sombra e realces). O triângulo da esquerda indica um corte de preto (área da imagem em preto puro sem outras informações) e o da direita indica realces exagerados (área da imagem branca sem outras informações).",
+        "cited_numbers": [
+          1
+        ],
+        "gold_in_context": true,
+        "cites_gold": true,
+        "consistent": true,
+        "retrieved_chunk_ids": [
+          "chk_D019_002_76fa3d81"
+        ],
+        "rubric_grade": null
+      }
+    ]
+  }
+}

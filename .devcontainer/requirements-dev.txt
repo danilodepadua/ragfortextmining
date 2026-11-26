@@ -1,4 +1,6 @@
 ipykernel==7.4.0
+matplotlib==3.10.8
 nbconvert==7.17.2
 nbformat==5.11.1
 pytest==9.2.0
+reportlab==4.5.1

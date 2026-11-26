@@ -1,0 +1,11 @@
+g_id,grade,cited_supports,notes
+G01,Correct,Yes,
+G02,Correct,Yes,
+G03,Correct,Yes,
+G04,Correct,Yes,
+G05,Correct,No,O trecho citado chk_D001_003_034d787c não define o COBIT como framework internacional unificador nem menciona ITIL ou ISO.
+G06,Correct,No,"Define o COBIT como modelo de governação de TI e lista ITIL, CMMI e ISO, mas o trecho citado chk_D001_001_05b0f5f9 não menciona ITIL, ISO nem essa definição."
+G07,Partial,Yes,"Indica regras em outros arquivos TMX e preenchimento automático, mas restringe a definição a áreas de colisão sem mencionar camadas/tiles ou que é apenas um exemplo."
+G08,Correct,Yes,
+G09,Correct,Yes,
+G10,Correct,Yes,
